@@ -1,0 +1,90 @@
+---
+title: "Plot depths for sampling White Matter"
+author: "Audrey Luo"
+date: "2024-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(cowplot)
+library(directlabels)
+library(dplyr)
+require(ggplot2)
+library(patchwork)
+library(ggpubr)
+knitr::opts_chunk$set(echo = TRUE)
+
+font_size <- 16
+theme_set(theme_classic(base_family = "sans",base_size = font_size))
+ 
+```
+ 
+
+
+```{r functions}
+replace_with_mm <- function(df) {
+  df$Depth_mm <- gsub("depth_(\\d+p\\d+|\\d+)", "\\1", df$Depth)
+  df$Depth_mm <- gsub("p", ".", df$Depth_mm)
+  return(df)
+}
+
+
+
+
+blues <- c("#9ee5e6","#43d7d9")
+reds <- c("#fc9b5d","#e05904")
+plot_depths <- function(df, title, palette) {
+  
+  plot <- ggplot(data=df, aes(x=Depth_mm, y=count)) + 
+    geom_bar(stat = "identity", fill=palette[1], colour=palette[2], alpha=0.8) + 
+    theme(axis.text.x = element_text(angle=45, vjust=0.8),
+          plot.title = element_text(hjust=0.5),
+          legend.position = "none") + 
+    ggtitle(title) + labs(y="Number of Subjects", x="Best Depth (mm)")
+  return(plot)
+}
+
+
+```
+
+```{r load and plot depths, fig.height=7, fig.width=7}
+dataset="HCPD"
+outputs_root <- sprintf("/cbica/projects/luo_wm_dev/output/%1$s/superficialWM/",dataset)
+csv_dir <- paste0(outputs_root, 'all_subjects/probseg_depths/')
+
+lh_GM <- read.csv(paste0(csv_dir, "lh_GM_count.csv"))
+lh_WM <- read.csv(paste0(csv_dir, "lh_WM_count.csv"))
+rh_GM <- read.csv(paste0(csv_dir, "rh_GM_count.csv"))
+rh_WM <- read.csv(paste0(csv_dir, "rh_WM_count.csv"))
+ 
+
+ 
+lh_GM <- replace_with_mm(lh_GM)
+lh_WM <- replace_with_mm(lh_WM)
+rh_GM <- replace_with_mm(rh_GM)
+rh_WM <- replace_with_mm(rh_WM)
+
+GMprobseg_plots <- ggarrange(plot_depths(lh_GM, "LH", blues), plot_depths(rh_GM, "RH", blues), common.legend = TRUE) 
+GMprobseg_plots <- annotate_figure(GMprobseg_plots, top = text_grob("Depths for lowest gray matter probability", 
+               color = "black", face = "bold", size = 16))
+
+
+
+
+WMprobseg_plots <- ggarrange(plot_depths(lh_WM, "LH", reds), plot_depths(rh_WM, "RH", reds), common.legend = TRUE) 
+WMprobseg_plots <- annotate_figure(WMprobseg_plots, top = text_grob("Depths for highest white matter probability", 
+               color = "black", face = "bold", size = 16))
+
+
+plot_grid(GMprobseg_plots, WMprobseg_plots, nrow=2)
+ 
+
+ggsave("/Users/audluo/PennLINC/luowm_local/output/superficial_wm_testing/Figs/best_depths.png", dpi=300, width = 7, height = 7)
+```
+
+
+```{r}
+x
+```
+
+

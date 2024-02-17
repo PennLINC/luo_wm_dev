@@ -1,0 +1,7 @@
+{
+	"dataset": "HCPD",
+	"data_root": "/cbica/projects/luo_wm_dev/input/HCPD",
+	"outputs_root": "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM",
+	"demographics_file": "/cbica/projects/luo_wm_dev/input/HCPD/sample_selection_files/HCPD_WMDev_FinalSampleDemographics_N569_age8to22.csv",
+	"qc_file": "/cbica/projects/luo_wm_dev/input/HCPD/sample_selection_files/HCPD_WMDev_FinalSampleQCMetrics_N569_age8to22.csv"
+}

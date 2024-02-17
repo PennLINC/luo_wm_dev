@@ -1,0 +1,88 @@
+---
+title: "SAaxis fsaverage5 testing"
+author: "Audrey Luo"
+date: "2024-02-15"
+output: html_document
+---
+
+```{r}
+library(freesurfer)
+library(freesurferformats)
+library(kableExtra)
+ 
+```
+
+
+```{r}
+
+SAaxis <- read.csv("/cbica/projects/luo_wm_dev/SAaxis/SensorimotorAssociation_Axis.fsaverage5.csv", header=T)
+
+# actually, best to split left and right hemi again
+lh.SAaxis <- SAaxis[1:10242,]
+rh.SAaxis <- SAaxis[10243:20484,]
+
+lh.SAaxis_medialwall <- which(lh.SAaxis==0) - 1 # vertex numbers for freesurfer label files start at 0, whereas SA axis vertex numbers (indices) start at 1
+rh.SAaxis_medialwall <- which(rh.SAaxis==0) - 1
+
+
+# load medial wall vertices. Note that vertex numbers for freesurfer label files start at 0!!
+lh.label_medialwall <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/lh.Medial_wall.label")
+rh.label_medialwall <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/rh.Medial_wall.label")
+ 
+
+length(lh.label_medialwall$vertex_num) # 888 freesurfer medial wall vertices
+length(lh.SAaxis_medialwall) # 776 SA axis medial wall vertices
+
+length(rh.label_medialwall$vertex_num) # 881 freesurfer medial wall vertices
+length(rh.SAaxis_medialwall) # 776 SA axis medial wall vertices
+
+# SA axis has 217 fewer vertices labeled as medial wall
+
+intersect(lh.label_medialwall$vertex_num, lh.SAaxis_medialwall)
+length(intersect(lh.label_medialwall$vertex_num, lh.SAaxis_medialwall)) # 719 shared lh medial wall vertices
+length(setdiff(lh.SAaxis_medialwall, lh.label_medialwall$vertex_num)) # 57 vertices in SA axis that are NOT in freesurfer
+length(setdiff(lh.label_medialwall$vertex_num, lh.SAaxis_medialwall)) # 169 vertices in freesurfer that are NOT in SA axis
+
+length(intersect(rh.label_medialwall$vertex_num, rh.SAaxis_medialwall)) # 725 shared rh medial wall vertices
+length(setdiff(rh.SAaxis_medialwall, rh.label_medialwall$vertex_num))# 51 vertices in SA axis that are NOT in freesurfer
+length(setdiff(rh.label_medialwall$vertex_num, rh.SAaxis_medialwall)) # 156 vertices in freesurfer that are NOT in SA axis
+ 
+ 
+```
+
+
+ 
+
+
+
+```{r} 
+# save out fsaverage5 coordinates
+lh.label_medialwall <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/lh.Medial_wall.label")
+rh.label_medialwall <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/rh.Medial_wall.label")
+
+lh.label_cortex <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/lh.cortex.label")
+rh.label_cortex <- read_fs_label("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/rh.cortex.label")
+
+lh_vertices <- rbind(lh.label_medialwall, lh.label_cortex)
+lh_vertices$vertex_num <- as.integer(lh_vertices$vertex_num)
+lh_vertices$r_coord <- as.numeric(lh_vertices$r_coord)
+lh_vertices$a_coord <- as.numeric(lh_vertices$a_coord)
+lh_vertices$s_coord <- as.numeric(lh_vertices$s_coord)
+lh_vertices <- lh_vertices %>% arrange(vertex_num) %>% select(-value)
+ 
+
+rh_vertices <- rbind(rh.label_medialwall, rh.label_cortex)
+rh_vertices$vertex_num <- as.integer(rh_vertices$vertex_num)
+rh_vertices <- rh_vertices %>% arrange(vertex_num) %>% select(-value)
+ 
+ 
+write.csv("/cbica/projects/luo_wm_dev/input/HCPD/HCPD_freesurfer/fsaverage5/label/lh_fsaverage_vertices_coords.csv")
+
+all_coords <- read.csv("/cbica/projects/luo_wm_dev/software/spin_test/rotate_parcellation/fsaverage5_fsLRmedialwall.Centroid_RAS.csv")
+all_coords
+
+
+lh_vertices[which(lh_vertices$r_coord > -0.1 & lh_vertices$r_coord < 0.5),]
+lh_vertices[which(lh_vertices$s_coord < -44 & lh_vertices$s_coord > -45),]
+```
+

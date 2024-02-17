@@ -1,0 +1,2 @@
+﻿dataset ,data_root, outputs_root,demographics_file, qc_file
+ HCPD,/cbica/projects/luo_wm_dev/input/HCPD,/cbica/projects/luo_wm_dev/output/HCPD/superficialWM,/cbica/projects/luo_wm_dev/input/HCPD/sample_selection_files/HCPD_WMDev_FinalSampleDemographics_N569_age8to22.csv,/cbica/projects/luo_wm_dev/input/HCPD/sample_selection_files/HCPD_WMDev_FinalSampleQCMetrics_N569_age8to22.csv
