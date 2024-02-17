@@ -101,4 +101,4 @@ fitGAMs_ModelArray_GMfiltered <- function(scalar, outdir) {
 #fitGAMs_ModelArray("dti_fa", outdir) # preliminary GAMs - didn't filter for GM probability
 #fitGAMs_ModelArray("md", outdir)
 
-fitGAMs_ModelArray(scalar, outdir)
+fitGAMs_ModelArray_GMfiltered(scalar, outdir)
