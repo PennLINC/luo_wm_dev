@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 # This script does a few things: 
 # 1) saves out dsistudio scalars and GMprobseg for all subjects to h5 file WITHOUT excluding vertices
-# 2) excludes vertices for each subject if her GMprobseg > 50% for a given vertex. Then saves our dsistudio scalars to h5 file
+# 2) saves out dsistudio scalars to h5 file for data that has vertices with GM probability >50% removed and has medial wall removed 
 
 # script adapted from Chenying's concifti code :) 
 
@@ -122,7 +122,7 @@ def write_hdf5_GMfiltered(type, depth, relative_root):
     """
 
     # define cohort filename
-    cohort_file = f"{type}_{depth}_cohortfile_GMfiltered.csv"
+    cohort_file = f"{type}_{depth}_cohortfile_GMfiltered_noMW.csv"
 
     # load cohort csv
     cohort_df = pd.read_csv(ospj(relative_root, "cohortfiles", "dsistudio_scalars", type, cohort_file))
@@ -139,7 +139,7 @@ def write_hdf5_GMfiltered(type, depth, relative_root):
         sources_lists[row['scalar_name']].append(row['source_file'])  # append source gifti filename to specific scalar_name
 
     # Write the output
-    output_h5 = ospj(f"{type}_{depth}_GMfiltered.h5")
+    output_h5 = ospj(f"{type}_{depth}_GMfiltered_noMW.h5")
     h5_finaldir = ospj(f"{h5_dir}", f"{type}")
 
     if not os.path.exists(f"{h5_finaldir}"):

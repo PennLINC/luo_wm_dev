@@ -1,0 +1,206 @@
+---
+title: "S-A Correspondence to Age Effect"
+author: "Audrey Luo"
+date: "2024-02-19"
+output: 
+  html_document:
+    highlight: haddock
+    code_folding: hide
+    number_sections: yes
+    theme: lumen
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    number_sections: yes
+    toc: yes
+    toc_depth: '4'
+  word_document:
+    toc: yes
+    toc_depth: '4'
+urlcolor: blue
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+ 
+
+```
+ 
+ 
+ 
+ 
+```{r load files for dti_fa md and SAaxis}
+
+gam.age.dti_fa <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/dti_fa/GAMresults.dti_fa.age_GMfiltered.RData")
+gam.age.md <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/md/GAMresults.md.age_GMfiltered.RData")
+gam.age.rd <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/rd/GAMresults.rd.age_GMfiltered.RData")
+gam.age.ad <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/ad/GAMresults.ad.age_GMfiltered.RData")
+SAaxis <- read.csv("/cbica/projects/luo_wm_dev/SAaxis/SensorimotorAssociation_Axis.fsaverage5.csv", header=T)
+
+write.csv(gam.age.dti_fa, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/dti_fa/GAMresults.dti_fa.age_GMfiltered.csv")
+write.csv(gam.age.md, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/md/GAMresults.md.age_GMfiltered.csv")
+write.csv(gam.age.rd, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/rd/GAMresults.rd.age_GMfiltered.csv")
+write.csv(gam.age.ad, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/ad/GAMresults.ad.age_GMfiltered.csv")
+
+ 
+```
+
+How many vertices have significant age effect after FDR?
+```{r check sig age effects}
+
+#length(which(gam.age.dti_fa$s_age.p.value.fdr < 0.05)) # dti_fa: 3278 vertices with significant age effect after FDR correction 
+#length(which(gam.age.md$s_age.p.value.fdr < 0.05)) # md: 15028 vertices with significant age effect after FDR correction 
+
+print(paste0("dti_fa: ", length(which(gam.age.dti_fa$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.dti_fa$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+print(paste0("md: ", length(which(gam.age.md$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.md$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+
+print(paste0("ad: ", length(which(gam.age.ad$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.ad$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+print(paste0("rd: ", length(which(gam.age.rd$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.rd$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+```
+
+
+```{r remove vertices that hop gyri in SA axis}
+
+identical(gam.age.dti_fa$element_id[(which(gam.age.dti_fa$s_age.delta.adj.rsq == "NaN"))], gam.age.md$element_id[(which(gam.age.md$s_age.delta.adj.rsq == "NaN"))]) # 370 vertices were fully NaN 
+vertices_to_rm <- gam.age.dti_fa$element_id[(which(gam.age.dti_fa$s_age.delta.adj.rsq == "NaN"))] + 1 # get the index of vertices
+ 
+SAaxis_filtered <- SAaxis[-vertices_to_rm,]  
+gam.age.dti_fa_filtered <- gam.age.dti_fa[-vertices_to_rm,]
+gam.age.md_filtered <- gam.age.md[-vertices_to_rm,]
+gam.age.ad_filtered <- gam.age.ad[-vertices_to_rm,]
+gam.age.rd_filtered <- gam.age.rd[-vertices_to_rm,]
+#nrow(gam.age.md_filtered)
+#length(SAaxis_filtered)
+
+
+gam.age.dti_fa[which(gam.age.dti_fa$s_age.delta.adj.rsq == "NaN"),]
+```
+
+
+```{r remove medial wall}
+# remove medial wall
+medial_wall <- which(SAaxis_filtered==0) 
+SAaxis_filtered <- SAaxis_filtered[-medial_wall]
+
+gam.age.dti_fa_filtered <- gam.age.dti_fa_filtered[-medial_wall,]
+gam.age.md_filtered <- gam.age.md_filtered[-medial_wall,]
+gam.age.ad_filtered <- gam.age.ad_filtered[-medial_wall,]
+gam.age.rd_filtered <- gam.age.rd_filtered[-medial_wall,]
+
+#length(SAaxis_filtered)
+#nrow(gam.age.dti_fa_filtered)
+```
+
+
+
+
+Correlate with SA axis
+```{r correlate w SAaxis}
+
+
+print("dti_fa")
+cor.test(gam.age.dti_fa_filtered$s_age.partial.rsq, SAaxis_filtered, method=c("spearman")) # r = -0.1576228, pspin?
+cor.test(gam.age.dti_fa_filtered$s_age.delta.adj.rsq, SAaxis_filtered, method=c("spearman")) # r = -0.1578304 , pspin?
+
+ 
+ 
+print("md")
+cor.test(gam.age.md_filtered$s_age.partial.rsq, SAaxis_filtered, method=c("spearman")) # r = 0.1699813 , pspin?
+cor.test(gam.age.md_filtered$s_age.delta.adj.rsq, SAaxis_filtered, method=c("spearman")) # r = 0.170142  , pspin?
+
+
+
+print("ad")
+cor.test(gam.age.ad_filtered$s_age.partial.rsq, SAaxis_filtered, method=c("spearman")) # r =   , pspin?
+cor.test(gam.age.ad_filtered$s_age.delta.adj.rsq, SAaxis_filtered, method=c("spearman")) # r =    , pspin?
+
+
+print("rd")
+cor.test(gam.age.rd_filtered$s_age.partial.rsq, SAaxis_filtered, method=c("spearman")) # r = 0.1699813 , pspin?
+cor.test(gam.age.rd_filtered$s_age.delta.adj.rsq, SAaxis_filtered, method=c("spearman")) # r = 0.170142  , pspin?
+
+```
+
+
+There are 6 vertices in the fsaverage5 S-A axis that have the same S-A rank assigned. Probably wouldn't have significantly impacted results but more reason to double check wb transform between fsLR and fsaverage5 
+```{r troubleshooting SA axis}
+
+## testing
+
+#SAaxis_filtered[which(duplicated(SAaxis_filtered))]
+ 
+#which(SAaxis_filtered=="50729.07")
+
+
+medial_wall <- which(SAaxis$X0==0) 
+SAaxis_noMW <- SAaxis[-medial_wall,]
+#SAaxis_noMW[which(duplicated(SAaxis_noMW))]
+
+
+#which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][1]) # after removing MW, vertices 943 and 10474 have same SA rank
+#which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][2]) # after removing MW, vertices 5472 and 11495 have same SA rank
+#which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][3]) # after removing MW, vertices 15425 and 15655 have same SA rank
+
+
+print(paste0("after removing medial wall, vertices ", which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][1])[1], " and ",  which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][1])[2]," have the same SA rank"))
+
+
+print(paste0("after removing medial wall, vertices ", which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][2])[1], " and ",  which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][2])[2]," have the same SA rank"))
+
+
+print(paste0("after removing medial wall, vertices ", which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][3])[1], " and ",  which(SAaxis_noMW==SAaxis_noMW[which(duplicated(SAaxis_noMW))][3])[2]," have the same SA rank"))
+
+```
+
+
+Correlations look very similar without excluding for high GM probability vertices
+```{r prelim corr}
+```
+
+
+```{r}
+
+# preliminary S-A axis correlation with age effect
+
+# dti_fa
+gam.age.dti_fa_nonfiltered<- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/GAMresults.dti_fa.age.RData")
+#write.csv(gam.age.dti_fa_nonfiltered, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/GAMresults.dti_fa.age.csv")
+
+SAaxis_nonfiltered <- read.csv("/cbica/projects/luo_wm_dev/SAaxis/SensorimotorAssociation_Axis.fsaverage5.csv", header=T)
+medial_wall_nonfiltered <- which(SAaxis_nonfiltered==0)
+gam.age.dti_fa_nonfiltered <- gam.age.dti_fa_nonfiltered[-medial_wall_nonfiltered,]
+SAaxis_nonfiltered <- SAaxis_nonfiltered$X0[-medial_wall]
+
+# md
+gam.age.md_nonfiltered<- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/GAMresults.md.age.RData")
+#write.csv(gam.age.md_nonfiltered, "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/GAM/GAMresults.md.age.csv")
+
+gam.age.md_nonfiltered <- gam.age.md_nonfiltered[-medial_wall_nonfiltered,]
+ 
+
+print(paste0("dti_fa: ", length(which(gam.age.dti_fa_nonfiltered$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.dti_fa_nonfiltered$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+print(paste0("md: ", length(which(gam.age.md_nonfiltered$s_age.p.value.fdr < 0.05)), " vertices (",  round(length(which(gam.age.md_nonfiltered$s_age.p.value.fdr < 0.05))/20484*100, 2),"%) with significant age effect after FDR correction"))
+
+
+print("dti_fa")
+cor.test(gam.age.dti_fa_nonfiltered$s_age.partial.rsq, SAaxis_nonfiltered, method=c("spearman")) # r = -0.1576228, pspin?
+cor.test(gam.age.dti_fa_nonfiltered$s_age.delta.adj.rsq, SAaxis_nonfiltered, method=c("spearman")) # r = -0.1578304 , pspin?
+
+ 
+
+print("md")
+cor.test(gam.age.md_nonfiltered$s_age.partial.rsq, SAaxis_nonfiltered, method=c("spearman")) # r = -0.1576228, pspin?
+cor.test(gam.age.md_nonfiltered$s_age.delta.adj.rsq, SAaxis_nonfiltered, method=c("spearman")) # r = -0.1578304 , pspin?
+
+```
+

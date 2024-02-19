@@ -108,7 +108,7 @@ make_cohort_df("depth_1p25", "GMprobseg")
 
 
       
-# define function for making cohort files (1 file per scalar) - dsistudio scalar vertices ARE filtered for GM probability
+# define function for making cohort files (1 file per scalar) - dsistudio scalar vertices ARE filtered for GM probability and medial wall is removed
 def make_cohort_df_filtered(depth):
         scalar_dataframes = {}
         # Iterate over scalars
@@ -124,13 +124,13 @@ def make_cohort_df_filtered(depth):
             scalar_df['scalar_name'] = scalar
             
             # Create source_file column    
-            scalar_df['source_file'] = scalar_df.apply(lambda row: f"{outputs_root}/{row['sub']}/vol_to_surf/dsistudio_scalars/fsaverage5/{scalar}/{row['sub']}_{scalar}_{depth}_fsaverage5_GMfiltered.shape.gii", axis=1)
+            scalar_df['source_file'] = scalar_df.apply(lambda row: f"{outputs_root}/{row['sub']}/vol_to_surf/dsistudio_scalars/fsaverage5/{scalar}/{row['sub']}_{scalar}_{depth}_fsaverage5_GMfiltered_noMW.shape.gii", axis=1)
         
 
             # Create separate dataframe for each scalar
             scalar_dataframes[scalar] = scalar_df  # Add dataframe to dictionary with scalar name as key
 
-            scalar_dataframes[scalar].to_csv(f'{outputs_root}/all_subjects/cohortfiles/dsistudio_scalars/{scalar}/{scalar}_{depth}_cohortfile_GMfiltered.csv', index=False)
+            scalar_dataframes[scalar].to_csv(f'{outputs_root}/all_subjects/cohortfiles/dsistudio_scalars/{scalar}/{scalar}_{depth}_cohortfile_GMfiltered_noMW.csv', index=False)
      
       
 

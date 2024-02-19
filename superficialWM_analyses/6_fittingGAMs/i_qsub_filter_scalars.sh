@@ -3,8 +3,8 @@
 # Set directories
 ########################################
 
-PYTHON_INTERPRETER="/cbica/projects/luo_wm_dev/.conda/envs/luo_wm_dev/bin/python3.11"
-source activate luo_wm_dev
+PYTHON_INTERPRETER="/cbica/projects/luo_wm_dev/.conda/envs/luo_wm_dev/bin/python3.8" # note that i changed python from 3.11 to 3.8 in environment!!
+source activate luo_wm_dev 
 
 # Check if conda environment is activated
 conda env list

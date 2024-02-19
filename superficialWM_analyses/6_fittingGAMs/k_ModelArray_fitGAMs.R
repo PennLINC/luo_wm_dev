@@ -7,6 +7,7 @@ library(ModelArray)
 args <- commandArgs(trailingOnly=TRUE)
 config_file <- args[1]
 scalar <- args[2]
+ 
 
 ################## 
 # Set Directories 
@@ -67,12 +68,12 @@ fitGAMs_ModelArray_GMfiltered <- function(scalar, outdir) {
    
   # Create a ModelArray-class object
   # filename of dsistudio scalar data (.h5 file):
-  h5_path <- sprintf("%1$s/all_subjects/h5_files/%2$s/%2$s_depth_1p25_GMfiltered.h5", outputs_root, scalar)
+  h5_path <- sprintf("%1$s/all_subjects/h5_files/%2$s/%2$s_depth_1p25_GMfiltered_noMW.h5", outputs_root, scalar)
   #h5_path <- "/cbica/projects/luo_wm_dev/output/HCPD/superficialWM/all_subjects/h5_files/dti_fa/dti_fa_depth_1p25.h5"
   
   # create a ModelArray-class object:
   modelarray <- ModelArray(h5_path, scalar_types = c(scalar))
-  phenotypes <- read.csv(sprintf("%1$s/all_subjects/cohortfiles/dsistudio_scalars/%2$s/%2$s_depth_1p25_cohortfile_GMfiltered.csv", outputs_root, scalar))
+  phenotypes <- read.csv(sprintf("%1$s/all_subjects/cohortfiles/dsistudio_scalars/%2$s/%2$s_depth_1p25_cohortfile_GMfiltered_noMW.csv", outputs_root, scalar))
   
   # formula:
   smooth_var <- "age"
@@ -89,7 +90,8 @@ fitGAMs_ModelArray_GMfiltered <- function(scalar, outdir) {
     changed.rsq.term.index = c(1)
   )
   
-  saveRDS(mygam.try, sprintf("%1$s/GAMresults.%2$s.age_GMfiltered.RData", outdir, scalar))
+  saveRDS(mygam.try, sprintf("%1$s/GAMresults.%2$s.age_GMfiltered_noMW.RData", outdir, scalar))
+  write.csv(mygam.try, sprintf("%1$s/GAMresults.%2$s.age_GMfiltered_noMW.csv", outdir, scalar))
 }
 
 
@@ -102,3 +104,5 @@ fitGAMs_ModelArray_GMfiltered <- function(scalar, outdir) {
 #fitGAMs_ModelArray("md", outdir)
 
 fitGAMs_ModelArray_GMfiltered(scalar, outdir)
+
+

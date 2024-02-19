@@ -15,10 +15,10 @@ for scalar in "${scalars[@]}"; do
 	# Check if scalar is running/completed
 	########################################
 
-	if [ -d ${outputs_root}/GAM/${scalar} ] ; then
-		echo "Skipping ${scalar} - already running or completed"
-		continue
-	fi
+	#if [ -d ${outputs_root}/GAM/${scalar} ] ; then
+	#	echo "Skipping ${scalar} - already running or completed"
+	#	continue
+	#fi
 
 	########################################
 	# Check for required directories
