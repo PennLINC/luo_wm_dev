@@ -191,5 +191,6 @@ for dsistudio_scalar in dsistudio_scalars:
 dsistudio_scalars = ["ad", "dti_fa", "gfa", "ha", "iso", "md", "qa", "rd", "rd1", "rd2", "rdi"]
 
 for dsistudio_scalar in dsistudio_scalars:
-    write_hdf5_GMfiltered(dsistudio_scalar, "depth_1", relative_root)
-    write_hdf5_GMfiltered(dsistudio_scalar, "depth_1p25", relative_root)
+    #write_hdf5_GMfiltered(dsistudio_scalar, "depth_1", relative_root)
+    #write_hdf5_GMfiltered(dsistudio_scalar, "depth_1p25", relative_root)
+    write_hdf5_GMfiltered(dsistudio_scalar, "depth_3", relative_root)

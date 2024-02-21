@@ -81,3 +81,6 @@ combine_giftis("depth_1", "GM_probseg")
 
 combine_giftis("depth_1p25", "scalar")
 combine_giftis("depth_1p25", "GM_probseg")
+
+combine_giftis("depth_3", "scalar")
+combine_giftis("depth_3", "GM_probseg")

@@ -4,7 +4,7 @@
 # Set directories
 ########################################
 
-PYTHON_INTERPRETER="/cbica/projects/luo_wm_dev/.conda/envs/luo_wm_dev/bin/python3.11"
+PYTHON_INTERPRETER="/cbica/projects/luo_wm_dev/.conda/envs/luo_wm_dev/bin/python3.8"
 source activate luo_wm_dev
 
 # Check if conda environment is activated
@@ -26,7 +26,7 @@ while IFS= read -r sub; do
 	# Check if subject is running/completed
 	########################################
 
-	if [ -f ${outputs_root}/${sub}/vol_to_surf/probseg_depths/fsaverage5/${sub}_GMprobseg_depth1p25_fsaverage5.shape.gii ] ; then
+	if [ -f ${outputs_root}/${sub}/vol_to_surf/probseg_depths/fsaverage5/${sub}_GMprobseg_depth_3_fsaverage5.shape.gii ] ; then
 		echo "Skipping ${sub} - already running or completed"
 		continue
 	fi

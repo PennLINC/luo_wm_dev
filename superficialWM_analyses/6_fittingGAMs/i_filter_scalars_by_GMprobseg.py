@@ -85,9 +85,11 @@ def remove_medial_wall(depth, subject_id):
 
 filter_scalar_by_GMprobseg("depth_1", subject_id)
 filter_scalar_by_GMprobseg("depth_1p25", subject_id)
+filter_scalar_by_GMprobseg("depth_3", subject_id)
 
 remove_medial_wall("depth_1", subject_id)
 remove_medial_wall("depth_1p25", subject_id)
+remove_medial_wall("depth_3", subject_id)
 
 
 #GMprobseg_lh = nib.load(ospj(f"{outputs_root}", f"{subject_id}", "vol_to_surf/probseg_depths/fsaverage5", f"lh.GMprobseg_{depth}_fsaverage5.shape.gii"))

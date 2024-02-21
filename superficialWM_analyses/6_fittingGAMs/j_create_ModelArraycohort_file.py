@@ -142,3 +142,7 @@ make_cohort_df_filtered("depth_1")
 make_cohort_df_filtered("depth_1p25")
   
 
+# depth = 3 mm
+make_cohort_df_filtered("depth_3")
+  
+
