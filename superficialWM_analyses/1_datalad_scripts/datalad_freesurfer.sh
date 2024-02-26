@@ -51,7 +51,8 @@ ssh-add ~/.ssh/id_rsa
 # freesurfer
 ########################################
  
-# note that datalad clone was already done in earlier analyses for HCPD...
+datalad clone ria+ssh://audluo@bblsub.pmacs.upenn.edu:/static/LINC_HCPD#~fstabulate datalad_freesurfer
+
 cd ${freesurfer_datalad_dir}/inputs/data
 
 datalad get -n .

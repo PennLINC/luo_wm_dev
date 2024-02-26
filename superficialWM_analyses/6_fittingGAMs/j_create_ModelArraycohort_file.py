@@ -106,6 +106,9 @@ make_cohort_df("depth_1", "GMprobseg")
 make_cohort_df("depth_1p25", "scalar")
 make_cohort_df("depth_1p25", "GMprobseg")
 
+# depth = 3 mm (GMprobseg only)
+make_cohort_df("depth_3", "GMprobseg")
+
 
       
 # define function for making cohort files (1 file per scalar) - dsistudio scalar vertices ARE filtered for GM probability and medial wall is removed
