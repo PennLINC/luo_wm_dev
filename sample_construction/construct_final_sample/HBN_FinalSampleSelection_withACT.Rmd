@@ -1,0 +1,140 @@
+---
+title: "HBN Final Sample Selection"
+author: "Audrey Luo"
+output:
+  html_document:
+    code_folding: show
+    highlight: haddock
+    theme: lumen
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(dplyr)
+library(purrr)
+library(stringr)
+library(tidyr)
+```
+
+## Load initial sample list
+```{r}
+sub_id <- read.table("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/HBN_subject_list_babs.txt", header = T)
+demographics.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_TempSampleDemographics_N1101_age5to22.csv")
+dwi.qc.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_TempSampleQCMetrics_N1101_age5to22.csv")
+```
+
+## Incomplete Data Processing Exclusion
+total excluded for incomplete data processing = 188
+```{r}
+# load subjects missing Freesurfer data
+missing_freesurfer <- read.table("/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/missing_freesurfer.txt", header=T)
+missing_freesurfer <- missing_freesurfer %>% select(sub_id) 
+sub_id <- sub_id[!sub_id$sub_id %in% missing_freesurfer$sub_id,] %>% as.data.frame() %>% setNames("sub_id") #remove 13 participants from the sample of 1101 due to missing Freesurfer data, new N = 1088
+write.table(sub_id, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/HBN_subject_list_babs_withACT.txt", col.names=T, row.names=F, quote = FALSE)
+```
+
+```{r}
+# 44 subjects failed qsirecon
+# this txt file was made with awk -F, '$8 == "True" { print $1 }' job_status.csv > ~/input/HBN/sample_selection_files/subs_failed_babs.txt
+failed_babs <- read.table("/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/subs_failed_babs_ACT_noUF.txt", header=F)
+sub_id <- sub_id[!sub_id$sub_id %in% failed_babs$V1,] %>% as.data.frame() %>% setNames("sub_id") # remove 44 participants from sample of 1088 due to failing qsiprep/qsirecon, new N = 1044
+```
+
+After running ACT + pyAFQ, many subjects are missing one or more tracts. We can't harmonize a subject's data if they are missing ANY tracts. To keep exclusion criteria consistent across datasets, we are excluding people who are missing bundles that we need for this study.
+
+Note that there are some bundles that are OKAY if they are missing because we are excluding some from analyses:
+- cingulum cingulate
+- uncinate (excluding this because so many people are missing uncinate after using ACT)
+- anterior thalamic radiation
+```{r}
+# load the tract profiles of subjects who are missing at least 1 tract
+missing_tracts <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_ACT/all_subjects/ACT_noUF/missing_tract_profiles_nocovbat_ACT_noUF.tsv")
+# load full tract profiles of everyone (except for the subjects in missing_tracts)
+HBN_all <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_ACT/all_subjects/ACT_noUF/collated_tract_profiles_nocovbat_unc_cc.tsv")
+required_tracts <- unique(HBN_all$tractID)
+
+##########################
+# missing tract exclusion
+##########################
+# it's okay if a participant is missing these tracts
+allowed_missing_tracts <- c("Cingulate", "Uncinate", "Anterior Thalamic")
+
+# summarize tracts present for each subject
+tract_summary <- missing_tracts %>%
+  distinct(sub, tractID) %>%
+  group_by(sub) %>%
+  summarize(tracts_present = list(tractID), .groups = "drop")
+
+# identify missing tracts for each subject
+subjects_missing_tracts <- tract_summary %>%
+  mutate(missing_tracts = map(tracts_present, ~ setdiff(required_tracts, .x))) %>%
+  select(sub, missing_tracts)
+ 
+# have one row per missing tract
+missing_tracts_long <- subjects_missing_tracts %>%
+  unnest(cols = c(missing_tracts))
+
+missing_tracts_count <- missing_tracts_long %>%
+  group_by(missing_tracts) %>%  # Group by missing tracts
+  summarise(count = n()) 
+
+# identify subjects to exclude
+# A subject should be excluded if they are missing any REQUIRED tracts (aka tracts not in "allowed_missing_tracts")
+# determine the subjects are missing needed tracts  
+unacceptable_missing_tracts <- missing_tracts_long %>%
+  filter(!str_detect(missing_tracts, paste(allowed_missing_tracts, collapse = "|")))
+
+# get unique subjects who have any unacceptable missing tracts
+subjects_to_exclude <- unacceptable_missing_tracts %>%
+  distinct(sub)
+
+# count the number of excluded subjects
+num_excluded_subjects <- nrow(subjects_to_exclude)
+cat("Number of subjects excluded:", num_excluded_subjects, "\n")
+
+#subjects_to_exclude <- subjects_to_exclude %>% rename(sub_id=sub)
+write.table(subjects_to_exclude, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/subs_missing_tracts_withACT.txt", col.names=T, row.names=F, quote = TRUE)
+
+sub_id <- sub_id[!sub_id$sub_id %in% subjects_to_exclude$sub,] %>% as.data.frame() %>% setNames("sub_id") # remove 131 participants from sample of 1044 due to failing qsiprep/qsirecon, new N = 913
+
+```
+
+```{r}
+# add back subjects that are missing non-important tracts. save HBN tract profiles
+# Identify subjects missing only non-essential tracts (tracts in allowed_missing_tracts)
+# = identify subjects who are not in the exclusion list
+subjects_with_allowed_missing_tracts <- missing_tracts_long %>%
+  filter(sub %notin% subjects_to_exclude$sub) %>%
+  filter(str_detect(missing_tracts, paste(allowed_missing_tracts, collapse = "|")))
+
+# get sub ids
+subjects_with_allowed_missing_tracts <- subjects_with_allowed_missing_tracts %>%
+  distinct(sub)
+
+# add these subjects' data back to the full tract profiles data (should be 52 participants added back)
+HBN_all_with_allowed <- bind_rows(HBN_all, missing_tracts %>% filter(sub %in% subjects_with_allowed_missing_tracts$sub))
+HBN_all_with_allowed <- HBN_all_with_allowed %>%
+  distinct()
+
+# remove the tracts we don't need
+HBN_all_with_allowed <- HBN_all_with_allowed %>% filter(!str_detect(tractID, paste(allowed_missing_tracts, collapse = "|")))
+
+write.table(HBN_all_with_allowed, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/derivatives/tract_profiles/all_subjects/collated_tract_profiles_nocovbat.tsv", row.names = FALSE)
+```
+
+## Save Final Sample: Subject List, Demographics, QC measures
+```{r}
+# Make final sample demographics dataframe
+demographics.final<- demographics.temp[demographics.temp$sub %in% sub_id$sub_id,] %>% select(sub, age, sex, race, site) # combine demographics data 
+ 
+# Make final sample QC metrics dataframe 
+dwi.qc.final <- dwi.qc.temp[dwi.qc.temp$sub %in% sub_id$sub_id,] %>% select(sub, mean_fd, t1_neighbor_corr) 
+
+write.table(sub_id, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/HBN_WMDev_FinalSample_withACT.txt", col.names=T, row.names=F, quote = TRUE)
+write.csv(merge(demographics.final, dwi.qc.final), "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv", quote = F, row.names = F)
+```
+ 

@@ -1,0 +1,43 @@
+# This is an example config yaml file for:
+#   BIDS App:         QSIPrep ("qsiprep")
+#   BIDS App version: 0.22.0
+#   Task:             regular use
+#   Which system:     SLURM
+
+singularity_run:
+    -v: "-v"
+    -w: "$BABS_TMPDIR"   # this is a placeholder. To be changed to `${PWD}/.git/tmp/wkdir`
+    --n_cpus: "$SLURM_CPUS_PER_TASK"   
+    --omp-nthreads: "3"   # without this, only run single-threaded jobs (N=`--n_cpus`) at once
+    --stop-on-first-crash: ""
+    --fs-license-file: "/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/license.txt"   
+    --skip-bids-validation: ""
+    --recon_input: "inputs/data/qsiprep/qsiprep" 
+    --recon_spec: "code/mrtrix_multishell_msmt_pyafq_tractometry_dti.json"
+    --recon-only: ""
+    --output-resolution: "1.5" # res = 1.8 in PNC, 1.5 in HCPD
+
+
+# Output foldername(s) to be zipped, and the BIDS App version to be included in the zip filename(s):
+zip_foldernames:
+    qsirecon: "0-22-0"     # folder 'qsirecon' will be zipped into 'sub-xx_(ses-yy_)qsirecon-0-22-0_mrtrix_multishell_msmt_ACT-hsvs_pyafq_dti.zip'
+
+# How much cluster resources it needs:
+cluster_resources:
+    interpreting_shell: "/bin/bash"
+    hard_memory_limit: 48G 
+    temporary_disk_space: 200G
+    number_of_cpus: "1" # requesting same amount as indicated in participant_job.sh for qsirecon autotrack
+    customized_text: |
+        #SBATCH --exclude=compute-fed1,compute-fed2,compute-fed3,compute-fed4,compute-fed5
+        #SBATCH --time=24:00:00
+        #SBATCH --propagate=NONE
+ 
+# Necessary commands to be run first:
+script_preamble: |
+    source /cbica/projects/luo_wm_dev/miniconda3/bin/activate babs
+    conda activate babs   
+
+# Where to run the jobs:
+job_compute_space: "${CBICA_TMPDIR}"
+  
