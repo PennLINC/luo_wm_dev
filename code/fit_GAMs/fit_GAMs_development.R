@@ -41,7 +41,7 @@ print(paste("Scalar:", scalar))
 ################## 
 config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
 demographics <- read.csv(config_data$demo_qc)
-data_root <- config_data$tract_profiles_root
+data_root <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles")
 outputs_root <- config_data$outputs_root
 GAM_outputs_dir <- paste0(outputs_root, "/GAM/", scalar)
 

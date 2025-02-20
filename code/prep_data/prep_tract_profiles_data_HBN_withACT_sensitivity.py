@@ -38,8 +38,8 @@ for dataset in ["HBN"]:
     ########################################
     # that dataframe should have column names as tractID_nodeID and the number should correspond to fa or md
 
-    all_tract_profiles = pd.DataFrame(columns=['sub', 'tractID', 'nodeID', 'dti_fa', 'dti_md', 'dti_ad', 'dti_rd'])
-    missing_tract_profiles = pd.DataFrame(columns=['sub', 'tractID', 'nodeID', 'dti_fa', 'dti_md', 'dti_ad', 'dti_rd'])
+    all_tract_profiles = pd.DataFrame(columns=['sub', 'tractID', 'nodeID', 'dti_fa', 'dti_md'])
+    missing_tract_profiles = pd.DataFrame(columns=['sub', 'tractID', 'nodeID', 'dti_fa', 'dti_md'])
 
     # also, keep track of subjects who are missing data
     #subs_missing_tracts = []

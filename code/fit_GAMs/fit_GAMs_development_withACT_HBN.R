@@ -40,8 +40,9 @@ print(paste("Scalar:", scalar))
 # Set Directories 
 ################## 
 config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
-#demographics <- read.csv(config_data$demo_qc)
-data_root <- config_data$tract_profiles_root
+demographics <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv")
+data_root <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles_ACT")
+
 outputs_root <- config_data$outputs_root
 GAM_outputs_dir <- paste0(outputs_root, "/GAM/", scalar)
 
@@ -66,7 +67,7 @@ run_gam.fit.smooth <- function(gam_df, smooth.var, covs, k, set.fx) {
                                                                              set_fx = set.fx))}, mc.cores = 4) 
   GAM_dev_measures <- do.call(rbind, GAM_dev_measures)
   #write.csv(GAM_dev_measures, sprintf("%1$s/%2$s_GAM_dev_measures_age_mat.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
-  write.csv(GAM_dev_measures, sprintf("%1$s/%2$s_GAM_dev_measures_noACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
+  write.csv(GAM_dev_measures, sprintf("%1$s/%2$s_GAM_dev_measures_withACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
 }
 
 # 2) run gam.derivatives to compute derivatives for my smooth (age) at each age  
@@ -83,7 +84,7 @@ run_gam.derivatives <- function(gam_df, smooth.var, covs, k, set.fx, num.draws, 
                                                                             return_posterior_derivatives = credible.interval)) %>% 
                                       mutate(tract_node = x)}, mc.cores = 4)
     smooth.derivatives <- do.call(rbind, smooth.derivatives)
-    write.csv(smooth.derivatives, sprintf("%1$s/%2$s_GAM_derivatives_noACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
+    write.csv(smooth.derivatives, sprintf("%1$s/%2$s_GAM_derivatives_withACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
 }
 
 # 3) run gam.estimate.smooth to estimate zero-centered age smooths for each node 
@@ -99,7 +100,7 @@ run_gam.estimate.smooth <- function(gam_df, smooth.var, covs, k, set.fx, num.dra
                                                                            age1 = start_age,
                                                                            age2 = end_age)) %>% mutate(tract_node = x)}, mc.cores = 4)
   smooth.centered <- do.call(rbind, smooth.centered)
-  write.csv(smooth.centered, sprintf("%1$s/%2$s_GAM_smoothcentered_noACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
+  write.csv(smooth.centered, sprintf("%1$s/%2$s_GAM_smoothcentered_withACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
 }
 
 
@@ -116,17 +117,14 @@ run_gam.smooth.predict <- function(gam_df, smooth.var, covs, k, set.fx, num.pred
                                                                             age1 = start_age,
                                                                             age2 = end_age)) %>% mutate(tract = x)}, mc.cores = 4)
   smooth.fittedvals <- do.call(rbind, smooth.fittedvals)
-  write.csv(smooth.fittedvals, sprintf("%1$s/%2$s_GAM_smooth_fittedvalues_noACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
+  write.csv(smooth.fittedvals, sprintf("%1$s/%2$s_GAM_smooth_fittedvalues_withACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
 }
 
 
 ################### 
 # Load files  
-###################
-demographics <- read.csv("/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_noACT.csv")
-data_root <- "/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_noACT"
-
-tract_profiles_long <- readRDS(sprintf("%1$s/all_subjects/collated_tract_profiles_final.RData", data_root))
+##################
+tract_profiles_long <- readRDS(sprintf("%1$s/all_subjects/ACT_noUF/collated_tract_profiles_final_ACT_noUF.RData", data_root))
 
 ######################################################### 
 # Merge demographics and qc with tract profiles data

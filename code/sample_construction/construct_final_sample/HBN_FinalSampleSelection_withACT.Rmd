@@ -48,7 +48,6 @@ After running ACT + pyAFQ, many subjects are missing one or more tracts. We can'
 
 Note that there are some bundles that are OKAY if they are missing because we are excluding some from analyses:
 - cingulum cingulate
-- uncinate (excluding this because so many people are missing uncinate after using ACT)
 - anterior thalamic radiation
 ```{r}
 # load the tract profiles of subjects who are missing at least 1 tract
@@ -61,7 +60,7 @@ required_tracts <- unique(HBN_all$tractID)
 # missing tract exclusion
 ##########################
 # it's okay if a participant is missing these tracts
-allowed_missing_tracts <- c("Cingulate", "Uncinate", "Anterior Thalamic")
+allowed_missing_tracts <- c("Cingulate", "Uncinate","Anterior Thalamic")
 
 # summarize tracts present for each subject
 tract_summary <- missing_tracts %>%
@@ -123,7 +122,7 @@ HBN_all_with_allowed <- HBN_all_with_allowed %>%
 # remove the tracts we don't need
 HBN_all_with_allowed <- HBN_all_with_allowed %>% filter(!str_detect(tractID, paste(allowed_missing_tracts, collapse = "|")))
 
-write.table(HBN_all_with_allowed, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/derivatives/tract_profiles/all_subjects/collated_tract_profiles_nocovbat.tsv", row.names = FALSE)
+write.table(HBN_all_with_allowed, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/derivatives/tract_profiles_ACT/all_subjects/ACT_noUF/collated_tract_profiles_nocovbat_ACT_noUF.tsv", row.names = FALSE)
 ```
 
 ## Save Final Sample: Subject List, Demographics, QC measures

@@ -4,7 +4,7 @@
 datasets=("HBN")
 scalars=("dti_md")
 
-r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/fit_GAMs/fit_GAMs_development_noACT_HBN.R"
+r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/fit_GAMs/fit_GAMs_development_withACT_HBN.R"
 
 # loop through each multishell dataset and scalar
 for dataset in "${datasets[@]}"; do
@@ -17,10 +17,10 @@ for dataset in "${datasets[@]}"; do
     fi
   
   for scalar in "${scalars[@]}"; do
-      job_name="fit_GAMs_dev_${dataset}_${scalar}_noACT"
+      job_name="fit_GAMs_dev_${dataset}_${scalar}_withACT"
       #job_name="fit_GAMs_dev_${dataset}_${scalar}_nonzero_smooths"
       # submit the job to SLURM using my Singularity container
-      sbatch --job-name=${job_name} --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=8G --time=6:00:00 --output=${logs_dir}/${job_name}_%j.out --error=${logs_dir}/${job_name}_%j.err --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/software/docker/r-packages-for-cubic_0.0.5.sif Rscript --save ${r_script} ${dataset} ${scalar}"
+      sbatch --job-name=${job_name} --nodes=1 --ntasks=1 --cpus-per-task=4 --mem=8G --time=6:00:00 --output=${logs_dir}/${job_name}_%j.out --error=${logs_dir}/${job_name}_%j.err --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes_manuscript/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script} ${dataset} ${scalar}"
       echo "Submitted ${dataset} ${scalar}"
   done
 done

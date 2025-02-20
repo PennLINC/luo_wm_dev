@@ -28,13 +28,14 @@ for dataset in ["PNC", "HCPD", "HBN"]:
     config_file = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_{dataset}.json"
     with open(config_file, "rb") as f:
         config = json.load(f)
-    data_root = config['tract_profiles_root']
-    if not os.path.exists(ospj(data_root, "all_subjects")):
-        os.makedirs(ospj(data_root, "all_subjects"))
+    data_root = ospj(config['data_root'], "derivatives", "tract_profiles")
+    output_root = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/input/{dataset}/derivatives/tract_profiles" 
+    if not os.path.exists(ospj(output_root, "all_subjects")):
+        os.makedirs(ospj(output_root, "all_subjects"))
         print(f"all_subjects created")
     else:
         print(f"all_subjects already exists.")
-    sample_selection_dir = ospj(config['data_root'], "sample_selection_files")
+    sample_selection_dir = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/input/{dataset}/sample_selection_files"
 
     ########################################
     # Reformat tract profiles
@@ -76,10 +77,10 @@ for dataset in ["PNC", "HCPD", "HBN"]:
              
     # save out collated tract profiles (subjects missing data are NOT included in this)
     all_tract_profiles = all_tract_profiles.iloc[:, :-1]
-    all_tract_profiles.to_csv(f'{data_root}/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv', index=False)
+    all_tract_profiles.to_csv(f'{output_root}/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv', index=False)
 
     missing_tract_profiles = missing_tract_profiles.iloc[:, :-1]
-    missing_tract_profiles.to_csv(f'{data_root}/all_subjects/missing_tract_profiles_nocovbat.tsv', index=False)
+    missing_tract_profiles.to_csv(f'{output_root}/all_subjects/missing_tract_profiles_nocovbat.tsv', index=False)
     
     # save the subject IDs with missing tracts to a text file
     #with open(os.path.join(sample_selection_dir, 'subs_missing_tracts.txt'), 'w') as f:

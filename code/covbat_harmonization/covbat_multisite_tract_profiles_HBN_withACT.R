@@ -17,15 +17,22 @@ print(paste("Processing", dataset))
 # Set Directories 
 ################## 
 config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
-demographics <- read.csv(config_data$demo_qc)
-data_root <- config_data$tract_profiles_root
-output_dir <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles/all_subjects")
+demographics <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv")
+data_root <- "/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_ACT/"
+output_dir <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/derivatives/tract_profiles_ACT/"
 
 if (dir.exists(output_dir)) {
   print(paste(output_dir, "already exists"))
 } else {
   dir.create(output_dir, recursive = TRUE)
   print(paste(output_dir, "created"))
+}
+
+if (dir.exists(paste0(output_dir, "all_subjects/ACT_noUF"))) {
+  print(paste(paste0(output_dir, "all_subjects/ACT_noUF"), "already exists"))
+} else {
+  dir.create(paste0(output_dir, "all_subjects/ACT_noUF"), recursive = TRUE)
+  print(paste(paste0(output_dir, "all_subjects/ACT_noUF"), "created"))
 }
 
 ################## 
@@ -49,7 +56,7 @@ format_covbat <- function(df, scalar) {
 ################## 
 # Load files 
 ################## 
-all_subjects <- fread(sprintf("%1$s/all_subjects/collated_tract_profiles_nocovbat.tsv", data_root))
+all_subjects <- fread(sprintf("%1$s/all_subjects/ACT_noUF/collated_tract_profiles_nocovbat_ACT_noUF.tsv", data_root))
 
 all_subjects$tractID <- gsub("Fronto-occipital", "Fronto.occipital", all_subjects$tractID)
 all_subjects <- all_subjects %>% mutate(hemi = ifelse(grepl("Left", tractID), "Left", "Right")) %>% 
@@ -121,4 +128,4 @@ merged_covbat_all <- merge(final_dti_fa_covbat, final_dti_md_covbat)
 merged_covbat_all <- merged_covbat_all %>% arrange(sub, tractID, nodeID, hemi) 
 
 # save out!
-saveRDS(merged_covbat_all, sprintf("%1$s/collated_tract_profiles_final.RData", output_dir))
+saveRDS(merged_covbat_all, sprintf("%1$s/all_subjects/ACT_noUF/collated_tract_profiles_final_ACT_noUF.RData", output_dir))
