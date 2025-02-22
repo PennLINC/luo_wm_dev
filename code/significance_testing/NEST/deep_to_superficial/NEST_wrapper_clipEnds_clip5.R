@@ -6,7 +6,6 @@ library(rjson)
 library(stringr)
 library(tidyr)
 library(NEST)
-#source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/explore_tract_profiles/NEST_custom_functions.R")
 
 ################## 
 # Set Variables 
@@ -22,9 +21,8 @@ print(paste("Running NEST for", dataset, tract))
 ################## 
 config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
 demographics <- read.csv(config_data$demo_qc)
-outputs_root <- "/cbica/projects/luo_wm_dev/output/"
 tract_prof_output_root <- config_data$outputs_root
-NEST_outputs_dir <- paste0(tract_prof_output_root, "/NEST/")
+NEST_outputs_dir <- paste0(tract_prof_output_root, "/NEST/dti_md/")
 
 if (dir.exists(NEST_outputs_dir)) {
   print(paste(NEST_outputs_dir, "already exists"))
@@ -181,31 +179,10 @@ NEST_wrapper <- function(tract, df, bin_size, nodes_to_clip) {
     what.to.return = "everything"
   )
   saveRDS(result_onesided, paste0(NEST_outputs_dir,  gsub(" ", "_", gsub("-", "_",tract)), "_bin", bin_size, "_clip", nodes_to_clip, "_1sided.RData"))
-  
-  # two-sided: is delta adj rsq different peripheral vs. deep nodes?
-  print("Running two-sided NEST")
-  result_twosided <- NEST(
-    statFun = "gam.deltaRsq",
-    args = list(X = X, 
-                dat = dat, 
-                gam.full.formula = as.formula(X.v ~ s(age, k = 3, fx = TRUE) + sex + mean_fd), 
-                gam.null.formula = as.formula(X.v ~ sex + mean_fd), 
-                lm.formula = as.formula(X.v ~ age + sex + mean_fd),  
-                y.in.gam = "s(age)", 
-                y.in.lm = "age", 
-                y.permute = "age",  
-                n.perm = 10000), 
-    net.maps = net,
-    one.sided = FALSE,
-    n.cores = 4, 
-    seed = 123, 
-    what.to.return = "everything"
-  )
-  
-  saveRDS(result_twosided, paste0(NEST_outputs_dir,  gsub(" ", "_", gsub("-", "_",tract)), "_bin", bin_size, "_clip", nodes_to_clip, "_2sided.RData"))
+
 }
  
-df <- readRDS(sprintf("%1$s/%2$s/tract_profiles/all_subjects/tract_profiles_for_NEST.RData", outputs_root, dataset))
+df <- readRDS(sprintf("%1$s/tract_profiles/tract_profiles_for_NEST.RData", tract_prof_output_root))
 print(paste0(dataset, " df loaded"))
 df$tract_label <- gsub(" ", "_", df$tract_label)
 
@@ -216,8 +193,11 @@ nodes_per_tract <- 100 # nodes per tract (nodeIDs from 0 to 99)
 ################### 
 # Run NEST
 ################### 
-#NEST_wrapper(tract, df = df, bin_size = 3, nodes_to_clip = 5)
+
 NEST_wrapper(tract, df = df, bin_size = 5, nodes_to_clip = 5)
+
+# sensitivity analyses:
+#NEST_wrapper(tract, df = df, bin_size = 3, nodes_to_clip = 5)
 #NEST_wrapper(tract, df = df, bin_size = 7, nodes_to_clip = 5)
 #NEST_wrapper(tract, df = df, bin_size = 10, nodes_to_clip = 5)
 

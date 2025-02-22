@@ -17,11 +17,12 @@ print(paste("Running spin tests for", dataset))
 ################# 
 # set directories
 ################# 
-proj_root <- "/cbica/projects/luo_wm_dev/"
+data_root <- "/cbica/projects/luo_wm_dev/"
+proj_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 
-output_dir <- paste0(output_root, "/", dataset, "/tract_profiles/suppfigs_spintests")
+output_dir <- paste0(output_root, "/", dataset, "/suppfigs_spintests")
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
@@ -31,7 +32,7 @@ if (!dir.exists(output_dir)) {
 }
 
 scalar = "dti_md"
-ageeffects <- read.csv(sprintf("%1$s/%2$s/tract_profiles/GAM/%3$s/%2$s_GAM_dev_measures.csv", output_root, dataset, scalar))
+ageeffects <- read.csv(sprintf("%1$s/%2$s/GAM/%3$s/%2$s_GAM_dev_measures.csv", output_root, dataset, scalar))
 invisible(assign(paste0(dataset, "_ageeffects"), ageeffects, envir = .GlobalEnv))
 
 # format age effect df's (the functions were originally formatted for all 3 datasets, hence the lapply's)
@@ -104,7 +105,6 @@ all_endpoints_binary <- all_endpoints_binary %>% mutate(maturation_status = ifel
 print(paste("Age of maturation vs. SA rank spin test running for", dataset))
 tractlevel_SA_ttest_p <- perm.sphere.SAaxis(glasser_SAaxis$SA.axis_rank, spun_ttest = TRUE, perm.id.full, paste0(dataset))
 write.csv(tractlevel_SA_ttest_p, paste0(output_dir, "/supp_tractlevel_pearson_ttest_pspin_maturedonly.csv"), row.names=F)
-#write.csv(tractlevel_SA_ttest_p, paste0(output_dir, "/supp_tractlevel_spearman_ttest_pspin.csv"), row.names=F)
 
 ###############################################################
 # Supplementary Fig. 

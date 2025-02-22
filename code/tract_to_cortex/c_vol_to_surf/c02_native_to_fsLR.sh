@@ -44,7 +44,8 @@ module load connectome_workbench/1.4.2
 proj_root="/cbica/projects/luo_wm_dev/"
 dataset=$(jq -r '.dataset' "$config_file")
 data_root=$(jq -r '.data_root' "$config_file")
-derivs_root="${data_root}/derivatives"
+manuscript_data_root=$(jq -r '.manuscript_input_root' "$config_file")
+derivs_root="${manuscript_data_root}/derivatives"
 xfms_root="${derivs_root}/fs_qsiprep_xfm"
 cortical_maps_root="${derivs_root}/vol_to_surf"
 

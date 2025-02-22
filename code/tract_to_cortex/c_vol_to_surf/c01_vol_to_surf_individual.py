@@ -38,8 +38,9 @@ with open(config_file, "rb") as f:
     config = json.load(f)
 
 data_root = config['data_root']
+manuscript_data_root = config['manuscript_input_root']
 dataset = config['dataset']
-derivs_dir = ospj(data_root, f"derivatives/vol_to_surf")
+derivs_dir = ospj(manuscript_data_root, f"derivatives/vol_to_surf")
 out_dir = ospj(derivs_dir, subject, "native_acpc")
 
 # Create directory for vol_to_surf outputs
@@ -83,7 +84,7 @@ def save_gifti_file(vol_to_surf_output, subject, tract, depth, outdir):
 # Load Files
 ########################################
 # load tdi maps (LAS) for each subject = img 
-tdi_maps_path = ospj(data_root, "derivatives", f"tdi_maps", subject, "tdi_binarized")
+tdi_maps_path = ospj(manuscript_data_root, "derivatives", f"tdi_maps", subject, "tdi_binarized")
 tdi_files = os.listdir(tdi_maps_path)  
 tdi_maps = {}
 for file in tdi_files: # loop through each file in my tdi_binarzed dir, extract the tract name, and load it
@@ -93,7 +94,7 @@ for file in tdi_files: # loop through each file in my tdi_binarzed dir, extract 
         tdi_maps[tract_name] = nib.load(file_path)
 
 # load freesurfer lh.white, rh.white in native acpc (LAS) = surfmesh
-surfs_path = ospj(data_root, "derivatives", f"fs_qsiprep_xfm", subject, "surfaces/native_acpc")
+surfs_path = ospj(manuscript_data_root, "derivatives", f"fs_qsiprep_xfm", subject, "surfaces/native_acpc")
 surfmesh_files = os.listdir(surfs_path)  
 lh_surf_mesh = [surfmesh_file for surfmesh_file in surfmesh_files if "lh.white" in surfmesh_file]
 rh_surf_mesh = [surfmesh_file for surfmesh_file in surfmesh_files if "rh.white" in surfmesh_file]

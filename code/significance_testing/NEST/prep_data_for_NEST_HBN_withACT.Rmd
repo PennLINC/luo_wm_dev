@@ -56,9 +56,8 @@ https://yeatmanlab.github.io/pyAFQ/explanations/bundle_orientation.html#bundle-o
 - Right Vertical Occipital: superior to inferior
 
 ```{r load tract profiles, cache=TRUE}
-PNC <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles/all_subjects/collated_tract_profiles_final.RData", input_root, "PNC"))
-HCPD <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles/all_subjects/collated_tract_profiles_final.RData", input_root, "HCPD"))
-HBN <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles/all_subjects/collated_tract_profiles_final.RData", input_root, "HBN"))
+HBN <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles_ACT/all_subjects/ACT_noUF/collated_tract_profiles_final_ACT_noUF.RData", input_root, "HBN"))
+
 
 # format tract profiles df's
 format_tract_profiles <- function(df) {
@@ -85,12 +84,9 @@ format_tract_profiles <- function(df) {
   return(df)
 }
 
-PNC_tp <- format_tract_profiles(PNC)
-HCPD_tp <- format_tract_profiles(HCPD)
-HBN_tp <- format_tract_profiles(HBN)
-  
-saveRDS(PNC_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "PNC"))
-saveRDS(HCPD_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HCPD"))
-saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HBN"))
+
+ HBN_tp <- format_tract_profiles(HBN)
+    
+saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST_withACT.RData", output_root, "HBN"))
 ```
 

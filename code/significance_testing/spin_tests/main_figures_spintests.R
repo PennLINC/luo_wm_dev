@@ -1,5 +1,6 @@
 library(dplyr)
 library(parallel)
+library(purrr)
 library(tidyr)
 source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
 
@@ -16,11 +17,12 @@ print(paste("Running spin tests for", dataset))
 ################# 
 # set directories
 ################# 
-proj_root <- "/cbica/projects/luo_wm_dev/"
+data_root <- "/cbica/projects/luo_wm_dev/"
+proj_root <-   "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 
-output_dir <- paste0(output_root, "/", dataset, "/tract_profiles/fig5_fig6_spintests")
+output_dir <- paste0(output_root, "/", dataset, "/fig5_fig6_spintests")
  
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
@@ -30,7 +32,7 @@ if (!dir.exists(output_dir)) {
 }
 
 scalar = "dti_md"
-ageeffects <- read.csv(sprintf("%1$s/%2$s/tract_profiles/GAM/%3$s/%2$s_GAM_dev_measures.csv", output_root, dataset, scalar))
+ageeffects <- read.csv(sprintf("%1$s/%2$s/GAM/%3$s/%2$s_GAM_dev_measures.csv", output_root, dataset, scalar))
 invisible(assign(paste0(dataset, "_ageeffects"), ageeffects, envir = .GlobalEnv))
 
 # format age effect df's (the functions were originally formatted for all 3 datasets, hence the lapply's)
@@ -83,26 +85,33 @@ invisible(assign(paste0("all_endpoints_", dataset), all_endpoints, envir = .Glob
 invisible(assign(paste0("lh_all_endpoints_", dataset), lh_all_endpoints, envir = .GlobalEnv))
 invisible(assign(paste0("rh_all_endpoints_", dataset), rh_all_endpoints, envir = .GlobalEnv))
 
+# aggregate ages of maturation to use for spin test null:
+aggregated_axis <- merge_SA_parcel(dataset)   # 360 glasser parcels with mean age maturation and SA rank
+aggregated_axis <- aggregated_axis %>% arrange(region)
+invisible(assign(paste0("aggregated_axis_", dataset), aggregated_axis, envir = .GlobalEnv))
+
 ###############################################################
 # Fig. 5: 
 # For individual datasets: compute mean difference in S-A axis 
 # rank between endpoints vs. Difference in age of maturation 
 # of endpoints (delta-delta plot)
 ###############################################################
+
+tract_names <- c("ARC", "ILF", "IFO", "SLF", "pARC", "UNC", "VOF", "COrb", "CAntFr" ,"CSupFr", "CMot", "CSupPar", "CPostPar", "CTemp", "COcc")
 lh_names <- c("ARCL", "ILFL", "IFOL", "SLFL", "pARCL", "UNCL", "VOFL", "COrbL", "CAntFrL" ,"CSupFrL", "CMotL", "CSupParL", "CPostParL", "CTempL", "COccL")
 rh_names <- c("ARCR", "ILFR", "IFOR", "SLFR", "pARCR", "UNCR", "VOFR", "COrbR", "CAntFrR" ,"CSupFrR", "CMotR", "CSupParR", "CPostParR", "CTempR", "COccR")
 
-diffs <- compute_diffs_wrapper(lh_all_endpoints, rh_all_endpoints)  
+diffs <- compute_absdiffs_wrapper(lh_all_endpoints, rh_all_endpoints)  
 diffs <- diffs %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                                                 "Large Difference\n in S-A Rank", 
-                                                 "Small Difference\n in S-A Rank"))
-diffs$group <- factor(diffs$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                                         "Large Difference in SA Rank", 
+                                         "Small Difference in SA Rank"))
+diffs$group <- factor(diffs$group, levels = c("Small Difference in SA Rank", "Large Difference in SA Rank"))
 invisible(assign(paste0("diffs_", dataset), diffs, envir = .GlobalEnv))
 
 print(paste("Delta-delta spin test running for", dataset))
-delta_p <- perm.sphere.SAaxis_delta(SAaxis = glasser_SAaxis$SA.axis_rank, perm.id = perm.id.full, dataset) 
+delta_p <- perm.sphere.age_map_delta_absdiff(aggregate_age_map = aggregated_axis$regional_mean_ageeffect, perm.id = perm.id.full, dataset = dataset, tract_names = tract_names, all_endpoints = all_endpoints) 
 delta_p_df <- as.data.frame(delta_p)
-write.csv(delta_p_df, paste0(output_dir, "/fig5_pspin.csv"), row.names=F)
+write.csv(delta_p_df, paste0(output_dir, "/fig5_pspin_absdiff.csv"), row.names=F)
 
 ########################################################################  
 # Fig 6: Pearson's correlation for fully matured endpoints vs. S-A rank

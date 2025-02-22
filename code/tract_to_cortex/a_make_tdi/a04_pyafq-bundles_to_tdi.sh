@@ -16,6 +16,7 @@ logs_dir=$3
 job_name=$4
 
 data_root=$(jq -r '.data_root' ${config_file})
+manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
 dataset=$(jq -r '.dataset' ${config_file})
 
 mapfile -t subjects_array < <(tail -n +2 ${subjects_file}) # skip header
@@ -47,7 +48,7 @@ module load mrtrix/3.0.4
 echo "Converting bundles to TDI for ${subject}"
 
 # Check if converted .tck files exist
-if ! find "${data_root}/derivatives/tck_temp/${subject}" -name "*.tck" -print -quit | grep -q .; then
+if ! find "${manuscript_data_root}/derivatives/tck_temp/${subject}" -name "*.tck" -print -quit | grep -q .; then
     echo "No tract (.tck) files for ${subject}"
     exit 1 
 fi
@@ -56,20 +57,20 @@ fi
 # Create output directories
 ########################################
 # Create output directories for tract density maps
-if [ ! -d ${data_root}/derivatives/tdi_maps/${subject} ]; then
-    mkdir -p ${data_root}/derivatives/tdi_maps/${subject}/mgz
-    mkdir -p ${data_root}/derivatives/tdi_maps/${subject}/nifti
-    mkdir -p ${data_root}/derivatives/tdi_maps/${subject}/tdi_binarized
+if [ ! -d ${manuscript_data_root}/derivatives/tdi_maps/${subject} ]; then
+    mkdir -p ${manuscript_data_root}/derivatives/tdi_maps/${subject}/mgz
+    mkdir -p ${manuscript_data_root}/derivatives/tdi_maps/${subject}/nifti
+    mkdir -p ${manuscript_data_root}/derivatives/tdi_maps/${subject}/tdi_binarized
 fi
-outputs_dir_mgz=${data_root}/derivatives/tdi_maps/${subject}/mgz
-outputs_dir_nifti=${data_root}/derivatives/tdi_maps/${subject}/nifti
-outputs_dir_tdi=${data_root}/derivatives/tdi_maps/${subject}/tdi_binarized
+outputs_dir_mgz=${manuscript_data_root}/derivatives/tdi_maps/${subject}/mgz
+outputs_dir_nifti=${manuscript_data_root}/derivatives/tdi_maps/${subject}/nifti
+outputs_dir_tdi=${manuscript_data_root}/derivatives/tdi_maps/${subject}/tdi_binarized
 
 ########################################
 # Convert tck to TDI maps
 ########################################
 # Iterate over tract (.tck) files
-for tract in ${data_root}/derivatives/tck_temp/${subject}/*.tck; do
+for tract in ${manuscript_data_root}/derivatives/tck_temp/${subject}/*.tck; do
     
     # Extract file name (without .tck extension)
     tract_fname=$(basename ${tract} | sed 's/.tck//g')

@@ -1,9 +1,7 @@
 #!/bin/bash
 
 # set variables
-datasets=("HCPD" "HBN" "PNC")
-
-r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/NEST/deep_to_superficial/NEST_wrapper_clipEnds_clip5.R"
+datasets=("PNC" "HCPD" "HBN")
 tract_list="/cbica/projects/luo_wm_dev/input/tract_list/tract_list.txt"
 
 inputarray=()
@@ -29,3 +27,5 @@ for dataset in "${datasets[@]}"; do
            --error=${logs_dir}/NEST_${dataset}_%A_%a.err \
            singularity_NEST_clip5.sh ${dataset} ${tract_list} 
 done
+
+

@@ -14,9 +14,10 @@ for dataset in "${datasets[@]}"; do
 
     # set dir
     data_root=$(jq -r '.data_root' ${config_file})
+    manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
     
     # subjects file
-    subjects_file="${data_root}/subject_list/final_sample/${dataset}_WMDev_FinalSample.txt"
+    subjects_file="${manuscript_data_root}/subject_list/final_sample/${dataset}_WMDev_FinalSample.txt"
     mapfile -t subjects_array < <(tail -n +2 ${subjects_file}) # skip header
     for i in "${!subjects_array[@]}"; do
         subjects_array[$i]=$(echo "${subjects_array[$i]}" | tr -d '"') # remove quotes

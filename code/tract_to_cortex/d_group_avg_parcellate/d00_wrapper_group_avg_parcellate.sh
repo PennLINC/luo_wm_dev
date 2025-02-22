@@ -19,10 +19,11 @@ for dataset in "${datasets[@]}"; do
 
     # set dir
     data_root=$(jq -r '.data_root' ${config_file})
+    manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
     
     # Create directory for group vol_to_surf outputs
-    if [ ! -d "${data_root}/derivatives/vol_to_surf/group" ]; then
-        mkdir -p ${data_root}/derivatives/vol_to_surf/group
+    if [ ! -d "${manuscript_data_root}/derivatives/vol_to_surf/group" ]; then
+        mkdir -p ${manuscript_data_root}/derivatives/vol_to_surf/group
     fi
 
         

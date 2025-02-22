@@ -18,8 +18,9 @@ with open(config_file, "rb") as f:
     config = json.load(f)
 
 data_root = config['data_root']
+manuscript_data_root = config['manuscript_input_root']
 dataset = config['dataset']
-derivs_dir = ospj(data_root, f"derivatives/fs_qsiprep_xfm")
+derivs_dir = ospj(manuscript_data_root, f"derivatives/fs_qsiprep_xfm")
  
 ########################################
 # Check for required files
@@ -94,7 +95,7 @@ for file_path in gii_files:
     except Exception as e:
         print(f"Error deleting file {file_path}: {e}")
 
-folder_path = "/cbica/projects/luo_wm_dev/two_axes_manuscript/code/tract_to_cortex"
+folder_path = "/cbica/projects/luo_wm_dev/two_axes_manuscript/code/tract_to_cortex/b_transforms"
 gii_files = glob.glob(os.path.join(folder_path, f'{subject}*.gii')) # i think these are some tmp files that normalize_surfs forgot to delete lol *shrug*
 
 for file_path in gii_files:

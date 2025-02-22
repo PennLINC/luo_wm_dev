@@ -443,6 +443,13 @@ ggsave(paste0(fig_dir, "fig3and4_brain_legend.png"), brain_legend, height = 1, w
 ```
 
 ```{r plot NEST for IFO tract ends, fig.height = 3, fig.width = 15}
+PNC_IFO_pvalue <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData")
+print(PNC_IFO_pvalue$pval)
+HCPD_IFO_pvalue <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData")
+print(HCPD_IFO_pvalue$pval)
+HBN_IFO_pvalue <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/Inferior_Fronto_occipital_bin5_clip5_2sided_end_compare_noACT.RData") # needs to be 1sided
+print(HBN_IFO_pvalue$pval)
+
 NEST_PNC_IFO <- plot_NEST_tract_ends("PNC", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
 NEST_HCPD_IFO <- plot_NEST_tract_ends("HCPD", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
 NEST_HBN_IFO <- plot_NEST_tract_ends("HBN", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= N.S."))

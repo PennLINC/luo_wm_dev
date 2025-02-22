@@ -15,11 +15,12 @@ print(paste("Running spin tests for average across datasets"))
 ################# 
 # set directories
 ################# 
-proj_root <- "/cbica/projects/luo_wm_dev/"
+data_root <- "/cbica/projects/luo_wm_dev/"
+proj_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 
-output_dir <- paste0(output_root, "/avgdatasets/tract_profiles/suppfigs_spintests")
+output_dir <- paste0(output_root, "/avgdatasets/suppfigs_spintests/")
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
@@ -29,9 +30,9 @@ if (!dir.exists(output_dir)) {
 }
 
 scalar = "dti_md"
-PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/tract_profiles/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
-HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/tract_profiles/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
-HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/tract_profiles/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
 
 # format age effect df's (the functions were originally formatted for all 3 datasets, hence the lapply's)
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
@@ -147,7 +148,6 @@ write.csv(tractlevel_SA_p, paste0(output_dir, "/supp_tractlevel_pearson_pspin_al
 ## spin
 print(paste("Age of maturation vs. SA rank spin test running for", dataset))
 tractlevel_SA_ttest_p <- perm.sphere.SAaxis(glasser_SAaxis$SA.axis_rank, spun_ttest = TRUE, perm.id.full, "avg_datasets")
-#write.csv(tractlevel_SA_ttest_p, paste0(output_dir, "/supp_tractlevel_spearman_ttest_pspin.csv"), row.names=F)
 write.csv(tractlevel_SA_ttest_p, paste0(output_dir, "/supp_tractlevel_pearson_ttest_pspin_maturedonly.csv"), row.names=F)
 
 ###############################################################

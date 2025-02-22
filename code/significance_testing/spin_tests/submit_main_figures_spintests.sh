@@ -21,7 +21,7 @@ for dataset in "${datasets[@]}"; do
            --propagate=NONE \
            --output=${logs_dir}/${job_name}_%j.out \
            --error=${logs_dir}/${job_name}_%j.err \
-           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/software/docker/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script} ${dataset}"
+           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes_manuscript/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script} ${dataset}"
 done
 
 
@@ -39,4 +39,4 @@ sbatch --job-name=main_figures_spintests_avgdatasets \
            --propagate=NONE \
            --output=${logs_avgdatasets_dir}/${job_name}_%j.out \
            --error=${logs_avgdatasets_dir}/${job_name}_%j.err \
-           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/software/docker/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script_avg}"
+           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes_manuscript/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script_avg}"

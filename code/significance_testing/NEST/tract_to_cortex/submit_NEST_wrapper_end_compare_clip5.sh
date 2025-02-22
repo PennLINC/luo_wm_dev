@@ -14,7 +14,7 @@ for dataset in "${datasets[@]}"; do
     logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/NEST/${dataset}"
     mkdir -p ${logs_dir}
 
-    sbatch --job-name=NEST_${dataset}_end_compare_noACT \
+    sbatch --job-name=NEST_${dataset}_end_compare \
            --nodes=1 \
            --ntasks=1 \
            --cpus-per-task=8 \
@@ -30,7 +30,7 @@ for dataset in "${datasets[@]}"; do
     logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/NEST/${dataset}"
     mkdir -p ${logs_dir}
 
-    sbatch --job-name=NEST_${dataset}_end_compare_noACT \
+    sbatch --job-name=NEST_${dataset}_end_compare \
            --nodes=1 \
            --ntasks=1 \
            --cpus-per-task=8 \

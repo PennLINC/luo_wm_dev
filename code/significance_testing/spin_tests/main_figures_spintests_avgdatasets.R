@@ -1,5 +1,6 @@
 library(dplyr)
 library(parallel)
+library(purrr)
 library(tidyr)
 source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
 
@@ -14,11 +15,12 @@ print(paste("Running spin tests for average across datasets"))
 ################# 
 # set directories
 ################# 
-proj_root <- "/cbica/projects/luo_wm_dev/"
+data_root <- "/cbica/projects/luo_wm_dev/"
+proj_root <-   "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 
-output_dir <- paste0(output_root, "/avgdatasets/tract_profiles/fig5_fig6_spintests")
+output_dir <- paste0(output_root, "/avgdatasets/fig5_fig6_spintests")
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = T)
@@ -28,9 +30,9 @@ if (!dir.exists(output_dir)) {
 }
 
 scalar = "dti_md"
-PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/tract_profiles/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
-HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/tract_profiles/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
-HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/tract_profiles/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
 
 # format age effect df's (the functions were originally formatted for all 3 datasets, hence the lapply's)
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
@@ -117,6 +119,33 @@ lh_all_endpoints_HBN <- all_endpoints_HBN[[1]]
 rh_all_endpoints_HBN <- all_endpoints_HBN[[2]]
 all_endpoints_HBN <- all_endpoints_HBN[[3]]
 
+# aggregate ages of maturation to use for spin test null:
+lh_PNC_merge <- lh_by_region_PNC %>% rename(PNC_mean_ageeffect = regional_mean_ageeffect)
+lh_HCPD_merge <- lh_by_region_HCPD %>% rename(HCPD_mean_ageeffect = regional_mean_ageeffect)
+lh_HBN_merge <- lh_by_region_HBN %>% rename(HBN_mean_ageeffect = regional_mean_ageeffect)
+
+merge_temp <- merge(lh_HCPD_merge, lh_HBN_merge, by = "region")
+lh_all_datasets_ageMat <- merge(merge_temp, lh_PNC_merge, by = "region")
+lh_all_datasets_ageMat <- lh_all_datasets_ageMat %>% # left hemi age of maturation maps
+  mutate(regional_mean_ageeffect = rowMeans(select(., HCPD_mean_ageeffect, HBN_mean_ageeffect, PNC_mean_ageeffect), na.rm = TRUE))
+
+rh_PNC_merge <- rh_by_region_PNC %>% rename(PNC_mean_ageeffect = regional_mean_ageeffect)
+rh_HCPD_merge <- rh_by_region_HCPD %>% rename(HCPD_mean_ageeffect = regional_mean_ageeffect)
+rh_HBN_merge <- rh_by_region_HBN %>% rename(HBN_mean_ageeffect = regional_mean_ageeffect)
+
+merge_temp <- merge(rh_HCPD_merge, rh_HBN_merge, by = "region")
+rh_all_datasets_ageMat <- merge(merge_temp, rh_PNC_merge, by = "region")
+rh_all_datasets_ageMat <- rh_all_datasets_ageMat %>% # right hemi age of maturation maps
+  mutate(regional_mean_ageeffect = rowMeans(select(., HCPD_mean_ageeffect, HBN_mean_ageeffect, PNC_mean_ageeffect), na.rm = TRUE))
+
+lh_all_datasets_ageMat$region <- paste0(rh_all_datasets_ageMat$region, "_L") 
+rh_all_datasets_ageMat$region <- paste0(rh_all_datasets_ageMat$region, "_R")
+
+aggregated_axis <- rbind(lh_all_datasets_ageMat, rh_all_datasets_ageMat) %>% select(region, regional_mean_ageeffect)
+aggregated_axis <- aggregated_axis %>% arrange(region)
+aggregated_axis <- merge(glasser_SAaxis %>% rename(region = regionName), aggregated_axis, by = "region" ) # add SA rank
+
+
 ###############################################################
 # Fig. 5: 
 # For individual datasets: compute mean difference in S-A axis 
@@ -124,26 +153,27 @@ all_endpoints_HBN <- all_endpoints_HBN[[3]]
 # of endpoints (delta-delta plot)
 ###############################################################
 # compute mean difference in S-A rank between the 2 cortical endpoints by the difference in age effect
+tract_names <- c("ARC", "ILF", "IFO", "SLF", "pARC", "UNC", "VOF", "COrb", "CAntFr" ,"CSupFr", "CMot", "CSupPar", "CPostPar", "CTemp", "COcc")
 lh_names <- c("ARCL", "ILFL", "IFOL", "SLFL", "pARCL", "UNCL", "VOFL", "COrbL", "CAntFrL" ,"CSupFrL", "CMotL", "CSupParL", "CPostParL", "CTempL", "COccL")
 rh_names <- c("ARCR", "ILFR", "IFOR", "SLFR", "pARCR", "UNCR", "VOFR", "COrbR", "CAntFrR" ,"CSupFrR", "CMotR", "CSupParR", "CPostParR", "CTempR", "COccR")
 
-diffs_PNC <- compute_diffs_wrapper(lh_all_endpoints_PNC, rh_all_endpoints_PNC)  
+diffs_PNC <- compute_absdiffs_wrapper(lh_all_endpoints_PNC, rh_all_endpoints_PNC)  
 diffs_PNC <- diffs_PNC %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                                                 "Large Difference\n in S-A Rank", 
-                                                 "Small Difference\n in S-A Rank"))
-diffs_PNC$group <- factor(diffs_PNC$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                                                 "Large Difference in SA Rank", 
+                                                 "Small Difference in SA Rank"))
+diffs_PNC$group <- factor(diffs_PNC$group, levels = c("Small Difference in SA Rank", "Large Difference in SA Rank"))
 
-diffs_HCPD <- compute_diffs_wrapper(lh_all_endpoints_HCPD, rh_all_endpoints_HCPD)  
+diffs_HCPD <- compute_absdiffs_wrapper(lh_all_endpoints_HCPD, rh_all_endpoints_HCPD)  
 diffs_HCPD <- diffs_HCPD %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                                                   "Large Difference\n in S-A Rank", 
-                                                   "Small Difference\n in S-A Rank"))
-diffs_HCPD$group <- factor(diffs_HCPD$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                                                   "Large Difference in SA Rank", 
+                                                   "Small Difference in SA Rank"))
+diffs_HCPD$group <- factor(diffs_HCPD$group, levels = c("Small Difference in SA Rank", "Large Difference in SA Rank"))
 
-diffs_HBN <- compute_diffs_wrapper(lh_all_endpoints_HBN, rh_all_endpoints_HBN)   
+diffs_HBN <- compute_absdiffs_wrapper(lh_all_endpoints_HBN, rh_all_endpoints_HBN)   
 diffs_HBN <- diffs_HBN %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                                                 "Large Difference\n in S-A Rank", 
-                                                 "Small Difference\n in S-A Rank"))
-diffs_HBN$group <- factor(diffs_HBN$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                                                 "Large Difference in SA Rank", 
+                                                 "Small Difference in SA Rank"))
+diffs_HBN$group <- factor(diffs_HBN$group, levels = c("Small Difference in SA Rank", "Large Difference in SA Rank"))
 
 lh_combined_df <- bind_rows(lh_all_endpoints_PNC %>% mutate(dataset = "PNC"),
                             lh_all_endpoints_HCPD %>% mutate(dataset = "HCPD"),
@@ -163,17 +193,20 @@ rh_averaged_df <- rh_combined_df %>%
                                             age_effect = mean(age_effect, na.rm = TRUE),
                                             .groups = "drop")
 
+all_endpoints <- rbind(lh_averaged_df, rh_averaged_df) %>% arrange(bundle_name, end) %>% select(end, mean_SA, age_effect, bundle_name)
+
 # compute diffs
-diffs_avg_datasets <- compute_diffs_wrapper(lh_averaged_df, rh_averaged_df)   
+diffs_avg_datasets <- compute_absdiffs_wrapper(lh_averaged_df, rh_averaged_df)   
 diffs_avg_datasets <- diffs_avg_datasets %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                                                                   "Large Difference\n in S-A Rank", 
-                                                                   "Small Difference\n in S-A Rank"))
-diffs_avg_datasets$group <- factor(diffs_avg_datasets$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                                                                   "Large Difference in SA Rank", 
+                                                                   "Small Difference in SA Rank"))
+diffs_avg_datasets$group <- factor(diffs_avg_datasets$group, levels = c("Small Difference in SA Rank", "Large Difference in SA Rank"))
 
 print(paste("Delta-delta spin test running for average across datasets"))
-across_datasets_delta_p <- perm.sphere.SAaxis_delta(glasser_SAaxis$SA.axis_rank, perm.id.full, "avg_datasets")  
+across_datasets_delta_p <- perm.sphere.age_map_delta_absdiff(aggregate_age_map = aggregated_axis$regional_mean_ageeffect, perm.id = perm.id.full, dataset = "avg_datasets", tract_names = tract_names, all_endpoints = all_endpoints) 
 across_datasets_delta_p <- as.data.frame(across_datasets_delta_p)
-write.csv(across_datasets_delta_p, paste0(output_dir, "/fig5_pspin.csv"), row.names=F)
+write.csv(across_datasets_delta_p, paste0(output_dir, "/fig5_pspin_absdiff.csv"), row.names=F)
+
 
 ########################################################################  
 # Fig 6: Pearson's (previously Spearman's) correlation for fully matured endpoints vs. S-A rank

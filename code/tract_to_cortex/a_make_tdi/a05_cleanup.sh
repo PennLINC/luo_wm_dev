@@ -15,7 +15,7 @@ config_file=$2
 logs_dir=$3
 job_name=$4
 
-data_root=$(jq -r '.data_root' ${config_file})
+manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
 dataset=$(jq -r '.dataset' ${config_file})
 
 mapfile -t subjects_array < <(tail -n +2 ${subjects_file}) # skip header
@@ -37,7 +37,7 @@ exec 2> "${error_file}"
 ######################
 # cleanup 
 ######################
-rm -rf ${data_root}/derivatives/tck_temp/${subject} # delete the subject's tck folder since we don't need it anymore
-rm -rf ${data_root}/derivatives/tdi_maps/${subject}/mgz # delete temporary mgz folder
-rm -rf ${data_root}/derivatives/tdi_maps/${subject}/nifti # delete temporary nifti folder
+rm -rf ${manuscript_data_root}/derivatives/tck_temp/${subject} # delete the subject's tck folder since we don't need it anymore
+rm -rf ${manuscript_data_root}/derivatives/tdi_maps/${subject}/mgz # delete temporary mgz folder
+rm -rf ${manuscript_data_root}/derivatives/tdi_maps/${subject}/nifti # delete temporary nifti folder
  

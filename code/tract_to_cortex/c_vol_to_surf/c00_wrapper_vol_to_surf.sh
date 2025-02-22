@@ -14,14 +14,15 @@ for dataset in "${datasets[@]}"; do
 
     # set dir
     data_root=$(jq -r '.data_root' ${config_file})
+    manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
 
     # Create directory for vol_to_surf outputs
-    if [ ! -d "${data_root}/derivatives/vol_to_surf" ]; then
-        mkdir -p ${data_root}/derivatives/vol_to_surf
+    if [ ! -d "${manuscript_data_root}/derivatives/vol_to_surf" ]; then
+        mkdir -p ${manuscript_data_root}/derivatives/vol_to_surf
     fi
 
     # subjects file
-    subjects_file="${data_root}/subject_list/final_sample/${dataset}_WMDev_FinalSample.txt"
+    subjects_file="${manuscript_data_root}/subject_list/final_sample/${dataset}_WMDev_FinalSample.txt"
     mapfile -t subjects_array < <(tail -n +2 ${subjects_file}) # skip header
     for i in "${!subjects_array[@]}"; do
         subjects_array[$i]=$(echo "${subjects_array[$i]}" | tr -d '"') # remove quotes

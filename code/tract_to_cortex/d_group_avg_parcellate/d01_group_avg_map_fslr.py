@@ -34,9 +34,10 @@ with open(config_file, "rb") as f:
     config = json.load(f)
 
 data_root = config['data_root']
-derivs_dir = ospj(data_root, f"derivatives/vol_to_surf")
+manuscript_data_root = config['manuscript_input_root']
+
+derivs_dir = ospj(manuscript_data_root, f"derivatives/vol_to_surf")
 out_dir = ospj(derivs_dir, "group")
-#os.makedirs(out_dir, exist_ok=True)
 
 
 ###################
@@ -57,7 +58,7 @@ def average_tract_maps(derivs_dir, depth):
     Remember that each subject-level map is already binarized. 
     """
     subject_dirs = [os.path.join(derivs_dir, d, "fslr_32k") for d in os.listdir(derivs_dir) if d.startswith('sub-') and os.path.isdir(os.path.join(derivs_dir, d))]
-    subject_ids = [os.path.basename(d) for d in os.listdir(derivs_dir) if d.startswith('sub-') and os.path.isdir(os.path.join(derivs_dir, d))]
+    #subject_ids = [os.path.basename(d) for d in os.listdir(derivs_dir) if d.startswith('sub-') and os.path.isdir(os.path.join(derivs_dir, d))]
     
     # Assume all subjects have the same tract names
     filenames = os.listdir(subject_dirs[0])

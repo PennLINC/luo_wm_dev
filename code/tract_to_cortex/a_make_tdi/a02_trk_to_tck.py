@@ -22,7 +22,8 @@ with open(config_file, "rb") as f:
 
 dataset = config['dataset']
 data_root = config['data_root']
-derivs_dir = ospj(data_root, "derivatives", f"tck_temp", subject)
+manuscript_data_root = config['manuscript_input_root']
+derivs_dir = ospj(manuscript_data_root, "derivatives", f"tck_temp", subject)
 
 if not os.path.exists(derivs_dir):
         os.makedirs(derivs_dir)

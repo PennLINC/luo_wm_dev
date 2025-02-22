@@ -475,7 +475,7 @@ make_lollipop_plot <- function(tract, data) {
 ## @param dataset, A string
 load_maps <- function(depth, dataset, age_group = NULL) {
   
-  config_file <- sprintf("%1$s/two_axes_manuscript/code/config/config_%2$s.json", proj_root, dataset)
+  config_file <- sprintf("%1$s/code/config/config_%2$s.json", proj_root, dataset)
   config <- fromJSON(paste(readLines(config_file), collapse=""))
   
   vol_to_surf_dir <- paste0(config$data_root, "/derivatives/vol_to_surf")
@@ -1775,7 +1775,7 @@ compute_mean_SA <- function(dataset, SAaxis.perm = NULL) {
 }
 
 # compute the difference in mean S-A rank between cortical endpoints
-compute_endpoint_diffs <- function(bundle_name, lh_all_endpoints, rh_all_endpoints) {
+compute_endpoint_absdiffs <- function(bundle_name, lh_all_endpoints, rh_all_endpoints) {
   
   callosum <- c("COrb", "CAntFr", "CSupFr", "CMot", "CSupPar", "CPostPar", "CTemp", "COcc")
   
@@ -1796,7 +1796,7 @@ compute_endpoint_diffs <- function(bundle_name, lh_all_endpoints, rh_all_endpoin
     
     endpoints_diffs <- SAranks_endpoints %>% filter(if_all(everything(), ~ !is.na(.))) %>%
       summarise(mean_SA_diff = mean_SA[end == "end1"] - mean_SA[end == "end2"],
-              age_effect_diff = age_effect[end == "end1"] - age_effect[end == "end2"]) %>% 
+                age_effect_diff = abs(age_effect[end == "end1"] - age_effect[end == "end2"])) %>% 
       mutate(bundle_name = bundle_name)
     
     # for callosum bundles, get the difference in age of maturation and diff in mean SA
@@ -1810,18 +1810,19 @@ compute_endpoint_diffs <- function(bundle_name, lh_all_endpoints, rh_all_endpoin
     
     endpoints_diffs <- SAranks_endpoints %>% filter(if_all(everything(), ~ !is.na(.))) %>%
       summarise(mean_SA_diff = mean_SA[end == "end1"] - mean_SA[end == "end2"],
-              age_effect_diff = age_effect[end == "end1"] - age_effect[end == "end2"]) %>% 
+                age_effect_diff = abs(age_effect[end == "end1"] - age_effect[end == "end2"])) %>% 
       mutate(bundle_name = bundle_name)
   }
   
   return(endpoints_diffs)
 }
 
+
 # compute delta_delta df's (difference between S-A rank and difference between age of maturationn of 2 cortical endpoints)
-compute_diffs_wrapper <- function(lh_all_endpoints, rh_all_endpoints) {
+compute_absdiffs_wrapper <- function(lh_all_endpoints, rh_all_endpoints) {
   # difference in age of maturation
-  lh_diffs <- lapply(lh_names, compute_endpoint_diffs, lh_all_endpoints, rh_all_endpoints)
-  rh_diffs <- lapply(rh_names, compute_endpoint_diffs, lh_all_endpoints, rh_all_endpoints)
+  lh_diffs <- lapply(lh_names, compute_endpoint_absdiffs, lh_all_endpoints, rh_all_endpoints)
+  rh_diffs <- lapply(rh_names, compute_endpoint_absdiffs, lh_all_endpoints, rh_all_endpoints)
   names(lh_diffs) <- lh_names
   names(rh_diffs) <- rh_names
   lh_diffs_all <- bind_rows(lh_diffs) %>%
@@ -1832,8 +1833,8 @@ compute_diffs_wrapper <- function(lh_all_endpoints, rh_all_endpoints) {
   diffs_all <- diffs_all %>% filter(!grepl("^C.*R$", bundle_name)) # remove redundant callosum bundles (keep just left hemi callosum bundles to show difference between rh and lh endpoints)
   diffs_all$bundle_name <- gsub("^(C.*)L$", "\\1", diffs_all$bundle_name) # rename callosum bundles to NOT have hemisphere
   # make a column to label IFO and ILF, and label Callosum Bundles and Association Bundles - for plotting
-  diffs_all <- diffs_all %>%mutate(ifo_ilf_label = case_when(str_detect(bundle_name, "^C") ~ "Callosum",
-                                                             TRUE ~ "Association")) 
+  diffs_all <- diffs_all %>% mutate(ifo_ilf_label = case_when(str_detect(bundle_name, "^C") ~ "Callosum",
+                                                              TRUE ~ "Association")) 
   diffs_all$ifo_ilf_label <- factor(diffs_all$ifo_ilf_label, levels = c("Association", "Callosum"))
   return(diffs_all)
 }
@@ -2090,75 +2091,110 @@ source("/cbica/projects/luo_wm_dev/software/spin_test/perm.sphere.p.R")
 perm.id.full <- readRDS("/cbica/projects/luo_wm_dev/software/spin_test/rotate_parcellation/glasser.coords_sphericalrotations_N10k.rds")
 
 # spin test for delta-delta: spin the S-A axis then recompute average S-A rank for each end. Then calculate difference in rank for delta-delta analysis. Then compute t.test and spun p-value for t-test
-## @param SAaxis, vector of S-A axis ranks
-perm.sphere.SAaxis_delta <- function(SAaxis, perm.id, dataset, alternative = "less", var.equal = FALSE) {
+## @param aggregate_age_map, vector of regional (parcel-level) age of maturation values
+perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, dataset, tract_names, all_endpoints, alternative = "less", var.equal = FALSE) {
   
   nroi = dim(perm.id)[1]  # number of regions
   nperm = dim(perm.id)[2] # number of permutations
   
-  # spin SA axis: permutation of measures
-  SAaxis.perm = array(NA,dim=c(nroi,nperm))
+  # spin parcel-level age of maturation values: permutation of measures
+  age_map.perm = array(NA,dim=c(nroi,nperm))
   for (r in 1:nperm) {
     for (i in 1:nroi) {
-      SAaxis.perm[i,r] = SAaxis[perm.id[i,r]]
+      age_map.perm[i,r] = aggregate_age_map[perm.id[i,r]] 
     }
   }
   
   # if want to compute spun p-value for the delta-delta plot: 
   # empirical t value
   diffs_emp <- get(paste0("diffs_", dataset))
-  diffs_emp <- diffs_emp %>% mutate(group = case_when(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR") ~ "Large Differences in Age of Maturation",
-                                                           !(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR")) ~ "Small Differences in Age of Maturation",
-                                                           TRUE ~ NA_character_))
-  
-  t.emp <- t.test(diffs_emp$mean_SA_diff[which(diffs_emp$group == "Small Differences in Age of Maturation")], # compare differences in sa rank
-                  diffs_emp$mean_SA_diff[which(diffs_emp$group == "Large Differences in Age of Maturation")], 
+  diffs_emp <- diffs_emp %>% mutate(group = case_when(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR") ~ "Large Difference in SA Rank",
+                                                      !(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR")) ~ "Small Difference in SA Rank",
+                                                      TRUE ~ NA_character_))
+  t.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], # compare Difference in sa rank
+                  diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], 
                   alternative = alternative, var.equal = var.equal)$statistic 
   
-  df.emp <- t.test(diffs_emp$mean_SA_diff[which(diffs_emp$group == "Small Differences in Age of Maturation")], # compare differences in sa rank
-                  diffs_emp$mean_SA_diff[which(diffs_emp$group == "Large Differences in Age of Maturation")], 
-                  alternative = alternative, var.equal = var.equal)$parameter 
-  
-  # t-test between permuted S-A axis differences and age of maturation differences between endpoints
-  t.null.SAaxis = vector(length=nperm)
+  df.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], # compare Difference in sa rank
+                   diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], 
+                   alternative = alternative, var.equal = var.equal)$parameter 
+  # t-test between permuted S-A axis Difference and SA Rank Difference between endpoints
+  t.null.age_map = vector(length=nperm)
   
   # when averaging across datasets, use PNC's bundle-to-cortex probability map
   if(dataset=="avg_datasets") {
     dataset <- "PNC"
   }
   
-  # spin
   for (r in 1:nperm) {
     print(r)
-    # merging of permuted S-A axis to age of maturation df
-    perm_mean_SAaxis <- compute_mean_SA(dataset, SAaxis.perm[,r]) # merge permuted S-A rank with age of maturation AND compute mean permuted S-A ranks
-    lh_perm_mean_SAaxis <- perm_mean_SAaxis[[1]]
-    rh_perm_mean_SAaxis <- perm_mean_SAaxis[[2]]
+    spun_aggregated_axis = aggregated_axis %>% mutate(regional_mean_ageeffect = age_map.perm[,r])
+    all_endpoints_spun  <- lapply(tract_names, make_null_age_maps, spun_aggregated_axis = spun_aggregated_axis)
+    names(all_endpoints_spun) <- tract_names
+    
+    
+    all_endpoints_spun <- lapply(all_endpoints_spun, function(df) na.omit(df))
+    
+    all_endpoints_spun <- map2(all_endpoints_spun, names(all_endpoints_spun), 
+                               ~ mutate(.x,
+                                        bundle_name = paste0(.y, case_when(hemi == "lh" ~ "L",
+                                                                           hemi == "rh" ~ "R", 
+                                                                           TRUE ~ ""))))
+    
+    all_endpoints_spun <- lapply(all_endpoints_spun, function(df) na.omit(df))
+    all_endpoints_spun <- bind_rows(all_endpoints_spun) %>% filter(!is.na(end))
+    
+    # collapse all_endpoints_spun across all tracts and merge with all_endpoints to have mean_SA
+    all_endpoints_spun <- merge(all_endpoints_spun, all_endpoints) %>% 
+      select(end, null_age_of_maturation, mean_SA,bundle_name) %>% arrange(bundle_name, end)
+    
+    # split all_endpoints_spun to lh and rh so we can use compute_absdiffs_wrapper function
+    lh_endpoints_spun <- all_endpoints_spun %>% filter(str_detect(bundle_name, "L$")) %>% 
+      rename(age_effect = null_age_of_maturation) # rename null_age_of_maturation to fit requires for compute_absdiffs_wrapper
+    rh_endpoints_spun <- all_endpoints_spun %>% filter(str_detect(bundle_name, "R$")) %>% 
+      rename(age_effect = null_age_of_maturation)
     
     # calculate difference in rank
-    perm_diffs <- compute_diffs_wrapper(lh_perm_mean_SAaxis, rh_perm_mean_SAaxis)
-    perm_diffs <- perm_diffs %>% mutate(group = case_when(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR") ~ "Large Differences in Age of Maturation",
-                                                               !(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR")) ~ "Small Differences in Age of Maturation",
-                                                               TRUE ~ NA_character_))
-    
+    perm_diffs <- compute_absdiffs_wrapper(lh_endpoints_spun, rh_endpoints_spun)
+    perm_diffs <- perm_diffs %>% mutate(group = case_when(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR") ~ "Large Difference in SA Rank",
+                                                          !(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR")) ~ "Small Difference in SA Rank",
+                                                          TRUE ~ NA_character_))
     
     # calculate t-test and permuted t-test: do tracts with very diff ages of maturation between endpoints actually have different s-a ranks?? 
-    t.null.SAaxis[r] <- t.test(perm_diffs$mean_SA_diff[which(perm_diffs$group == "Small Differences in Age of Maturation")], 
-                               perm_diffs$mean_SA_diff[which(perm_diffs$group == "Large Differences in Age of Maturation")], 
-                               alternative = alternative, var.equal = var.equal )$statistic
+    t.null.age_map[r] <- t.test(perm_diffs$age_effect_diff[which(perm_diffs$group == "Small Difference in SA Rank")], 
+                                perm_diffs$age_effect_diff[which(perm_diffs$group == "Large Difference in SA Rank")], 
+                                alternative = alternative, var.equal = var.equal )$statistic
   }
   
   # p-value definition  
   if (t.emp>0) {
-    p.perm = sum(t.null.SAaxis>t.emp)/nperm
+    p.perm = sum(t.null.age_map>t.emp)/nperm
   } else { 
-    p.perm = sum(t.null.SAaxis<t.emp)/nperm
+    p.perm = sum(t.null.age_map<t.emp)/nperm
   } 
   
   return(list(p.perm = p.perm, t.emp = t.emp, df.emp = df.emp))
-  # return p-value for the t-test to see if tracts with very diff ages of maturation between endpoints actually have different s-a rank
+  # return p-value for the t-test to see if tracts with large diffs in S-A rank have significant diffs in age of maturation
   
 }
+
+# helper function for perm.sphere.age_map_delta_absdiff
+make_null_age_maps <- function(tract_name, spun_aggregated_axis) {
+  # get output from "make_maps" for each tract (df includes average age of maturation for each Glasser region and which tract end each region belongs)
+  lh_deveffect <- get(paste0(tract_name, "L_deveffect_", dataset)) 
+  rh_deveeffect <- get(paste0(tract_name, "R_deveffect_", dataset))
+  bilat_deveffect <- rbind(lh_deveffect, rh_deveeffect) %>% select(-region) %>% rename(region = regionName) %>% 
+    mutate(hemi = ifelse(str_detect(region, "_L$"), "lh",
+                         ifelse(str_detect(region, "_R$"), "rh", NA))) %>% arrange(end)
+  
+  # merge spun age map with tract-ends map. Then select the aggregated, averaged age of maturation for each Glasser parcel and end assignments
+  spun_age_map <- merge(spun_aggregated_axis, bilat_deveffect, by = "region") %>% arrange(end) %>% select(end, hemi, SA.axis_rank, regional_mean_ageeffect, region) 
+  
+  # map ages of maturation (parcel-level) back to tract endpoints
+  spun_tract_ends <- spun_age_map %>% group_by(end, hemi) %>% summarise(null_age_of_maturation = mean(regional_mean_ageeffect, na.rm = T))
+  return(spun_tract_ends)
+}
+
 
 # spun p-value for t-test of S-A rank between matured vs. not matured (parcel-level)
 perm.sphere.p.ttest = function(SAaxis, perm.id, dataset, alternative = "greater", var.equal = FALSE) {

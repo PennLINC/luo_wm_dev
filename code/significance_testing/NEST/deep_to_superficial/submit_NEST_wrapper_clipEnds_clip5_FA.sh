@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set variables
-datasets=("HCPD" "HBN" "PNC")
+datasets=("PNC" "HCPD" "HBN")
 
 r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/NEST/deep_to_superficial/NEST_wrapper_clipEnds_clip5_FA.R"
 tract_list="/cbica/projects/luo_wm_dev/input/tract_list/tract_list.txt"

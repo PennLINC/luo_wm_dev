@@ -19,6 +19,7 @@ logs_dir=$3
 job_name=$4
 
 data_root=$(jq -r '.data_root' ${config_file})
+manuscript_data_root=$(jq -r '.manuscript_input_root' ${config_file})
 dataset=$(jq -r '.dataset' ${config_file})
 
 mapfile -t subjects_array < <(tail -n +2 ${subjects_file}) # skip header
@@ -49,7 +50,7 @@ module load fsl/6.0.4
 qsiprep_dir="${data_root}/raw/datalad_qsiprep/"
 freesurfer_dir="${data_root}/raw/datalad_freesurfer/inputs/data/"
 SUBJECTS_DIR="${data_root}/raw/datalad_freesurfer/inputs/data/freesurfer/"
-derivs_dir="${data_root}/derivatives/fs_qsiprep_xfm"
+derivs_dir="${manuscript_data_root}/derivatives/fs_qsiprep_xfm"
 if [ ! -d "${derivs_dir}" ]; then
   mkdir -p ${derivs_dir}
 fi
@@ -127,8 +128,8 @@ fi
 # Freesurfer  
 ###############
 # set variables for singularity
-freesurfer_license="/cbica/projects/luo_wm_dev/software/freesurfer/license.txt"
-freesurfer_sif="/cbica/projects/luo_wm_dev/software/freesurfer/fmriprep-20.2.3.sif"
+freesurfer_license="/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/license.txt"
+freesurfer_sif="/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/fmriprep-20.2.3.sif"
  
 
 # Convert Freesurfer reference volumes (nu.mgz) to NIFTIs
@@ -204,7 +205,7 @@ singularity exec --writable-tmpfs \
   /mnt/surf/rh.sphere.reg ${derivs_dir_surf}/${subject}.rh.sphere.freesurfer.surf.gii 
   # note that for sphere.reg, we DON'T want the --to-scanner flag!!
   # it messes up wb_shortcuts -freesurfer-resample-prep down the line
-  # see Marc's slack channel 
+  
  
  
 ###############

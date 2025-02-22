@@ -33,10 +33,11 @@ with open(config_file, "rb") as f:
     config = json.load(f)
 
 data_root = config['data_root']
+manuscript_data_root = config['manuscript_input_root']
 dataset = config['dataset']
-derivs_dir = ospj(data_root, f"derivatives/vol_to_surf")
+derivs_dir = ospj(manuscript_data_root, f"derivatives/vol_to_surf")
 out_dir = ospj(derivs_dir, "group")
-#os.makedirs(out_dir, exist_ok=True)
+
 ###################
 # Define functions 
 ###################
