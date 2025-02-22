@@ -45,6 +45,7 @@
 The project directory on CUBIC is `/cbica/projects/luo_wm_dev` . 
 
 - Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes_manuscript`
+
 | Directory | Description |
 | --------- | ----------- |
 | `~/two_axes_manuscript/input` | for each dataset: has sample selection files, babs projects, and tract profiles for test subjects  |
