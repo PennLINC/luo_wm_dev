@@ -1874,7 +1874,7 @@ plot_diffs <- function(dataset, p_label, legend_position, labels = NULL) {
           axis.title = element_blank(),
           axis.text.x = element_text(size = 20, color = "black"),
           axis.text.y = element_text(size = 20, color = "black")) + 
-    ylim(-5, 10) + xlim(-50, 252)
+    ylim(-1, 10) + xlim(-50, 252) + scale_y_continuous(limits = c(-1, 10), breaks = c(0, 5, 10))
   
   if (!is.null(labels)) {
     diffs_plot <- diffs_plot + 

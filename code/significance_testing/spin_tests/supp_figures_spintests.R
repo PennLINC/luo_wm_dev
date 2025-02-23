@@ -25,7 +25,7 @@ output_root <- paste0(proj_root, "output")
 output_dir <- paste0(output_root, "/", dataset, "/suppfigs_spintests")
 
 if (!dir.exists(output_dir)) {
-  dir.create(output_dir)
+  dir.create(output_dir, recursive = TRUE)
   message("Folder created: ", output_dir)
 } else {
   message("Folder already exists: ", output_dir)
