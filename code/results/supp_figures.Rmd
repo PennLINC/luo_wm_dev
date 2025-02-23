@@ -38,7 +38,7 @@ theme_set(theme_classic(base_family = "sans",base_size = font_size))
 line_size <- 1
 point_size <- 2
 
-proj_root <- "/cbica/projects/luo_wm_dev/"
+proj_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 suppfig_dir <- "/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/supplement/"
@@ -49,9 +49,9 @@ suppfig_dir <- "/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC
 - load age effect files and set up dataframes
 ```{r load dev effects files}
 scalar = "dti_md"
-HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/tract_profiles/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
-HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/tract_profiles/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
-PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/tract_profiles/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
 ```
 
 ```{r format age effects dfs}
@@ -130,7 +130,7 @@ title.grob <- textGrob("Age Effect Magnitude of Mean Diffusivity Across Datasets
                    gp=gpar(col="black", fontsize = 24, face = "bold"), hjust = 0.5)
  
 grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob))
-ggsave(paste0(suppfig_dir, "supp_hexplots.png"), grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob)), height = 7, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_hexplots.png"), grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob)), height = 7, width = 20, units = "in")
 ```
 
 
@@ -139,9 +139,9 @@ ggsave(paste0(suppfig_dir, "supp_hexplots.png"), grid.arrange(arrangeGrob(ageeff
 # Supplementary Table 1. Coefficient of Variation for tract ends and deep tract regions
 - load tract profiles
 ```{r load tract profiles}
-PNC <- readRDS(sprintf("%1$s/%2$s/tract_profiles/all_subjects/tract_profiles_for_NEST.RData", output_root, "PNC"))
-HCPD <- readRDS(sprintf("%1$s/%2$s/tract_profiles/all_subjects/tract_profiles_for_NEST.RData", output_root, "HCPD"))
-HBN <- readRDS(sprintf("%1$s/%2$s/tract_profiles/all_subjects/tract_profiles_for_NEST.RData", output_root, "HBN"))
+PNC <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "PNC"))
+HCPD <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HCPD"))
+HBN <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HBN"))
 ```
 
 tract profiles coefficient of variance
@@ -234,9 +234,9 @@ cv_table_html <- combined_cv %>%
   row_spec(0:nrow(combined_cv), extra_css = "line-height: 0.5;")  %>%
   column_spec(c(2, 4, 6), background = "gray90", include_thead = TRUE)
  
-save_kable(cv_table_html, paste0(suppfig_dir, "table1_cv.html"))
-webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.pdf"))
-webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.png"))
+#save_kable(cv_table_html, paste0(suppfig_dir, "table1_cv.html"))
+#webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.pdf"))
+#webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.png"))
 ```
 
 # Supplementary Figure 2. Age effect plots for corticospinal tract
@@ -247,13 +247,13 @@ color_PNC = "#cc0468"
 ```
 
 ```{r load CST NEST}
-cst_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Corticospinal_bin5_clip5_1sided.RData")
+cst_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Corticospinal_bin5_clip5_1sided.RData")
 NEST_PNC <- data.frame(c("Corticospinal", cst_PNC$pval, "PNC")) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 
-cst_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/Corticospinal_bin5_clip5_1sided.RData")
+cst_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Corticospinal_bin5_clip5_1sided.RData")
 NEST_HCPD <- data.frame(c("Corticospinal", cst_HCPD$pval, "HCP-D")) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 
-cst_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/Corticospinal_bin5_clip5_1sided.RData")
+cst_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Corticospinal_bin5_clip5_1sided.RData")
 NEST_HBN <- data.frame(c("Corticospinal", cst_HBN$pval, "HBN")) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 
 ```
@@ -299,17 +299,18 @@ CST_plot <- plot_grid(ggdraw() + draw_label("Corticospinal", size = 18, y = 0.2,
                                   plot_grid(plotlist = list(ageeffects_plot_CST, lollipop_plot_CST),
                                             align = "h", ncol = 2, rel_widths = c(1, 0.4)), ncol = 1, rel_heights = c(0.25, 1)) +  bgcolor("white") 
 
-ggsave(paste0(suppfig_dir, "supp_CST_ageeffect.svg"), CST_plot, height = 5, width = 5, units = "in")
-ggsave(paste0(suppfig_dir, "supp_CST_ageeffect.png"), CST_plot, height = 5, width = 5, units = "in")
+CST_plot
+#ggsave(paste0(suppfig_dir, "supp_CST_ageeffect.svg"), CST_plot, height = 5, width = 5, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_CST_ageeffect.png"), CST_plot, height = 5, width = 5, units = "in")
 ```
 
 
 # Supplementary Figure 3. Age effect plots for fractional anisotropy (FA).
 ```{r load dev effects files}
 scalar = "dti_fa"
-PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/tract_profiles/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
-HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/tract_profiles/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
-HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/tract_profiles/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
 ```
 
 ```{r format age effects dfs}
@@ -334,74 +335,7 @@ tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Cortic
 # HBN: There are 1947/2400 significant nodes - 81.1%
 
 ```
-
-```{r MAY REMOVE load deep to superficial NEST results}
-tracts <- c("Callosum Anterior Frontal", "Callosum Motor", "Callosum Occipital", "Callosump Orbital", "Callosum Posterior Parietal", "Callosum Superior Frontal", "Callosum Superior Parietal", "Callosum Temporal", "Arcuate", "Inferior Fronto-occipital", "Inferior Longitudinal", "Posterior Arcuate", "Superior Longitudinal", "Uncinate", "Vertical Occipital")
-
-# PNC
-arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Arcuate_bin5_clip5_1sided.RData")
-ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Superior_Longitudinal_bin5_clip5_1sided.RData")
-unc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Uncinate_bin5_clip5_1sided.RData")
-vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Vertical_Occipital_bin5_clip5_1sided.RData")
-
-#cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData") # still running
-# for now: 
-cc_af_PNC = 1 # need to update below
-cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_PNC <- NA # not checking NEST based on plots
-cc_pp_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/dti_fa/Callosum_Temporal_bin5_clip5_1sided.RData")
  
-NEST_PNC <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC, cc_mot_PNC$pval, cc_occ_PNC$pval, cc_orb_PNC$pval, cc_pp_PNC$pval, cc_sf_PNC$pval, cc_sp_PNC$pval, cc_tm_PNC$pval, arc_PNC$pval, ifo_PNC$pval, ilf_PNC$pval, parc_PNC$pval, slf_PNC$pval, unc_PNC$pval, vof_PNC$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
-
-
-# HCPD
-arc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Arcuate_bin5_clip5_1sided.RData")
-ifo_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Superior_Longitudinal_bin5_clip5_1sided.RData")
-unc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Uncinate_bin5_clip5_1sided.RData")
-vof_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Vertical_Occipital_bin5_clip5_1sided.RData")
-
-cc_af_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
-cc_mot_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Orbital_bin5_clip5_1sided.RData")
-cc_pp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_HCPD <- readRDS("/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/NEST/dti_fa/Callosum_Temporal_bin5_clip5_1sided.RData")
- 
-NEST_HCPD <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HCPD$pval, cc_mot_HCPD$pval, cc_occ_HCPD$pval, cc_orb_HCPD$pval, cc_pp_HCPD$pval, cc_sf_HCPD$pval, cc_sp_HCPD$pval, cc_tm_HCPD$pval, arc_HCPD$pval, ifo_HCPD$pval, ilf_HCPD$pval, parc_HCPD$pval, slf_HCPD$pval, unc_HCPD$pval, vof_HCPD$pval)), method=c("fdr")), rep("HCP-D", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
-
-# HBN
-arc_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Arcuate_bin5_clip5_1sided.RData")
-ifo_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Superior_Longitudinal_bin5_clip5_1sided.RData")
-unc_HBN <- NA
-vof_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Vertical_Occipital_bin5_clip5_1sided.RData")
-vof_HBN = 0.05 # need to udpate
-cc_af_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
-cc_mot_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Orbital_bin5_clip5_1sided.RData")
-cc_pp_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_HBN <- readRDS("/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/NEST/dti_fa/Callosum_Temporal_bin5_clip5_1sided.RData")
- 
-NEST_HBN <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HBN$pval, cc_mot_HBN$pval, cc_occ_HBN$pval, cc_orb_HBN$pval, cc_pp_HBN$pval, cc_sf_HBN$pval, cc_sp_HBN$pval, cc_tm_HBN$pval, arc_HBN$pval,  ifo_HBN$pval, ilf_HBN$pval, parc_HBN$pval, slf_HBN$pval, unc_HBN, vof_HBN)), method=c("fdr")), rep("HBN", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
-```
-
 ```{r make FA age effect plots for callosum}
 ageeffect_measure = "GAM.smooth.AdjRsq"
 ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_fa", ageeffect_measure = ageeffect_measure, 
@@ -409,40 +343,12 @@ ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_fa", ageeffect
                            = 20, legend_position = "none")
 names(ageeffects_plots) <- tracts
 ```
-
-```{r MAY REMOVE prep lollipop plots}
-colors <- c("#3FB8AFFF", "#FF9E9DFF", "#cc0468")
-names(colors) <- c("HCP-D", "HBN", "PNC")
-bin_num_nodes = 5
-clipEnds = 5
-
-# prepare the data for making lollipop plots
-df_all <- bind_rows(
-  ageeffect.fdr_dfs$HCPD_ageeffects %>% mutate(Dataset = "HCP-D"),
-  ageeffect.fdr_dfs$HBN_ageeffects  %>% mutate(Dataset = "HBN"),
-  ageeffect.fdr_dfs$PNC_ageeffects  %>% mutate(Dataset = "PNC")
-)
-
-df_all$Dataset <- factor(df_all$Dataset, levels = c("HCP-D", "PNC", "HBN"))
-df_formatted <- format_deep_superficial(df_all, ageeffect_measure, bin_num_nodes, clipEnds)  
-df_formatted <- df_formatted[complete.cases(df_formatted), ]
- 
-# merge with NEST results
-NEST <- rbind(NEST_HCPD, NEST_HBN, NEST_PNC)
-lollipop_data <- prepare_lollipop_data(df_formatted)   
-lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("PNC", "HCP-D", "HBN"))
-
-# plot lollipops
-tracts <- setdiff(unique(df_formatted$tract_label), "Corticospinal") # CST for supplement
-lollipop_plots <- lapply(tracts, make_lollipop_plot, lollipop_data)
-names(lollipop_plots) <- tracts
-```
  
 arrange callosal plots
 ```{r FA age effects callosum arrange plots, fig.height = 10, fig.width = 20}
 arrange_callosum_plots_nolollipop(ageeffects_plots) + bgcolor("white")
-ggsave(paste0(suppfig_dir, "supp_ageeffects_fig1_FA.svg"), arrange_callosum_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
-ggsave(paste0(suppfig_dir, "supp_ageeffects_fig1_FA.png"), arrange_callosum_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_ageeffects_fig1_FA.svg"), arrange_callosum_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_ageeffects_fig1_FA.png"), arrange_callosum_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
 ```
  
 arrange association plots
@@ -456,11 +362,37 @@ names(ageeffects_plots) <- tracts
  
 ```{r FA age effects association arrange plots, fig.height = 10, fig.width = 20, warnings = FALSE}
 arrange_association_plots_nolollipop(ageeffects_plots) + bgcolor("white")
-ggsave(paste0(suppfig_dir, "supp_ageeffects_fig2_FA.svg"), arrange_association_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
-ggsave(paste0(suppfig_dir, "supp_ageeffects_fig2_FA.png"), arrange_association_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_ageeffects_fig2_FA.svg"), arrange_association_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_ageeffects_fig2_FA.png"), arrange_association_plots_nolollipop(ageeffects_plots), height = 10, width = 20, units = "in")
 ```
 
 # Supplementary Figure 4. Tract-level: age of maturation association with S-A axis.
+```{r load dev effects files}
+# reload dti_md files lol
+scalar = "dti_md"
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+```
+
+```{r format age effects dfs}
+# make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
+datasets <- c("HCPD", "HBN", "PNC")
+ageeffect_df_names <- c()
+for (dataset in datasets) {
+  ageeffect_df_names <- append(ageeffect_df_names, paste0(dataset, "_ageeffects"))
+}
+
+# format age effect df's
+ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
+```
+
+```{r fdr correction}
+ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
+names(ageeffect.fdr_dfs) <- ageeffect_df_names
+tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
+```
+
 ```{r load glasser tract to region maps, results = hide}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
@@ -507,6 +439,8 @@ HBN_deveffects_5_agemat <- ageeffect.fdr_dfs$HBN_ageeffects %>% filter((nodeID <
 make_maps("PNC", "5_agemat") # makes [bundle_name]_deveffect_[dataset] for each dataset and bundle. e.g. IFOL_deveffect_PNC
 make_maps("HCPD", "5_agemat") 
 make_maps("HBN", "5_agemat")
+
+ 
 ```
 
 ```{r aggregate age maps}
@@ -551,19 +485,15 @@ all_endpoints_avgdatasets <- combined_df %>%
 ```
 
 ```{r tract level plot meanSA by mat status pearson, fig.height = 6, fig.width = 22}
-PNC_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
-HCPD_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/output/HCPD/tract_profiles/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
-HBN_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/output/HBN/tract_profiles/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
-avgdatasets_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/output/avgdatasets/tract_profiles/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
+PNC_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
+HCPD_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
+HBN_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
+avgdatasets_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes_manuscript/output/avgdatasets/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
 
-
-SA_age_mat_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_pearsons$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001")))
-SA_age_mat_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_pearsons$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001")))
-SA_age_mat_HBN <- plot_meanSA_by_age_mat("HBN", bquote(paste(italic("r"), " = ", .(round(HBN_tractlevel_SA_pearsons$rho.emp, 2)), ", ", 
-             italic("p"[spin]), " = N.S.")))
-
+SA_age_mat_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) # pval=0
+SA_age_mat_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) # pval=0
+SA_age_mat_HBN <- plot_meanSA_by_age_mat("HBN", bquote(paste(italic("r"), " = ", .(round(HBN_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " = N.S.")))
+ 
 SA_age_mat_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) + ggtitle("Average Across Datasets")
 
 SA_age_mat_plot_final <- ggarrange(SA_age_mat_PNC, SA_age_mat_HCPD, SA_age_mat_HBN, SA_age_mat_avgdatasets, ncol = 4, common.legend = T, legend = "bottom") 
@@ -576,7 +506,7 @@ y.grob <- textGrob("Age of Maturation (Years)",
 
 grid.arrange(arrangeGrob(SA_age_mat_plot_final, left = y.grob, bottom = x.grob))
 
-ggsave(paste0(suppfig_dir, "supp_SA_tract_level_pearson_allendpoints.png"), grid.arrange(arrangeGrob(SA_age_mat_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_SA_tract_level_pearson_allendpoints.png"), grid.arrange(arrangeGrob(SA_age_mat_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
 ```
  
 ```{r tract level plot meanSA by mat status ttest and spearman, fig.height = 6, fig.width = 22}
@@ -606,14 +536,12 @@ HBN_tractlevel_SA_ttest_p <- read.csv("/cbica/projects/luo_wm_dev/output/HBN/tra
 avgdatasets_tractlevel_SA_ttest_p <- read.csv("/cbica/projects/luo_wm_dev/output/avgdatasets/tract_profiles/suppfigs_spintests/supp_tractlevel_pearson_ttest_pspin_maturedonly.csv")
 
 SA_age_mat_binary_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001")), binary = TRUE)
+                                                      italic("p"[spin]), " < 0.0001")), binary = TRUE) # pval=0
 SA_age_mat_binary_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " = ", .(round(HCPD_tractlevel_SA_ttest_p$p.perm.cor, 2)))), binary = TRUE)
+                                                      italic("p"[spin]), " = ", .(round(HCPD_tractlevel_SA_ttest_p$p.perm.cor, 3)))), binary = TRUE)
 SA_age_mat_binary_HBN <- plot_meanSA_by_age_mat("HBN", bquote(paste(italic("r"), " = ", .(round(HBN_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
                                                       italic("p"[spin]), " = ", "N.S.")), binary = TRUE)
-SA_age_mat_binary_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", 
-                                                                                    .(round(avgdatasets_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                                                    italic("p"[spin]), " < 0.0001")), binary = TRUE) + ggtitle("Average Across Datasets")
+SA_age_mat_binary_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001")), binary = TRUE) + ggtitle("Average Across Datasets")
 
 SA_age_mat_binary_plot_final <- ggarrange(SA_age_mat_binary_PNC, SA_age_mat_binary_HCPD, SA_age_mat_binary_HBN, SA_age_mat_binary_avgdatasets, ncol = 4, common.legend = T, legend = "bottom")
 
@@ -625,7 +553,7 @@ y.grob <- textGrob("Age of Maturation (Years)",
 
 grid.arrange(arrangeGrob(SA_age_mat_binary_plot_final, left = y.grob, bottom = x.grob))
 
-ggsave(paste0(suppfig_dir, "supp_SA_tract_level_pearson_maturedOnly.png"), grid.arrange(arrangeGrob(SA_age_mat_binary_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_SA_tract_level_pearson_maturedOnly.png"), grid.arrange(arrangeGrob(SA_age_mat_binary_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
 ```
 
 # Supplementary Figure 5. Parcel-level: age of maturation association with S-A axis.
@@ -690,7 +618,7 @@ x.grob <- textGrob("S-A Axis Rank", gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Age of Maturation (Years)", gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob))
 
-ggsave(paste0(suppfig_dir, "supp_parcel_level_pearsons_allendpoints.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_parcel_level_pearsons_allendpoints.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
 ```
 
 # Supplementary Figure 7. Figure 1 with ACT in HBN
@@ -702,9 +630,9 @@ color_PNC = "#cc0468"
 
 ```{r load dev effects files}
 scalar = "dti_md"
-PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/tract_profiles/GAM/noUF/", scalar, "/PNC_GAM_dev_measures.csv"))
-HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/tract_profiles/GAM/noUF/", scalar, "/HCPD_GAM_dev_measures.csv"))
-HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/tract_profiles/GAM/noUF/", scalar, "/HBN_GAM_dev_measures.csv"))
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures_withACT.csv"))
 ```
 
 ```{r format age effects dfs}
@@ -728,13 +656,6 @@ tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Cortic
 
 ```{r load deep to superficial NEST results}
 # PNC
-arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Arcuate_bin5_clip5_1sided.RData")
-ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Superior_Longitudinal_bin5_clip5_1sided.RData")
-vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Vertical_Occipital_bin5_clip5_1sided.RData")
-
 cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
 cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Motor_bin5_clip5_1sided.RData")
 cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Occipital_bin5_clip5_1sided.RData")
@@ -822,14 +743,14 @@ names(lollipop_plots) <- tracts
  
 ```{r lollipop and age effects callosum arrange plots, fig.height = 13, fig.width = 20}
 arrange_callosum_plots(lollipop_plots)
-ggsave(paste0(suppfig_dir, "supp_fig1_withact_lollipop.svg"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
-ggsave(paste0(suppfig_dir, "supp_fig1_withact_lollipop.png"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_fig1_withact_lollipop.svg"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_fig1_withact_lollipop.png"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
 ```
 
 # Supplementary Figure 8. Threshold testing for tract-to-cortex maps (10%, 30%, 50%)
 ```{r display thresholded maps, fig.height = 10, fig.width = 20}
 # load my colormap :)
-colormap_file <- sprintf("%1$s/two_axes_manuscript/code/colormaps/aquamarine.json", proj_root)
+colormap_file <- sprintf("%1$s/code/colormaps/aquamarine.json", proj_root)
 colormap <- fromJSON(paste(readLines(colormap_file), collapse=""))
 aquamarine <- colorRampPalette(colormap)(15)
 
@@ -879,7 +800,7 @@ threshold_0.5 <- annotate_figure(ggarrange(arc_0.5 + theme(plot.margin = unit(c(
 
 all_threshold_plots <- ggarrange(threshold_0.1, threshold_0.3, threshold_0.5, ncol = 3, nrow = 1)
 
-ggsave(paste0(suppfig_dir, "supp_thresholds_PNC.png"), all_threshold_plots, height = 10, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_thresholds_PNC.png"), all_threshold_plots, height = 10, width = 20, units = "in")
 ```
 
 # Methods: determining best depth for tract-to-cortex mapping  
@@ -926,7 +847,7 @@ cc_sf_PNC_bin3 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/
 cc_sp_PNC_bin3 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Superior_Parietal_bin3_clip5_1sided.RData")
 cc_tm_PNC_bin3 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Temporal_bin3_clip5_1sided.RData")
  
-NEST_PNC_bin3 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin3$pval, cc_mot_PNC_bin3$pval, cc_occ_PNC_bin3$pval, cc_orb_PNC_bin3$pval, cc_pp_PNC_bin3$pval, cc_sf_PNC_bin3$pval, cc_sp_PNC_bin3$pval, cc_tm_PNC_bin3$pval, arc_PNC_bin3$pval, ifo_PNC_bin3$pval, ilf_PNC_bin3$pval, parc_PNC_bin3$pval, slf_PNC_bin3$pval, unc_PNC_bin3$pval, vof_PNC_bin3$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+NEST_PNC_bin3 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin3$pval, cc_mot_PNC_bin3$pval, cc_occ_PNC_bin3$pval, cc_orb_PNC_bin3$pval, cc_pp_PNC_bin3$pval, cc_sf_PNC_bin3$pval, cc_sp_PNC_bin3$pval, cc_tm_PNC_bin3$pval, arc_PNC_bin3$pval, ifo_PNC_bin3$pval, ilf_PNC_bin3$pval, parc_PNC_bin3$pval, slf_PNC_bin3$pval, unc_PNC_bin3$pval, vof_PNC_bin3$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "bin_3_pvalue", "Dataset"))
  
 # bin size = 5
 arc_PNC_bin5 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Arcuate_bin5_clip5_1sided.RData")
@@ -946,7 +867,7 @@ cc_sf_PNC_bin5 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/
 cc_sp_PNC_bin5 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
 cc_tm_PNC_bin5 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Temporal_bin5_clip5_1sided.RData")
  
-NEST_PNC_bin5 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin5$pval, cc_mot_PNC_bin5$pval, cc_occ_PNC_bin5$pval, cc_orb_PNC_bin5$pval, cc_pp_PNC_bin5$pval, cc_sf_PNC_bin5$pval, cc_sp_PNC_bin5$pval, cc_tm_PNC_bin5$pval, arc_PNC_bin5$pval, ifo_PNC_bin5$pval, ilf_PNC_bin5$pval, parc_PNC_bin5$pval, slf_PNC_bin5$pval, unc_PNC_bin5$pval, vof_PNC_bin5$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+NEST_PNC_bin5 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin5$pval, cc_mot_PNC_bin5$pval, cc_occ_PNC_bin5$pval, cc_orb_PNC_bin5$pval, cc_pp_PNC_bin5$pval, cc_sf_PNC_bin5$pval, cc_sp_PNC_bin5$pval, cc_tm_PNC_bin5$pval, arc_PNC_bin5$pval, ifo_PNC_bin5$pval, ilf_PNC_bin5$pval, parc_PNC_bin5$pval, slf_PNC_bin5$pval, unc_PNC_bin5$pval, vof_PNC_bin5$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "bin_5_pvalue", "Dataset"))
  
 # bin size = 7
 arc_PNC_bin7 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Arcuate_bin7_clip5_1sided.RData")
@@ -966,7 +887,7 @@ cc_sf_PNC_bin7 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/
 cc_sp_PNC_bin7 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Superior_Parietal_bin7_clip5_1sided.RData")
 cc_tm_PNC_bin7 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Temporal_bin7_clip5_1sided.RData")
  
-NEST_PNC_bin7 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin7$pval, cc_mot_PNC_bin7$pval, cc_occ_PNC_bin7$pval, cc_orb_PNC_bin7$pval, cc_pp_PNC_bin7$pval, cc_sf_PNC_bin7$pval, cc_sp_PNC_bin7$pval, cc_tm_PNC_bin7$pval, arc_PNC_bin7$pval, ifo_PNC_bin7$pval, ilf_PNC_bin7$pval, parc_PNC_bin7$pval, slf_PNC_bin7$pval, unc_PNC_bin7$pval, vof_PNC_bin7$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+NEST_PNC_bin7 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin7$pval, cc_mot_PNC_bin7$pval, cc_occ_PNC_bin7$pval, cc_orb_PNC_bin7$pval, cc_pp_PNC_bin7$pval, cc_sf_PNC_bin7$pval, cc_sp_PNC_bin7$pval, cc_tm_PNC_bin7$pval, arc_PNC_bin7$pval, ifo_PNC_bin7$pval, ilf_PNC_bin7$pval, parc_PNC_bin7$pval, slf_PNC_bin7$pval, unc_PNC_bin7$pval, vof_PNC_bin7$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "bin_7_pvalue", "Dataset"))
  
 # bin size = 10
 arc_PNC_bin10 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Arcuate_bin10_clip5_1sided.RData")
@@ -986,14 +907,17 @@ cc_sf_PNC_bin10 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles
 cc_sp_PNC_bin10 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Superior_Parietal_bin10_clip5_1sided.RData")
 cc_tm_PNC_bin10 <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/Callosum_Temporal_bin10_clip5_1sided.RData")
  
-NEST_PNC_bin10 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin10$pval, cc_mot_PNC_bin10$pval, cc_occ_PNC_bin10$pval, cc_orb_PNC_bin10$pval, cc_pp_PNC_bin10$pval, cc_sf_PNC_bin10$pval, cc_sp_PNC_bin10$pval, cc_tm_PNC_bin10$pval, arc_PNC_bin10$pval, ifo_PNC_bin10$pval, ilf_PNC_bin10$pval, parc_PNC_bin10$pval, slf_PNC_bin10$pval, unc_PNC_bin10$pval, vof_PNC_bin10$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+NEST_PNC_bin10 <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC_bin10$pval, cc_mot_PNC_bin10$pval, cc_occ_PNC_bin10$pval, cc_orb_PNC_bin10$pval, cc_pp_PNC_bin10$pval, cc_sf_PNC_bin10$pval, cc_sp_PNC_bin10$pval, cc_tm_PNC_bin10$pval, arc_PNC_bin10$pval, ifo_PNC_bin10$pval, ilf_PNC_bin10$pval, parc_PNC_bin10$pval, slf_PNC_bin10$pval, unc_PNC_bin10$pval, vof_PNC_bin10$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "bin_10_pvalue", "Dataset"))
 
 ```
 
 
 ```{r compare pvalues in PNC}
-PNC_bin_compare <- left_join(NEST_PNC_bin3, NEST_PNC_bin5) %>% left_join(NEST_PNC_bin7) %>% left_join(NEST_PNC_bin10)  
-
+PNC_bin_compare <- left_join(NEST_PNC_bin3, NEST_PNC_bin5) %>% left_join(NEST_PNC_bin7) %>% left_join(NEST_PNC_bin10) %>% select(-Dataset)
+PNC_bin_compare$bin_3_pvalue <- as.numeric(PNC_bin_compare$bin_3_pvalue)
+PNC_bin_compare$bin_5_pvalue <- as.numeric(PNC_bin_compare$bin_5_pvalue)
+PNC_bin_compare$bin_7_pvalue <- as.numeric(PNC_bin_compare$bin_7_pvalue)
+PNC_bin_compare$bin_10_pvalue <- as.numeric(PNC_bin_compare$bin_10_pvalue)
 # binning differences don’t impact significance status, though specific p-value changes a little
 PNC_bin_table <- PNC_bin_compare %>%
   mutate(across(where(is.numeric), ~ formatC(.x, digits = 2, format = "fg", drop0trailing = TRUE))) %>%
@@ -1005,76 +929,14 @@ PNC_bin_table <- PNC_bin_compare %>%
 
 PNC_bin_table_final <- PNC_bin_table %>%
   kbl(format = "html", align = "lcccc", digits = 2) %>%
-
   add_header_above(c(" " = 1, "p-value" = 4), bold = TRUE) %>%
   kable_styling(full_width = FALSE, position = "center") %>%
   kable_classic(full_width = FALSE, html_font = "Arial") %>%
   row_spec(0:nrow(PNC_bin_table), extra_css = "line-height: 0.5;")  
 
- 
-save_kable(PNC_bin_table_final, paste0(suppfig_dir, "table2_binning.html"))
-webshot(paste0(suppfig_dir, "table2_binning.html"), paste0(suppfig_dir, "table2_binning.png"))
-webshot(paste0(suppfig_dir, "table2_binning.html"), paste0(suppfig_dir, "table2_binning.pdf"))
+PNC_bin_table_final
+#save_kable(PNC_bin_table_final, paste0(suppfig_dir, "table2_binning.html"))
+#webshot(paste0(suppfig_dir, "table2_binning.html"), paste0(suppfig_dir, "table2_binning.png"))
+#webshot(paste0(suppfig_dir, "table2_binning.html"), paste0(suppfig_dir, "table2_binning.pdf"))
 ```
 
-
-
-# Tract-to-region maps for youngest and oldest ages 
-```{r load glasser tract to region maps labels, results = hide}
-# load glasser labels
-glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
-glasser_labels$regionID <- c(1:360)
-glasser_labels$region <- gsub("7Pl", "7PL", glasser_labels$region)   
-```
-
-```{r load youngest tract to region maps}
-# load maps for depth = 1.5mm (disregard a,b, and c. Variables are just there to prevent lapply output from being printed lol)
-a <- lapply("1.5", load_maps, "PNC", "youngest") # makes lh_maps_PNC, rh_maps_PNC
-b <- lapply("1.5", load_maps, "HCPD", "youngest") # makes lh_maps_HCPD, rh_maps_HCPD 
-c <- lapply("1.5", load_maps, "HBN", "youngest") # makes lh_maps_HBN, rh_maps_HBN
-make_endpoint_maps("PNC")
-```
-
-```{r set tract names}
-lh_names <- c("COrbL", "CAntFrL" ,"CSupFrL", "CMotL", "CSupParL", "CPostParL", "CTempL", "COccL", "ARCL", "CSTL" ,"ILFL", "IFOL", "SLFL", "pARCL", "UNCL", "VOFL")
-rh_names <- c("COrbR", "CAntFrR" ,"CSupFrR", "CMotR", "CSupParR", "CPostParR", "CTempR", "COccR", "ARCR", "CSTR", "ILFR", "IFOR", "SLFR", "pARCR", "UNCR", "VOFR")
-
-bilateral_tract_names <- c("COrb", "CAntFr" ,"CSupFr", "CMot", "CSupPar", "CPostPar", "CTemp", "COcc", "ARC", "CST", "ILF", "IFO", "SLF", "pARC", "UNC","VOF")
-```
-
-```{r plot youngest endpoints, fig.height = 15, fig.width = 17}
-# the same cortical regions across different tracts might have slightly different age effects, and that is okay. The age effects do tend to be in the same ballpark
-# this occurs because the age effects are projected to all the cortical regions that have a 30% or higher or being a cortical endpoint of a given tract
-# so for example, for IFO vs. VOF, the occipital lobe looks like there may be differences in age effect in the same brain region
-# it's likely because the exact cortical regions that one tract terminates on are slightly different than the other, but the age effect from the tract gets projected onto all of the regions at each tract end.
-
-# PNC
-lh_plots_PNC <- lapply(lh_names, plot_ends, dataset="PNC")
-rh_plots_PNC <- lapply(rh_names, plot_ends, dataset="PNC")
-names(lh_plots_PNC) <- lh_names
-names(rh_plots_PNC) <- rh_names
-endpoint_plots_PNC_youngest <- arrange_endpoint_plots(lh_plots_PNC, rh_plots_PNC)
-endpoint_plots_PNC_youngest
-ggsave(paste0(suppfig_dir, "supp_endpoint_maps_youngest.png"), endpoint_plots_PNC_youngest + bgcolor("white"), height = 15, width = 17, units = "in")
-```
-
-
-```{r load oldest tract to region maps}
-# load maps for depth = 1.5mm (disregard a,b, and c. Variables are just there to prevent lapply output from being printed lol)
-a <- lapply("1.5", load_maps, "PNC", "oldest") # makes lh_maps_PNC, rh_maps_PNC
-make_endpoint_maps("PNC")
-```
-
-```{r plot youngest endpoints, fig.height = 15, fig.width = 17}
-# uses same variables as before - writing over previous variables heh.
-
-# PNC
-lh_plots_PNC <- lapply(lh_names, plot_ends, dataset="PNC")
-rh_plots_PNC <- lapply(rh_names, plot_ends, dataset="PNC")
-names(lh_plots_PNC) <- lh_names
-names(rh_plots_PNC) <- rh_names
-endpoint_plots_PNC_oldest <- arrange_endpoint_plots(lh_plots_PNC, rh_plots_PNC)
-endpoint_plots_PNC_oldest + bgcolor("white")
-ggsave(paste0(suppfig_dir, "supp_endpoint_maps_oldest.png"), endpoint_plots_PNC_oldest + bgcolor("white"), height = 15, width = 17, units = "in")
-```
- 

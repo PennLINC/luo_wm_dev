@@ -16,6 +16,7 @@ pacman::p_load(
   grid, gridExtra, gratia, knitr, kableExtra, mgcv, RColorBrewer, scales, 
   stringr, rjson, tidyr
 )
+
 source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, include = TRUE) 
 
@@ -61,7 +62,6 @@ ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
 ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
 names(ageeffect.fdr_dfs) <- ageeffect_df_names 
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
-
 ```
 
 ```{r load deep to superficial NEST results}
@@ -84,7 +84,6 @@ cc_sp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/
 cc_tm_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
  
 NEST_PNC <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC$pval, cc_mot_PNC$pval, cc_occ_PNC$pval, cc_orb_PNC$pval, cc_pp_PNC$pval, cc_sf_PNC$pval, cc_sp_PNC$pval, cc_tm_PNC$pval, arc_PNC$pval, ifo_PNC$pval, ilf_PNC$pval, parc_PNC$pval, slf_PNC$pval, unc_PNC$pval, vof_PNC$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
-
 
 # HCPD
 arc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
@@ -319,11 +318,11 @@ CMot_brain_HBN
 ```
  
 ```{r plot NEST for CMot tract ends, fig.height = 3, fig.width = 15}
-NEST_PNC_CMot_pval <- readRDS(paste0(output_root, "/PNC/NEST/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
+NEST_PNC_CMot_pval <- readRDS(paste0(output_root, "/PNC/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_PNC_CMot_pval$pval)
-NEST_HCPD_CMot_pval <- readRDS(paste0(output_root, "/HCPD/NEST/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
+NEST_HCPD_CMot_pval <- readRDS(paste0(output_root, "/HCPD/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_HCPD_CMot_pval$pval)
-NEST_HBN_CMot_pval <- readRDS(paste0(output_root, "/HBN/NEST/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
+NEST_HBN_CMot_pval <- readRDS(paste0(output_root, "/HBN/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_HBN_CMot_pval$pval)
 
 NEST_PNC_CMot <- plot_NEST_tract_ends("PNC", tract = "CMot", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= N.S."))
@@ -440,11 +439,11 @@ brain_legend <- plot_grid(legend_title, brain_legend, ncol = 1, rel_heights = c(
 ```
 
 ```{r plot NEST for IFO tract ends, fig.height = 3, fig.width = 15}
-NEST_PNC_CMot_pval <- readRDS(paste0(output_root, "/PNC/NEST/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+NEST_PNC_CMot_pval <- readRDS(paste0(output_root, "/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_PNC_CMot_pval$pval)
-NEST_HCPD_CMot_pval <- readRDS(paste0(output_root, "/HCPD/NEST/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+NEST_HCPD_CMot_pval <- readRDS(paste0(output_root, "/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_HCPD_CMot_pval$pval)
-NEST_HBN_CMot_pval <- readRDS(paste0(output_root, "/HBN/NEST/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+NEST_HBN_CMot_pval <- readRDS(paste0(output_root, "/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
 print(NEST_HBN_CMot_pval$pval)
 
 
@@ -594,21 +593,21 @@ rh_names <- c("ARCR", "ILFR", "IFOR", "SLFR", "pARCR", "UNCR", "VOFR", "COrbR", 
 
 diffs_PNC <- compute_absdiffs_wrapper(lh_all_endpoints_PNC, rh_all_endpoints_PNC)  
 diffs_PNC <- diffs_PNC %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                        "Large Difference\n in S-A Rank", 
-                        "Small Difference\n in S-A Rank"))
-diffs_PNC$group <- factor(diffs_PNC$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
- 
+                        "Large Difference in S-A Rank", 
+                        "Small Difference in S-A Rank"))
+diffs_PNC$group <- factor(diffs_PNC$group, levels = c("Small Difference in S-A Rank", "Large Difference in S-A Rank"))
+
 diffs_HCPD <- compute_absdiffs_wrapper(lh_all_endpoints_HCPD, rh_all_endpoints_HCPD)  
 diffs_HCPD <- diffs_HCPD %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                        "Large Difference\n in S-A Rank", 
-                        "Small Difference\n in S-A Rank"))
-diffs_HCPD$group <- factor(diffs_HCPD$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                        "Large Difference in S-A Rank", 
+                        "Small Difference in S-A Rank"))
+diffs_HCPD$group <- factor(diffs_HCPD$group, levels = c("Small Difference in S-A Rank", "Large Difference in S-A Rank"))
 
 diffs_HBN <- compute_absdiffs_wrapper(lh_all_endpoints_HBN, rh_all_endpoints_HBN)   
 diffs_HBN <- diffs_HBN %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") | str_detect(bundle_name, "ILF"), 
-                        "Large Difference\n in S-A Rank", 
-                        "Small Difference\n in S-A Rank"))
-diffs_HBN$group <- factor(diffs_HBN$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
+                        "Large Difference in S-A Rank", 
+                        "Small Difference in S-A Rank"))
+diffs_HBN$group <- factor(diffs_HBN$group, levels = c("Small Difference in S-A Rank", "Large Difference in S-A Rank"))
  
 PNC_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/fig5_fig6_spintests/fig5_pspin_absdiff.csv")
 HCPD_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/fig5_fig6_spintests/fig5_pspin_absdiff.csv")
