@@ -1,7 +1,25 @@
 ---
 title: "Supplementary Figures"
 author: "Audrey Luo"
-output: html_document
+output: 
+  html_document:
+    highlight: haddock
+    code_folding: hide
+    number_sections: no
+    theme: lumen
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    number_sections: no
+    toc: yes
+    toc_depth: '4'
+  word_document:
+    toc: yes
+    toc_depth: '4'
+urlcolor: blue
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -47,14 +65,14 @@ suppfig_dir <- "/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC
  
 # Supplementary Figure 1. Hex plot of MD age effects
 - load age effect files and set up dataframes
-```{r load dev effects files}
+```{r load dev effects files MD}
 scalar = "dti_md"
 HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
 HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
 PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
 ```
 
-```{r format age effects dfs}
+```{r format age effects dfs MD}
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
 datasets <- c("HCPD", "HBN", "PNC")
 ageeffect_df_names <- c()
@@ -66,7 +84,7 @@ for (dataset in datasets) {
 ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
 ```
 
-```{r fdr correction}
+```{r fdr correction MD}
 ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
 names(ageeffect.fdr_dfs) <- ageeffect_df_names
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
@@ -124,7 +142,7 @@ HBN_PNC_ageeffects_plot <- HBN_PNC_ageeffects_plot +
                                     oob = scales::squish)
 
 
-ageeffects_plots <- ggarrange(HCPD_PNC_ageeffects_plot, HBN_PNC_ageeffects_plot, HCPD_HBN_ageeffects_plot, nrow = 1, common.legend=T, legend = c("bottom"))
+ageeffects_plots <- ggarrange(HCPD_PNC_ageeffects_plot, HBN_PNC_ageeffects_plot, HCPD_HBN_ageeffects_plot, nrow = 1, common.legend=T, legend = c("bottom"), labels = "auto")
 
 title.grob <- textGrob("Age Effect Magnitude of Mean Diffusivity Across Datasets", 
                    gp=gpar(col="black", fontsize = 24, face = "bold"), hjust = 0.5)
@@ -171,7 +189,7 @@ PNC_cv <- summary_PNC_dti_md %>%
   pivot_wider(names_from = node_position, values_from = average_cv, names_prefix = "average_cv_") %>%
   select(tractID, average_cv_deep, average_cv_superficial) %>% 
   rename(`PNC Deep` = average_cv_deep,
-         `PNC Peripheral` = average_cv_superficial,
+         `PNC Superficial` = average_cv_superficial,
          Tract = tractID)  
  
 PNC_cv$Tract <- gsub("_", " ", PNC_cv$Tract)
@@ -190,7 +208,7 @@ HCPD_cv <- summary_HCPD_dti_md %>%
   pivot_wider(names_from = node_position, values_from = average_cv, names_prefix = "average_cv_") %>%
   select(tractID, average_cv_deep, average_cv_superficial) %>% 
   rename(`HCPD Deep` = average_cv_deep,
-         `HCPD Peripheral` = average_cv_superficial,
+         `HCPD Superficial` = average_cv_superficial,
          Tract = tractID)  
  
 HCPD_cv$Tract <- gsub("_", " ", HCPD_cv$Tract)
@@ -209,7 +227,7 @@ HBN_cv <- summary_HBN_dti_md %>%
   pivot_wider(names_from = node_position, values_from = average_cv, names_prefix = "average_cv_") %>%
   select(tractID, average_cv_deep, average_cv_superficial) %>% 
   rename(`HBN Deep` = average_cv_deep,
-         `HBN Peripheral` = average_cv_superficial,
+         `HBN Superficial` = average_cv_superficial,
          Tract = tractID)  
  
 HBN_cv$Tract <- gsub("_", " ", HBN_cv$Tract)
@@ -234,6 +252,7 @@ cv_table_html <- combined_cv %>%
   row_spec(0:nrow(combined_cv), extra_css = "line-height: 0.5;")  %>%
   column_spec(c(2, 4, 6), background = "gray90", include_thead = TRUE)
  
+cv_table_html
 #save_kable(cv_table_html, paste0(suppfig_dir, "table1_cv.html"))
 #webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.pdf"))
 #webshot(paste0(suppfig_dir, "table1_cv.html"), paste0(suppfig_dir, "table1_cv.png"))
@@ -306,14 +325,14 @@ CST_plot
 
 
 # Supplementary Figure 3. Age effect plots for fractional anisotropy (FA).
-```{r load dev effects files}
+```{r load dev effects files FA}
 scalar = "dti_fa"
 PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
 HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
 HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
 ```
 
-```{r format age effects dfs}
+```{r format age effects dfs FA}
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
 datasets <- c("PNC", "HCPD", "HBN")
 ageeffect_df_names <- c()
@@ -325,7 +344,7 @@ for (dataset in datasets) {
 ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
 ```
 
-```{r fdr correction}
+```{r fdr correction FA}
 ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
 names(ageeffect.fdr_dfs) <- ageeffect_df_names 
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
@@ -367,7 +386,7 @@ arrange_association_plots_nolollipop(ageeffects_plots) + bgcolor("white")
 ```
 
 # Supplementary Figure 4. Tract-level: age of maturation association with S-A axis.
-```{r load dev effects files}
+```{r load dev effects files again for MD}
 # reload dti_md files lol
 scalar = "dti_md"
 HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
@@ -375,7 +394,7 @@ HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HB
 PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
 ```
 
-```{r format age effects dfs}
+```{r format age effects dfs again MD}
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
 datasets <- c("HCPD", "HBN", "PNC")
 ageeffect_df_names <- c()
@@ -387,13 +406,13 @@ for (dataset in datasets) {
 ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
 ```
 
-```{r fdr correction}
+```{r fdr correction again MD}
 ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
 names(ageeffect.fdr_dfs) <- ageeffect_df_names
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
 ```
 
-```{r load glasser tract to region maps, results = hide}
+```{r load glasser tract to region maps}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
 glasser_labels$regionID <- c(1:360)
@@ -622,20 +641,20 @@ grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.gro
 ```
 
 # Supplementary Figure 7. Figure 1 with ACT in HBN
-```{r set colors}
+```{r set colors again}
 color_HCPD = "#3FB8AFFF"
 color_HBN = "#FF9E9DFF"
 color_PNC = "#cc0468"
 ```
 
-```{r load dev effects files}
+```{r load dev effects files ACT MD}
 scalar = "dti_md"
 PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
 HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
 HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures_withACT.csv"))
 ```
 
-```{r format age effects dfs}
+```{r format age effects dfs ACT MD}
 # make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
 datasets <- c("PNC", "HCPD", "HBN")
 ageeffect_df_names <- c()
@@ -647,7 +666,7 @@ for (dataset in datasets) {
 ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
 ```
 
-```{r fdr correction}
+```{r fdr correction ACT MD}
 ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
 names(ageeffect.fdr_dfs) <- ageeffect_df_names 
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") 
@@ -656,6 +675,13 @@ tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Cortic
 
 ```{r load deep to superficial NEST results}
 # PNC
+arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Arcuate_bin5_clip5_1sided.RData")
+ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Superior_Longitudinal_bin5_clip5_1sided.RData")
+vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Vertical_Occipital_bin5_clip5_1sided.RData")
+
 cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
 cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Motor_bin5_clip5_1sided.RData")
 cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/output/PNC/tract_profiles/NEST/noUF/Callosum_Occipital_bin5_clip5_1sided.RData")
@@ -799,7 +825,7 @@ threshold_0.5 <- annotate_figure(ggarrange(arc_0.5 + theme(plot.margin = unit(c(
                                            nrow = 2, ncol = 1), top = text_grob("Threshold = 50%", color = "black", size = 20, face = 'bold'))
 
 all_threshold_plots <- ggarrange(threshold_0.1, threshold_0.3, threshold_0.5, ncol = 3, nrow = 1)
-
+all_threshold_plots
 #ggsave(paste0(suppfig_dir, "supp_thresholds_PNC.png"), all_threshold_plots, height = 10, width = 20, units = "in")
 ```
 

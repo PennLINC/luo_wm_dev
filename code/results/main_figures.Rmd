@@ -1,7 +1,25 @@
 ---
 title: "Main Figures"
 author: "Audrey Luo"
-output: html_document
+output: 
+  html_document:
+    highlight: haddock
+    code_folding: hide
+    number_sections: no
+    theme: lumen
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+  pdf_document:
+    number_sections: no
+    toc: yes
+    toc_depth: '4'
+  word_document:
+    toc: yes
+    toc_depth: '4'
+urlcolor: blue
+editor_options: 
+  chunk_output_type: inline
 ---
 
 ```{r setup, include=FALSE}
@@ -224,7 +242,7 @@ arrange_association_plots(lollipop_plots)
 ```
 
 # Figure 3: Superficial tract regions connecting homotopic cortical endpoints exhibit similar developmental patterns
-```{r load glasser tract to region maps, results = hide}
+```{r load glasser tract to region maps 1}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
 glasser_labels$regionID <- c(1:360)
@@ -236,7 +254,7 @@ b <- lapply("1.5", load_maps, "HBN") # makes lh_maps_HBN, rh_maps_HBN
 c <- lapply("1.5", load_maps, "PNC") # makes lh_maps_PNC, rh_maps_PNC
 ```
 
-```{r compute age effect at each tract end, results = hide}
+```{r compute age effect at each tract end}
 bin_num_nodes = 5
 clipEnds = 5
 ageeffect_measure = "GAM.smooth.AdjRsq"
@@ -503,7 +521,7 @@ IFO_devtraj_final
 
 
 # Figure 5: Superficial tract regions connecting heterotopic cortical endpoints exhibit distinct developmental patterns. 
-```{r load glasser tract to region maps, results = hide}
+```{r load glasser tract to region maps}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
 glasser_labels$regionID <- c(1:360)
@@ -623,7 +641,7 @@ x.grob <- textGrob("Difference in Mean Sensorimotor-Association Rank Between End
                    gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)", 
                    gp=gpar(col="black", fontsize=20), rot=90)
-grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob))
+#grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob))
  
 # IFOL = 213
 # IFOR = 241
@@ -686,7 +704,7 @@ x.grob_label <- textGrob("Difference in Mean Sensorimotor-Association Rank Betwe
                    gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)", 
                    gp=gpar(col="black", fontsize=20), rot=90)
-grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob))
+#grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob))
 
 #ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets_labels.svg"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
 #ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets_labels.png"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
@@ -812,7 +830,7 @@ aggregated_age_mat_plot
 
 ```
 
-```{r binarize age of maturation df's to get matured and not-yet-matured regions}
+```{r binarize age of maturation dfs to get matured and not-yet-matured regions}
 aggregated_axis_PNC <- merge_SA_parcel("PNC")   # 360 glasser parcels with mean age maturation and SA rank
 aggregated_axis_HCPD <- merge_SA_parcel("HCPD") 
 aggregated_axis_HBN <- merge_SA_parcel("HBN")   

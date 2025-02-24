@@ -156,7 +156,6 @@ arrange_association_plots_nolollipop <- function(list_figures) {
 ##################################################################################
 # Supplementary Figure 4. Tract-level: age of maturation association with S-A axis.
 ##################################################################################
-
 plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
   title = gsub("PD", "P-D", dataset) # for HCPD
   
