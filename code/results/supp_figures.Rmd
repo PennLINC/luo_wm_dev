@@ -632,7 +632,7 @@ agg_SA_parcel_HCPD <- plot_agg_SA_parcel("HCPD", annot_text_HCPD, all_parcels = 
 agg_SA_parcel_HBN <- plot_agg_SA_parcel("HBN", annot_text_HBN, all_parcels = TRUE)
 agg_SA_parcel_avgdatasets <- plot_agg_SA_parcel("avgdatasets", annot_text_avgdatasets, all_parcels = TRUE) + ggtitle("Average Across Datasets")
 
-agg_SA_parcel_plot_final <- ggarrange(agg_SA_parcel_PNC, agg_SA_parcel_HCPD, agg_SA_parcel_HBN, agg_SA_parcel_avgdatasets, ncol = 4)
+agg_SA_parcel_plot_final <- ggarrange(agg_SA_parcel_PNC, agg_SA_parcel_HCPD, agg_SA_parcel_HBN, agg_SA_parcel_avgdatasets, ncol = 4, labels = 'auto')
 x.grob <- textGrob("S-A Axis Rank", gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Age of Maturation (Years)", gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob))
