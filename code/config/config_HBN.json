@@ -1,8 +1,0 @@
-{
-	"dataset": "HBN",
-	"data_root": "/cbica/projects/luo_wm_dev/input/HBN",
-	"manuscript_input_root": "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN",
-	"outputs_root": "/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN",
-	"tract_profiles_root": "/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles",
-	"demo_qc": "/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv"
-}
