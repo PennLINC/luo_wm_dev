@@ -2092,7 +2092,7 @@ perm.id.full <- readRDS("/cbica/projects/luo_wm_dev/software/spin_test/rotate_pa
 
 # spin test for delta-delta: spin the S-A axis then recompute average S-A rank for each end. Then calculate difference in rank for delta-delta analysis. Then compute t.test and spun p-value for t-test
 ## @param aggregate_age_map, vector of regional (parcel-level) age of maturation values
-perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, dataset, tract_names, all_endpoints, alternative = "less", var.equal = FALSE) {
+perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, dataset, tract_names, all_endpoints, alternative = "greater", var.equal = FALSE) {
   
   nroi = dim(perm.id)[1]  # number of regions
   nperm = dim(perm.id)[2] # number of permutations
@@ -2111,12 +2111,12 @@ perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, datase
   diffs_emp <- diffs_emp %>% mutate(group = case_when(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR") ~ "Large Difference in SA Rank",
                                                       !(bundle_name %in% c("ILFL", "IFOL", "ILFR", "IFOR")) ~ "Small Difference in SA Rank",
                                                       TRUE ~ NA_character_))
-  t.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], # compare Difference in sa rank
-                  diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], 
+  t.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], # compare Difference in sa rank
+                  diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], 
                   alternative = alternative, var.equal = var.equal)$statistic 
   
-  df.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], # compare Difference in sa rank
-                   diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], 
+  df.emp <- t.test(diffs_emp$age_effect_diff[which(diffs_emp$group == "Large Difference in SA Rank")], # compare Difference in sa rank
+                   diffs_emp$age_effect_diff[which(diffs_emp$group == "Small Difference in SA Rank")], 
                    alternative = alternative, var.equal = var.equal)$parameter 
   # t-test between permuted S-A axis Difference and SA Rank Difference between endpoints
   t.null.age_map = vector(length=nperm)
@@ -2161,8 +2161,8 @@ perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, datase
                                                           TRUE ~ NA_character_))
     
     # calculate t-test and permuted t-test: do tracts with very diff ages of maturation between endpoints actually have different s-a ranks?? 
-    t.null.age_map[r] <- t.test(perm_diffs$age_effect_diff[which(perm_diffs$group == "Small Difference in SA Rank")], 
-                                perm_diffs$age_effect_diff[which(perm_diffs$group == "Large Difference in SA Rank")], 
+    t.null.age_map[r] <- t.test(perm_diffs$age_effect_diff[which(perm_diffs$group == "Large Difference in SA Rank")], 
+                                perm_diffs$age_effect_diff[which(perm_diffs$group == "Small Difference in SA Rank")], 
                                 alternative = alternative, var.equal = var.equal )$statistic
   }
   
