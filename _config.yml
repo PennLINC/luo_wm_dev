@@ -1,5 +1,6 @@
 title: Two Axes of White Matter Development
 description: <br>Project Information and Reproducibility Guide
-theme: minima
+#theme: jekyll-theme-minimal
+remote_theme: pages-themes/cayman@v0.2.0
 plugins:
-  - jekyll-seo-tag
+- jekyll-remote-theme 
