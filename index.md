@@ -168,7 +168,7 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
     # in each dataset 
     ```
 
-[FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
+This table shows the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
     
 
 | **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |

@@ -1,9 +1,11 @@
 title: Two Axes of White Matter Development
 author: "Audrey C. Luo"
+description: "<a href='https://github.com/PennLINC/luo_wm_dev/tree/main'>GitHub Repo</a>"
 theme: minima
 #remote_theme: jekyll/minima
 plugins:
   - jekyll-seo-tag
+
 url: "https://pennlinc.github.io"
 baseurl: "/luo_wm_dev"
 header_pages:
