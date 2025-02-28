@@ -1,3 +1,7 @@
+---
+layout: page
+---
+
 # Reproducibility Guide
 ## I. Project Information
 
