@@ -168,14 +168,14 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
     # in each dataset 
     ```
 
-    [FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
+[FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
     
 
-    | **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |
-    | --- | --- | --- | --- | --- |
-    | PNC | MRTrix: ss3t, ACT + HSVS and pyAFQ |babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_singleshell_dti.yaml | mrtrix_singleshell_ss3t_ACT-hsvs_pyafq_dti.json |  |
-    | HCP-D | MRTrix: msmt, ACT + HSVS and pyAFQ | babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_dti.yaml  | mrtrix_multishell_msmt_ACT-hsvs_pyafq_dti.json | JSON file contains modification: `"max_bval": 1500`. HCP-D is multi-shell. We use ALL shells for CSD in MRTrix. But we exclude the highest b-value for DTI in pyAFQ.  |
-    | HBN | MRTrix: msmt, and pyAFQ. (No ACT+HSVS) | babs_qsiprep-0-22-0_qsirecon_mrtrix_msmt_pyafq_dti.yaml | mrtrix_multishell_msmt_pyafq_tractometry_dti.json | Same `"max_bval": 1500` modification as HCP-D |
+| **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |
+| --- | --- | --- | --- | --- |
+| PNC | MRTrix: ss3t, ACT + HSVS and pyAFQ |babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_singleshell_dti.yaml | mrtrix_singleshell_ss3t_ACT-hsvs_pyafq_dti.json |  |
+| HCP-D | MRTrix: msmt, ACT + HSVS and pyAFQ | babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_dti.yaml  | mrtrix_multishell_msmt_ACT-hsvs_pyafq_dti.json | JSON file contains modification: `"max_bval": 1500`. HCP-D is multi-shell. We use ALL shells for CSD in MRTrix. But we exclude the highest b-value for DTI in pyAFQ.  |
+| HBN | MRTrix: msmt, and pyAFQ. (No ACT+HSVS) | babs_qsiprep-0-22-0_qsirecon_mrtrix_msmt_pyafq_dti.yaml | mrtrix_multishell_msmt_pyafq_tractometry_dti.json | Same `"max_bval": 1500` modification as HCP-D |
 
 
 2. Copy custom QSIRecon JSON file for each dataset to the corresponding BABS project (described in table above):
