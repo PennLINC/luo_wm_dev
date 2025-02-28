@@ -3,6 +3,27 @@ layout: page
 title: Reproducibility Guide
 ---
 
+## Table of Contents
+
+- [I. Project Information](#i-project-information)
+- [II. CUBIC Project Directory Structure](#ii-cubic-project-directory-structure)
+- [III. Code Documentation](#iii-code-documentation)
+  - [0. Install required software and packages](#0-install-required-software-and-packages)
+  - [1. Construct initial sample](#1-construct-initial-sample)
+  - [2. Download QSIPrep and Freesurfer data](#2-download-qsiprep-and-freesurfer-data)
+  - [3. Use BABS to run qsirecon and pyAFQ](#3-use-babs-to-run-qsirecon-and-pyafq)
+  - [4. Get tract profiles from babs project](#4-get-tract-profiles-from-babs-project)
+  - [5. Prepare data for final sample selection](#5-prepare-data-for-final-sample-selection)
+  - [6. Construct final sample](#6-construct-final-sample)
+  - [7. Harmonize multi-site data using CovBat](#7-harmonize-multi-site-data-using-covbat)
+  - [8. Fit GAMs](#8-fit-gams)
+  - [9. Tract-to-cortex mapping](#9-tract-to-cortex-mapping)
+  - [10. Significance testing with NEST: deep-to-superficial](#10-significance-testing-with-nest-deep-to-superficial)
+  - [11. Significance testing with NEST: tract-to-cortex](#11-significance-testing-with-nest-tract-to-cortex)
+  - [12. Significance testing with spin tests](#12-significance-testing-with-spin-tests-delta-delta-analysis-and-parcel-level-age-of-maturation-vs-s-a-rank)
+  - [13. Visualize results!](#13-visualize-results)
+
+
 ## I. Project Information
 
 **Abstract**
@@ -147,21 +168,16 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
     # in each dataset 
     ```
 
-    
-    - [FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
-
+    [FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
     
 
     | **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |
     | --- | --- | --- | --- | --- |
-    | PNC | MRTrix: ss3t,
-    ACT + HSVS
-    and pyAFQ | babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_singleshell_dti.yaml | mrtrix_singleshell_ss3t_ACT-hsvs_pyafq_dti.json |  |
-    | HCP-D | MRTrix: msmt,
-    ACT + HSVS
-    and pyAFQ | babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_dti.yaml | mrtrix_multishell_msmt_ACT-hsvs_pyafq_dti.json | JSON file contains modification: `"max_bval": 1500`. HCP-D is multi-shell. We use ALL shells for CSD in MRTrix. But we exclude the highest b-value for DTI in pyAFQ.  |
-    | HBN | MRTrix: msmt,
-    and pyAFQ. (No ACT+HSVS) | babs_qsiprep-0-22-0_qsirecon_mrtrix_msmt_pyafq_dti.yaml | mrtrix_multishell_msmt_pyafq_tractometry_dti.json | Same `"max_bval": 1500` modification as HCP-D |
+    | PNC | MRTrix: ss3t, ACT + HSVS and pyAFQ |babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_singleshell_dti.yaml | mrtrix_singleshell_ss3t_ACT-hsvs_pyafq_dti.json |  |
+    | HCP-D | MRTrix: msmt, ACT + HSVS and pyAFQ | babs_qsiprep-0-22-0_qsirecon_mrtrix_ACT-hsvs_pyafq_dti.yaml  | mrtrix_multishell_msmt_ACT-hsvs_pyafq_dti.json | JSON file contains modification: `"max_bval": 1500`. HCP-D is multi-shell. We use ALL shells for CSD in MRTrix. But we exclude the highest b-value for DTI in pyAFQ.  |
+    | HBN | MRTrix: msmt, and pyAFQ. (No ACT+HSVS) | babs_qsiprep-0-22-0_qsirecon_mrtrix_msmt_pyafq_dti.yaml | mrtrix_multishell_msmt_pyafq_tractometry_dti.json | Same `"max_bval": 1500` modification as HCP-D |
+
+
 2. Copy custom QSIRecon JSON file for each dataset to the corresponding BABS project (described in table above):
     
     ```bash
@@ -299,7 +315,7 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
     
     - `c01_vol_to_surf_individual.py` and `c01_vol_to_surf_individual.sh` does the vol_to_surf mapping for each subject and outputs binary maps of cortical endpoints for each tract for each subject. For main analyses, a depth of 1.5mm is used (determined to be optimal depth in discovery dataset for sampling white matter and avoiding gray matter).
     - `c02_native_to_fsLR.sh` : warps the vol_to_surf outputs to fsLR
-    
+
 4. **Lastly, subject-level binarized tract-to-cortex maps are averaged to get a population probability map for each tract. Then we parcellate each map (1 map per tract per dataset) with Glasser.**
     
     **Scripts can be found at `~/two_axes_manuscript/code/tract_to_cortex/d_group_avg_parcellate`**
