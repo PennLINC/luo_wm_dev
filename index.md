@@ -1,4 +1,3 @@
-# Two Axes of White Matter Development: Reproducibility Guide
 
 # I. Project Information
 
