@@ -1,8 +1,8 @@
 ---
 layout: page
+title: Reproducibility Guide
 ---
 
-# Reproducibility Guide
 ## I. Project Information
 
 **Abstract**
@@ -46,7 +46,7 @@ Despite decades of neuroimaging research, it remains unknown how white matter de
 
 ## II. CUBIC Project Directory Structure
 
-The project directory on CUBIC is `/cbica/projects/luo_wm_dev` . 
+The project directory on CUBIC is `/cbica/projects/luo_wm_dev`. 
 
 - Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes_manuscript/code/`
 - The directories on Github are `~/two_axes_manuscript/code/` and `~/two_axes_manuscript/software/`
@@ -146,9 +146,12 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev` .
     ./babs_init.sh # initializes babs for PNC, HCP-D, and HBN for 3 test subjects 
     # in each dataset 
     ```
+
     
     - [FYI]: These are the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
+
     
+
     | **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |
     | --- | --- | --- | --- | --- |
     | PNC | MRTrix: ss3t,
@@ -252,6 +255,7 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
 
 - Code for tract-to-cortex mapping is in `~/two_axes_manuscript/code/tract_to_cortex`.
 - The scripts in the subfolders of **`~/two_axes_manuscript/code/tract_to_cortex/`** need to be run sequentially.
+
 1. **The first set of scripts makes the tract density images: `~/two_axes_manuscript/code/tract_to_cortex/a_make_tdi`**
     
     The wrapper will run all scripts a01 to a05 as jobs with dependencies. Each script will automatically run as soon as the one before it finishes. It basically runs job arrays that are dependent on each other (each element of array = 1 subject)
@@ -266,7 +270,8 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
     - `a03_delete_trks.sh`: cleans up trk’s to save space
     - `a04_pyafq-bundles_to_tdi.sh`: converts tck files to tract density images for each subject and binarizes the TDI image
     - `a05_cleanup.sh`: deletes temporary directories and unneeded files to save space
-2. **Next, we need to make sure each subject’s Freesurfer surfaces are aligned to their QSIPrep T1w’s and tracts. Scripts found here:**
+
+2. **Next, we need to make sure each subject's Freesurfer surfaces are aligned to their QSIPrep T1w's and tracts. Scripts found here:**
     
     **`~/two_axes_manuscript/code/tract_to_cortex/b_transforms`**
     
@@ -280,6 +285,7 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
     - Huge thanks to Marc Jaskir for his code, from which my code is heavily adapted: [https://github.com/marcjaskir/tracts/tree/main](https://github.com/marcjaskir/tracts/tree/main)
     - `b01_determine_freesurfer-to-native_acpc_volume_xfm.sh` : datalad gets Freesurfer files for each subject. Harmonizes file types and orientations of Freesurfer and QSIPrep images with voxelized tracts.
     - `b02_align_surfaces_with_tract_volumes.py` and `b02_align_surfaces_with_tract_volumes.sh` : Pial and white surfaces get transformed to native ACPC (QSIPrep space)
+
 3. **Now we will use nilearn’s vol_to_surf to sample the binarized TDI map for each tract to the cortical surface. The non-zero regions on the surface correspond to the cortical endpoints of that tract.** 
     
     Scripts can be found at `~/two_axes_manuscript/code/tract_to_cortex/c_vol_to_surf`
@@ -293,6 +299,7 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
     
     - `c01_vol_to_surf_individual.py` and `c01_vol_to_surf_individual.sh` does the vol_to_surf mapping for each subject and outputs binary maps of cortical endpoints for each tract for each subject. For main analyses, a depth of 1.5mm is used (determined to be optimal depth in discovery dataset for sampling white matter and avoiding gray matter).
     - `c02_native_to_fsLR.sh` : warps the vol_to_surf outputs to fsLR
+    
 4. **Lastly, subject-level binarized tract-to-cortex maps are averaged to get a population probability map for each tract. Then we parcellate each map (1 map per tract per dataset) with Glasser.**
     
     **Scripts can be found at `~/two_axes_manuscript/code/tract_to_cortex/d_group_avg_parcellate`**

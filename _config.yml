@@ -1,7 +1,8 @@
 title: Two Axes of White Matter Development
 author:
-  name: Audrey C. Luo
-  email: audrey.luo@pennmedicine.upenn.edu
+  name: "Audrey C. Luo"
+  email: "audrey.luo@pennmedicine.upenn.edu
+  
 theme: minima
 #remote_theme: jekyll/minima
 plugins:
