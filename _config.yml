@@ -3,5 +3,5 @@ description: Project Information and Reproducibility Guide
 theme: minima
 plugins:
   - jekyll-seo-tag
-url: "https://pennlinc.github.io"
+url: "https://github.com/PennLINC"
 baseurl: "/luo_wm_dev"
