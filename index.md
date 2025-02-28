@@ -1,11 +1,11 @@
 
-# I. Project Information
+## I. Project Information
 
 **Abstract**
 
 Despite decades of neuroimaging research, it remains unknown how white matter develops along the length of major tracts in the human brain. Here, we identify fundamental patterns of white matter maturation by examining developmental variation along cortico-cortical tracts in youth ages 5-23 using diffusion MRI from three large-scale, cross-sectional datasets (total N = 2,710). Across all three datasets, we delineate two replicable axes of white matter development. First, we delineate a deep-to-superficial axis of maturation along tracts. Second, we demonstrate that development of superficial tract regions near a tract’s cortical endpoints aligns with the cortical hierarchy defined by the sensorimotor-association axis. These results challenge the longstanding assumption of synchronous maturation along white matter tracts. Rather than being uniform conduits between cortical regions, white matter tracts exhibit developmental variability along their length that may be adaptive for refining neural transmission in youth.
 
-
+ 
 **Team**
 
 | **Role** | **Name** |
@@ -40,11 +40,12 @@ Despite decades of neuroimaging research, it remains unknown how white matter de
 
 ---
 
-# II. CUBIC Project Directory Structure
+## II. CUBIC Project Directory Structure
 
 The project directory on CUBIC is `/cbica/projects/luo_wm_dev` . 
 
-- Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes_manuscript`
+- Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes_manuscript/code/`
+- The directories on Github are `~/two_axes_manuscript/code/` and `~/two_axes_manuscript/software/`
 
 | **Directory** | **Description** |
 | --- | --- |
@@ -53,12 +54,11 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev` .
 | `~/two_axes_manuscript/output` | for each dataset: tract profiles, GAM outputs, NEST, spin test results |
 | `~/two_axes_manuscript/software` | singularity images for various softwares and code for installing them and setting up the project folder |
 |  |  |
-| `~/input/` | This directory is OUTSIDE of the manuscript directory. 
+| `~/input/` | This directory is OUTSIDE of the manuscript directory. For each dataset: includes “raw” data (datalad clones for qsiprep and freesurfer), ‘derivatives’ (pyAFQ output from BABS), sample selection files (demographics csv’s), tract profiles for ALL subjects.   |
 
-For each dataset: includes “raw” data (datalad clones for qsiprep and freesurfer), ‘derivatives’ (pyAFQ output from BABS), sample selection files (demographics csv’s), tract profiles for ALL subjects.   |
+---
 
-# III. Code Documentation
-
+## III. Code Documentation
 ***Overview of Analytic Workflow***
 
 | **Step** | **Task** | **Notes** |
