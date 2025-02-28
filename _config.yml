@@ -1,7 +1,12 @@
-title: Two Axes of White Matter Development
-description: Project Information and Reproducibility Guide
+
+author:
+  name: Audrey C. Luo
+  email: audrey.luo@pennmedicine.upenn.edu
 theme: minima
+#remote_theme: jekyll/minima
 plugins:
   - jekyll-seo-tag
-url: "https://github.com/PennLINC"
+url: "https://pennlinc.github.io"
 baseurl: "/luo_wm_dev"
+header_pages:
+  - about.md
