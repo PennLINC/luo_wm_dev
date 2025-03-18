@@ -90,6 +90,7 @@ names(ageeffect.fdr_dfs) <- ageeffect_df_names
 tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
 ```
 
+
 ```{r age effect cross-dataset correlation, fig.height = 7, fig.width = 18}
 cor_HCPD_HBN <- round(cor.test(ageeffect.fdr_dfs$HCPD_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HBN_ageeffects$GAM.smooth.AdjRsq)$estimate, 2)
 cor_HCPD_PNC <- round(cor.test(ageeffect.fdr_dfs$HCPD_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$PNC_ageeffects$GAM.smooth.AdjRsq)$estimate, 2)
@@ -109,13 +110,13 @@ HCPD_PNC_ageeffects <- merge(HCPD_to_corr, PNC_to_corr, by = "tract_node")
 HBN_PNC_ageeffects <- merge(HBN_to_corr, PNC_to_corr, by = "tract_node")
 
 text_HCPD_HBN <- bquote(italic(r) == .(cor_HCPD_HBN) * "," ~ italic(p[perm]) < .(format(round(HCPD_HBN_ageeffect_perm$p_value, 4), scientific = FALSE)))
-HCPD_HBN_ageeffects_plot <- hex_plot(HCPD_HBN_ageeffects, "HCPD", "HBN", text_HCPD_HBN, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64)
+HCPD_HBN_ageeffects_plot <- hex_plot(HCPD_HBN_ageeffects, "HCPD", "HBN", text_HCPD_HBN, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
 text_HCPD_PNC <- bquote(italic(r) == .(cor_HCPD_PNC) * "," ~ italic(p[perm]) < .(format(round(HCPD_PNC_ageeffect_perm$p_value, 4), scientific = FALSE)))
-HCPD_PNC_ageeffects_plot <- hex_plot(HCPD_PNC_ageeffects, "HCPD", "PNC", text_HCPD_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64)
+HCPD_PNC_ageeffects_plot <- hex_plot(HCPD_PNC_ageeffects, "HCPD", "PNC", text_HCPD_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
 text_HBN_PNC <- bquote(italic(r) == .(cor_HBN_PNC) * "," ~ italic(p[perm]) < .(format(round(PNC_HBN_ageeffect_perm$p_value, 4), scientific = FALSE)))
-HBN_PNC_ageeffects_plot <- hex_plot(HBN_PNC_ageeffects, "HBN", "PNC", text_HBN_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64)
+HBN_PNC_ageeffects_plot <- hex_plot(HBN_PNC_ageeffects, "HBN", "PNC", text_HBN_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
 # make bin colors the same across plots
 # get the maximum bin counts from all datasets
@@ -142,13 +143,13 @@ HBN_PNC_ageeffects_plot <- HBN_PNC_ageeffects_plot +
                                     oob = scales::squish)
 
 
-ageeffects_plots <- ggarrange(HCPD_PNC_ageeffects_plot, HBN_PNC_ageeffects_plot, HCPD_HBN_ageeffects_plot, nrow = 1, common.legend=T, legend = c("bottom"), labels = "auto")
+ageeffects_plots <- ggarrange(HCPD_PNC_ageeffects_plot, HBN_PNC_ageeffects_plot, HCPD_HBN_ageeffects_plot, nrow = 1, common.legend=T, legend = c("bottom"), labels = "auto", font.label = list(size=24))
 
 title.grob <- textGrob("Age Effect Magnitude of Mean Diffusivity Across Datasets", 
                    gp=gpar(col="black", fontsize = 24, face = "bold"), hjust = 0.5)
  
 grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob))
-#ggsave(paste0(suppfig_dir, "supp_hexplots.png"), grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob)), height = 7, width = 20, units = "in")
+#ggsave(paste0(suppfig_dir, "supp_cross_dataset_hexplots.png"), grid.arrange(arrangeGrob(ageeffects_plots, top = title.grob)), height = 7, width = 20, units = "in")
 ```
 
 
@@ -458,8 +459,6 @@ HBN_deveffects_5_agemat <- ageeffect.fdr_dfs$HBN_ageeffects %>% filter((nodeID <
 make_maps("PNC", "5_agemat") # makes [bundle_name]_deveffect_[dataset] for each dataset and bundle. e.g. IFOL_deveffect_PNC
 make_maps("HCPD", "5_agemat") 
 make_maps("HBN", "5_agemat")
-
- 
 ```
 
 ```{r aggregate age maps}
@@ -575,7 +574,68 @@ grid.arrange(arrangeGrob(SA_age_mat_binary_plot_final, left = y.grob, bottom = x
 #ggsave(paste0(suppfig_dir, "supp_SA_tract_level_pearson_maturedOnly.png"), grid.arrange(arrangeGrob(SA_age_mat_binary_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 22, units = "in")
 ```
 
-# Supplementary Figure 5. Parcel-level: age of maturation association with S-A axis.
+# Supplementary Figure 5. Correspondence of mean diffusivity age effect and age of maturation. 
+```{r age of mat vs age effect correlation, fig.height = 7, fig.width = 18}
+# add abs value of age effect
+ageeffect.fdr_dfs$PNC_ageeffects <- ageeffect.fdr_dfs$PNC_ageeffects %>% mutate(abs_GAM.smooth.AdjRsq = abs(GAM.smooth.AdjRsq))
+ageeffect.fdr_dfs$HCPD_ageeffects <- ageeffect.fdr_dfs$HCPD_ageeffects %>% mutate(abs_GAM.smooth.AdjRsq = abs(GAM.smooth.AdjRsq))
+ageeffect.fdr_dfs$HBN_ageeffects <- ageeffect.fdr_dfs$HBN_ageeffects %>% mutate(abs_GAM.smooth.AdjRsq = abs(GAM.smooth.AdjRsq))
+
+# correlations
+cor_PNC <- round(cor.test(ageeffect.fdr_dfs$PNC_ageeffects$abs_GAM.smooth.AdjRsq, ageeffect.fdr_dfs$PNC_ageeffects$smooth.decrease.offset)$estimate, 2)
+cor_HCPD <- round(cor.test(ageeffect.fdr_dfs$HCPD_ageeffects$abs_GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HCPD_ageeffects$smooth.decrease.offset)$estimate, 2)
+cor_HBN <- round(cor.test(ageeffect.fdr_dfs$HBN_ageeffects$abs_GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HBN_ageeffects$smooth.decrease.offset)$estimate, 2)
+
+# perm p-value
+PNC_age_measures_perm <- perm_cor_test(ageeffect.fdr_dfs$PNC_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$PNC_ageeffects$smooth.decrease.offset)
+HCPD_age_measures_perm <- perm_cor_test(ageeffect.fdr_dfs$HCPD_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HCPD_ageeffects$smooth.decrease.offset)
+HBN_age_measures_perm <- perm_cor_test(ageeffect.fdr_dfs$HBN_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HBN_ageeffects$smooth.decrease.offset)
+
+
+text_PNC <- bquote(italic(r) == .(cor_PNC) * "," ~ italic(p[perm]) < .(format(round(PNC_age_measures_perm$p_value, 4), scientific = FALSE)))
+PNC_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$PNC_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_PNC, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10) + 
+  labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "PNC") + 
+  theme(plot.title = element_text(hjust=0.5))
+
+text_HCPD <- bquote(italic(r) == .(cor_HCPD) * "," ~ italic(p[perm]) < .(format(round(HCPD_age_measures_perm$p_value, 4), scientific = FALSE)))
+HCPD_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$HCPD_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_HCPD, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10)  + 
+  labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "HCP-D") + 
+  theme(plot.title = element_text(hjust=0.5))
+
+text_HBN <- bquote(italic(r) == .(cor_HBN) * "," ~ italic(p[perm]) < .(format(round(HBN_age_measures_perm$p_value, 4), scientific = FALSE)))
+HBN_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$HBN_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_HBN, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10) + 
+  labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "HBN") + 
+  theme(plot.title = element_text(hjust=0.5))
+
+# get the maximum bin counts from all datasets
+max_count_PNC <- max(ggplot_build(PNC_age_measures_plot)$data[[1]]$count, na.rm = TRUE)
+max_count_HCPD <- max(ggplot_build(HCPD_age_measures_plot)$data[[1]]$count, na.rm = TRUE)
+max_count_HBN  <- max(ggplot_build(HBN_age_measures_plot)$data[[1]]$count, na.rm = TRUE)
+global_max_count <- max(max_count_PNC, max_count_HCPD, max_count_HBN)
+scale_limits <- c(0, global_max_count)
+PNC_age_measures_plot <- PNC_age_measures_plot +
+  paletteer::scale_fill_paletteer_c("ggthemes::Blue-Green Sequential", 
+                                    direction = -1, 
+                                    limits = scale_limits, 
+                                    oob = scales::squish)
+HCPD_age_measures_plot <- HCPD_age_measures_plot +
+  paletteer::scale_fill_paletteer_c("ggthemes::Blue-Green Sequential", 
+                                    direction = -1, 
+                                    limits = scale_limits, 
+                                    oob = scales::squish)
+
+HBN_age_measures_plot <- HBN_age_measures_plot +
+  paletteer::scale_fill_paletteer_c("ggthemes::Blue-Green Sequential", 
+                                    direction = -1, 
+                                    limits = scale_limits, 
+                                    oob = scales::squish)
+
+
+ggarrange(PNC_age_measures_plot, HCPD_age_measures_plot, HBN_age_measures_plot, nrow = 1, common.legend = T, legend = "bottom", labels = "auto", font.label = list(size=24))
+#ggsave(paste0(suppfig_dir, "supp_age_measures_hexplots.png"), ggarrange(PNC_age_measures_plot, HCPD_age_measures_plot, HBN_age_measures_plot, nrow = 1, common.legend = T, legend = "bottom", labels = "auto", font.label = list(size=24)), height = 7, width = 20, units = "in")
+```
+
+# Supplementary Figure 6. Parcel-level: age of maturation association with S-A axis.
 ```{r SA by age of mat plot all parcels, fig.height = 6, fig.width = 22}
 aggregated_axis_PNC <- merge_SA_parcel("PNC")   # 360 glasser parcels with mean age maturation and SA rank
 aggregated_axis_HCPD <- merge_SA_parcel("HCPD") 
@@ -632,7 +692,7 @@ agg_SA_parcel_HCPD <- plot_agg_SA_parcel("HCPD", annot_text_HCPD, all_parcels = 
 agg_SA_parcel_HBN <- plot_agg_SA_parcel("HBN", annot_text_HBN, all_parcels = TRUE)
 agg_SA_parcel_avgdatasets <- plot_agg_SA_parcel("avgdatasets", annot_text_avgdatasets, all_parcels = TRUE) + ggtitle("Average Across Datasets")
 
-agg_SA_parcel_plot_final <- ggarrange(agg_SA_parcel_PNC, agg_SA_parcel_HCPD, agg_SA_parcel_HBN, agg_SA_parcel_avgdatasets, ncol = 4, labels = 'auto')
+agg_SA_parcel_plot_final <- ggarrange(agg_SA_parcel_PNC, agg_SA_parcel_HCPD, agg_SA_parcel_HBN, agg_SA_parcel_avgdatasets, ncol = 4, labels = 'auto', font.label = list(size = 24))
 x.grob <- textGrob("S-A Axis Rank", gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Age of Maturation (Years)", gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob))
@@ -852,7 +912,7 @@ kbl(PNC_rh_WM, align = "lccrr", caption = "PNC Right Hemi: best depths for WM") 
 
 # Supplementary Table 2: Methods: Deep-Peripheral NEST with different bin sizes (bin size = 3, 5, 7, 10)
 ```{r load deep to superficial NEST results bin3}
-tracts <- c("Callosum Anterior Frontal", "Callosum Motor", "Callosum Occipital", "Callosump Orbital", "Callosum Posterior Parietal", "Callosum Superior Frontal", "Callosum Superior Parietal", "Callosum Temporal", "Arcuate", "Inferior Fronto-occipital", "Inferior Longitudinal", "Posterior Arcuate", "Superior Longitudinal", "Uncinate", "Vertical Occipital")
+tracts <- c("Callosum Anterior Frontal", "Callosum Motor", "Callosum Occipital", "Callosum Orbital", "Callosum Posterior Parietal", "Callosum Superior Frontal", "Callosum Superior Parietal", "Callosum Temporal", "Arcuate", "Inferior Fronto-occipital", "Inferior Longitudinal", "Posterior Arcuate", "Superior Longitudinal", "Uncinate", "Vertical Occipital")
 
 # PNC
 # bin size = 3

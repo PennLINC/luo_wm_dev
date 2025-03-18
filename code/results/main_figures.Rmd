@@ -359,6 +359,7 @@ NEST_CMot <- grid.arrange(arrangeGrob(NEST_CMot, left = y.grob))
 #ggsave(paste0(fig_dir, "fig3_NEST.png"), NEST_CMot, height = 3, width = 15, units = "in")
 ```
 
+
 ```{r plot dev trajectories for CMot, fig.height = 6, fig.width = 15}
 PNC_CMot_devtraj <- dev_trajectory_plot("PNC", tp_df = PNC, tract_name = "Callosum Motor", 
                                         fitted_df = PNC_fitted, derivs_df = PNC_derivs, "Right", "Left", 
@@ -520,7 +521,7 @@ IFO_devtraj_final
 ```
 
 
-# Figure 5: Superficial tract regions connecting heterotopic cortical endpoints exhibit distinct developmental patterns. 
+# Figure 5: Cortical endpoints at opposite ends of the cortical hierarchy have discrepant ages of maturation.
 ```{r load glasser tract to region maps}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
@@ -711,20 +712,6 @@ y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)
 
 ```
 
-
-```{r print delta delta ttest table}
-PNC_delta_p <- PNC_delta_p %>% mutate(Dataset = "PNC")
-HCPD_delta_p <- HCPD_delta_p %>% mutate(Dataset = "HCPD")
-HBN_delta_p <- HBN_delta_p %>% mutate(Dataset = "HBN")
-
-across_datasets_delta_p <- across_datasets_delta_p %>% mutate(Dataset = "Average Across Datasets")
-
-kbl(rbind(PNC_delta_p, HCPD_delta_p, HBN_delta_p, across_datasets_delta_p), align = "lccrr", caption = "Spun t-test results for delta-delta analysis") %>%
-  kable_styling(bootstrap_options = "striped", full_width = F, position = "left") 
-```
-
-
-
 ```{r CMot SA rank on cortex, fig.height = 4, fig.width = 10}
 merged_CMotL <- merge(CMotL_deveffect_PNC, glasser_SAaxis,  by = "regionName") %>% select(-label)
 merged_CMotR <- merge(CMotR_deveffect_PNC, glasser_SAaxis,  by = "regionName") %>% select(-label)
@@ -912,7 +899,6 @@ grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.gro
 
 
 ```{r print fig 6 perasons table}
-
 PNC_parcelSA_cor <- PNC_parcelSA_cor %>% mutate(Dataset = "PNC")
 HCPD_parcelSA_cor <- HCPD_parcelSA_cor %>% mutate(Dataset = "HCPD")
 HBN_parcelSA_cor <- HBN_parcelSA_cor %>% mutate(Dataset = "HBN")
@@ -924,12 +910,4 @@ kbl(rbind(PNC_parcelSA_cor, HCPD_parcelSA_cor, HBN_parcelSA_cor, avgdatasets_par
 ```
 
 
-```{r print fig 6 ttest table}
-PNC_parcelSA_ttest <- PNC_parcelSA_ttest %>% mutate(Dataset = "PNC")
-HCPD_parcelSA_ttest <- HCPD_parcelSA_ttest %>% mutate(Dataset = "HCPD")
-HBN_parcelSA_ttest <- HBN_parcelSA_ttest %>% mutate(Dataset = "HBN")
-
-kbl(rbind(PNC_parcelSA_ttest, HCPD_parcelSA_ttest, HBN_parcelSA_ttest), align = "lccrr", caption = "Spun t-test for immature vs. mature S-A ranks in Fig. 6") %>%
-  kable_styling(bootstrap_options = "striped", full_width = F, position = "left") 
-```
 

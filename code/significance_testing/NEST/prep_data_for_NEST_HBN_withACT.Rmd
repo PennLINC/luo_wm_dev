@@ -87,6 +87,6 @@ format_tract_profiles <- function(df) {
 
  HBN_tp <- format_tract_profiles(HBN)
     
-saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST_withACT.RData", output_root, "HBN"))
+saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles_ACT/tract_profiles_for_NEST_withACT.RData", output_root, "HBN"))
 ```
 

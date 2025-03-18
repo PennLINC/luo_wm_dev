@@ -3,7 +3,6 @@
 # set variables
 datasets=("PNC" "HCPD" "HBN")
 
-r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/NEST/tract_to_cortex/NEST_wrapper_end_compare_clip5.R"
 #tract_list=("Inferior_Fronto-occipital" "Callosum_Motor")
  
 #inputarray=("${tract_list[@]}")

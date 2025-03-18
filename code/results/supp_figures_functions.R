@@ -48,9 +48,9 @@ perm_cor_test <- function(vector1, vector2, n_perm = 10000, seed = 123) {
 
 
 # hex plot function for correlations between datasets
-hex_plot <- function(df, x, y, text, ylim1, ylim2, xlim1, xlim2, x_text, y_text) {
+hex_plot <- function(df, x, y, text, ylim1, ylim2, xlim1, xlim2, x_text, y_text, bin_size) {
   plot <- ggplot(df, aes_string(x = x, y = y)) +
-    geom_hex(bins = 7) +
+    geom_hex(bins = bin_size) +
     paletteer::scale_fill_paletteer_c("ggthemes::Blue-Green Sequential", direction = -1) +
     geom_smooth(method = "lm", color = "black", se = FALSE) +   
     annotate("text", x = x_text, y = y_text, 
