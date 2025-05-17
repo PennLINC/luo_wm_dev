@@ -29,7 +29,8 @@ title: Reproducibility Guide
 
 **Abstract**
 
-Despite decades of neuroimaging research, it remains unknown how white matter develops along the length of major tracts in the human brain. Here, we identify fundamental patterns of white matter maturation by examining developmental variation along cortico-cortical tracts in youth ages 5-23 using diffusion MRI from three large-scale, cross-sectional datasets (total N = 2,710). Across all three datasets, we delineate two replicable axes of white matter development. First, we delineate a deep-to-superficial axis of maturation along tracts. Second, we demonstrate that development of superficial tract regions near a tract’s cortical endpoints aligns with the cortical hierarchy defined by the sensorimotor-association axis. These results challenge the longstanding assumption of synchronous maturation along white matter tracts. Rather than being uniform conduits between cortical regions, white matter tracts exhibit developmental variability along their length that may be adaptive for refining neural transmission in youth.
+Despite decades of neuroimaging research, how white matter develops along the length of major tracts in humans remains unknown. Here, we identify fundamental patterns of white matter maturation by examining developmental variation along major, long-range cortico-cortical tracts in youth ages 5-23 years using diffusion MRI from three large-scale, cross-sectional datasets (total N = 2,716). Across datasets, we delineate two replicable axes of human white matter development. First, we find a deep-to-superficial axis, in which superficial tract regions near the cortical surface exhibit greater age-related change than deep tract regions. Second, we demonstrate that the development of superficial tract regions aligns with the cortical hierarchy defined by the sensorimotor-association axis, with tract ends adjacent to sensorimotor cortices maturing earlier than those adjacent to association cortices. These results reveal developmental variation along tracts that conventional tract-average analyses have previously obscured, challenging the implicit assumption that white matter tracts mature uniformly along their length. Such developmental variation along tracts may have functional implications, including mitigating ephaptic coupling in densely packed deep tract regions and tuning neural synchrony through hierarchical development in superficial tract regions – ultimately refining neural transmission in youth.
+
 
  
 **Team**
@@ -240,14 +241,14 @@ This table shows the custom BABS YAML files and custom QSIPrep json files used f
     ```
 
 ### 5. Create tract profiles from multi-shell diffusion models
-1. Reconstruction for NODDI and MAP-MRI were done using QSIPrep and BABS, with the same steps as described above. All code is analogous to the steps run in step 3 and can be found in 
+- Reconstruction for NODDI and MAP-MRI were done using QSIPrep and BABS, with the same steps as described above. All code is analogous to the steps run in step 3 and can be found in 
     ```bash
     ~/two_axes/code/run_babs_qsirecon/babs_noddi_and_mapmri/
     ```
 
 The custom BABS YAML files and custom QSIPrep json files used for each multi-shell dataset, HCP-D and HBN (all files are also located in `~/two_axes/code/run_babs_qsirecon/babs_yaml_files/` and `~/two_axes/code/run_babs_qsirecon/qsirecon_json_files`).
 
-2. Map NODDI and MAP-MRI measures to tract profiles along pyAFQ-segmented tracts:
+- Map NODDI and MAP-MRI measures to tract profiles along pyAFQ-segmented tracts:
 
     ```bash
     cd ~/two_axes/code/scalars_to_tractprofiles/noddi/
