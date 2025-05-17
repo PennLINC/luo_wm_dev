@@ -13,15 +13,17 @@ title: Reproducibility Guide
   - [2. Download QSIPrep and Freesurfer data](#2-download-qsiprep-and-freesurfer-data)
   - [3. Use BABS to run qsirecon and pyAFQ](#3-use-babs-to-run-qsirecon-and-pyafq)
   - [4. Get tract profiles from babs project](#4-get-tract-profiles-from-babs-project)
-  - [5. Prepare data for final sample selection](#5-prepare-data-for-final-sample-selection)
-  - [6. Construct final sample](#6-construct-final-sample)
-  - [7. Harmonize multi-site data using CovBat](#7-harmonize-multi-site-data-using-covbat)
-  - [8. Fit GAMs](#8-fit-gams)
-  - [9. Tract-to-cortex mapping](#9-tract-to-cortex-mapping)
-  - [10. Significance testing with NEST: deep-to-superficial](#10-significance-testing-with-nest-deep-to-superficial)
-  - [11. Significance testing with NEST: tract-to-cortex](#11-significance-testing-with-nest-tract-to-cortex)
-  - [12. Significance testing with spin tests](#12-significance-testing-with-spin-tests-delta-delta-analysis-and-parcel-level-age-of-maturation-vs-s-a-rank)
-  - [13. Visualize results!](#13-visualize-results)
+  - [5. Create tract profiles from multi-shell diffusion models](#5-create-tract-profiles-from-multi-shell-diffusion-models)
+
+  - [6. Prepare data for final sample selection](#6-prepare-data-for-final-sample-selection)
+  - [7. Construct final sample](#7-construct-final-sample)
+  - [8. Harmonize multi-site data using CovBat](#8-harmonize-multi-site-data-using-covbat)
+  - [9. Fit GAMs](#9-fit-gams)
+  - [10. Tract-to-cortex mapping](#10-tract-to-cortex-mapping)
+  - [11. Significance testing with NEST: deep-to-superficial](#11-significance-testing-with-nest-deep-to-superficial)
+  - [12. Significance testing with NEST: tract-to-cortex](#12-significance-testing-with-nest-tract-to-cortex)
+  - [13. Significance testing with spin tests](#13-significance-testing-with-spin-tests-delta-delta-analysis-and-parcel-level-age-of-maturation-vs-s-a-rank)
+  - [14. Visualize results!](#14-visualize-results)
 
 
 ## I. Project Information
@@ -69,15 +71,15 @@ Despite decades of neuroimaging research, it remains unknown how white matter de
 
 The project directory on CUBIC is `/cbica/projects/luo_wm_dev`. 
 
-- Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes_manuscript/code/`
-- The directories on Github are `~/two_axes_manuscript/code/` and `~/two_axes_manuscript/software/`
+- Code for the final manuscript is in `/cbica/projects/luo_wm_dev/two_axes/code/`
+- The directories on Github are `~/two_axes/code/` and `~/two_axes/software/`
 
 | **Directory** | **Description** |
 | --- | --- |
-| `~/two_axes_manuscript/code` | where manuscript code lives |
-| `~/two_axes_manuscript/input` | for each dataset: has sample selection files, babs projects, and tract profiles for test subjects  |
-| `~/two_axes_manuscript/output` | for each dataset: tract profiles, GAM outputs, NEST, spin test results |
-| `~/two_axes_manuscript/software` | singularity images for various softwares and code for installing them and setting up the project folder |
+| `~/two_axes/code` | where manuscript code lives |
+| `~/two_axes/input` | for each dataset: has sample selection files, babs projects, and tract profiles for test subjects  |
+| `~/two_axes/output` | for each dataset: tract profiles, GAM outputs, NEST, spin test results |
+| `~/two_axes/software` | singularity images for various softwares and code for installing them and setting up the project folder |
 |  |  |
 | `~/input/` | This directory is OUTSIDE of the manuscript directory. For each dataset: includes “raw” data (datalad clones for qsiprep and freesurfer), ‘derivatives’ (pyAFQ output from BABS), sample selection files (demographics csv’s), tract profiles for ALL subjects.   |
 
@@ -98,14 +100,14 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
 | 7 | Harmonize multi-site data using CovBat | Only HCP-D and HBN need to be harmonized within each dataset |
 | 8 | Fit GAMs | Compute magnitude of the age effect and age of maturation, as well as GAM fits for each age |
 | 9 | Tract-to-cortex mapping | Lots of steps here! Goal is to get tract-to-cortex probability maps for each dataset and parcellate to HCP-MMP atlas |
-| 10 | Significance testing with NEST: deep-to-superficial | Are age effects enriched in superficial compared to deep tract regions? **(For Figures 1 and 2)**  |
-| 11 | Significance testing with NEST: tract-to-cortex | Age age effects different on each end of callosum motor and IFOF? **(For Figures 3 and 4)** |
-| 12 | Significance testing with spin tests: delta-delta analysis and parcel-level age of maturation vs. S-A rank | Are the ages of maturation different between tracts with large vs. small differences in S-A rank? **(For Figure 5)** Collapsing across tracts, does the age of maturation of superficial tract regions correlate with S-A axis rank? **(For Figure 6)** |
+| 10 | Significance testing with NEST: deep-to-superficial | Are age effects enriched in superficial compared to deep tract regions? **(For Figures 1, 2 and 3)**  |
+| 11 | Significance testing with NEST: tract-to-cortex | Age age effects different on each end of callosum motor and IFOF? **(For Figures 4 and 5)** |
+| 12 | Significance testing with spin tests: delta-delta analysis and parcel-level age of maturation vs. S-A rank | Are the ages of maturation different between tracts with large vs. small differences in S-A rank? **(For Figure 6)** Collapsing across tracts, does the age of maturation of superficial tract regions correlate with S-A axis rank? **(For Figure 7)** |
 | 13 | Visualize results! |  |
 
 ### 0. Install required software and packages
 
-- `~/two_axes_manuscript/software/installation` contains code for:
+- `~/two_axes/software/installation` contains code for:
     - setting up the project directory
     - building the required singularity images for fMRIPrep and QSIPrep
     - pulling the Docker container for R packages used on CUBIC
@@ -117,15 +119,15 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
 
 1. Identify non-variant diffusion MRI data in all 3 datasets
     1. Get QC files from each dataset’s QSIPrep clone
-        - `~/two_axes_manuscript/code/datalad/qc/get_qcfiles.sh` gets the qc csv’s and copies them to `~/input/${dataset}/raw/qc_files`
+        - `~/two_axes/code/datalad/qc/get_qcfiles.sh` gets the qc csv’s and copies them to `~/input/${dataset}/raw/qc_files`
         - `./submit_get_qcfiles.sh` submits the above script as jobs for PNC, HCP-D, and HBN
     2. Make list of subjects with variant and non-variant dMRI data
         
         ```bash
-        cd ~/two_axes_manuscript/code/sample_construction/identify_variants/ 
+        cd ~/two_axes/code/sample_construction/identify_variants/ 
         ./run_identify_variants.sh # this scripts runs identify_variants.py 
         # for all 3 datasets and saves out variant and non-variant lists 
-        # in the two_axes_manuscript input folder for each dataset. 
+        # in the two_axes input folder for each dataset. 
         ```
         
 
@@ -133,7 +135,7 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
     1.  `${dataset}_InitialSampleSelection.Rmd` saves out temporary subject lists, which will be used for BABS
         
         ```bash
-        cd ~/two_axes_manuscript/code/sample_construction/construct_initial_sample/
+        cd ~/two_axes/code/sample_construction/construct_initial_sample/
         ```
         
 
@@ -142,7 +144,7 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
 1. Get QSIPrep data for each dataset 
     
     ```bash
-    cd ~/two_axes_manuscript/code/datalad/qsiprep/
+    cd ~/two_axes/code/datalad/qsiprep/
     sbatch ./datalad_get_qsiprep_PNC.sh # will get 3 subjects per datasets
     sbatch ./datalad_get_qsiprep_HCPD.sh
     sbatch ./datalad_get_qsiprep_HBN.sh
@@ -152,7 +154,7 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
     1. Note that in the main analyses, only PNC and HCP-D use ACT. HBN loses too many subjects with ACT (noisy dataset), but we ran HBN with ACT as a sensitivity analysis.
     
     ```bash
-    cd ~/two_axes_manuscript/code/datalad/freesurfer/
+    cd ~/two_axes/code/datalad/freesurfer/
     sbatch ./datalad_get_freesurfer_PNC.sh  
     sbatch ./datalad_get_freesurfer_HCPD.sh
     ```
@@ -163,12 +165,12 @@ The project directory on CUBIC is `/cbica/projects/luo_wm_dev`.
 1. Initialize babs project
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./babs_init.sh # initializes babs for PNC, HCP-D, and HBN for 3 test subjects 
     # in each dataset 
     ```
 
-This table shows the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes_manuscript/code/run_babs_qsirecon/babs_yaml_files/` and `./qsirecon_json_files` )
+This table shows the custom BABS YAML files and custom QSIPrep json files used for each dataset (all files located in `~/two_axes/code/run_babs_qsirecon/babs_yaml_files/` and `~/two_axes/code/run_babs_qsirecon/qsirecon_json_files`)
     
 
 | **Dataset** | **QSIRecon** | **YAML file** | **JSON file** | **Notes** |
@@ -181,28 +183,28 @@ This table shows the custom BABS YAML files and custom QSIPrep json files used f
 2. Copy custom QSIRecon JSON file for each dataset to the corresponding BABS project (described in table above):
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./copy_json_files.sh # run code to copy json files to respective BABS project
     ```
     
 3. Datalad save all these modifications to each BABS project
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./datalad_save_babs_modifications.sh # runs datalad save and push for each dataset's BABS project
     ```
     
 4. Do a test job for each dataset’s BABS project (per BABS instructions)
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./babs_check_setup.sh # runs babs-check-setup
     ```
     
 5. `babs-submit` subjects for each dataset after the test jobs above finish successfully for all datasets. 
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./babs_submit.sh # runs babs-submit  
     ```
     
@@ -226,58 +228,78 @@ This table shows the custom BABS YAML files and custom QSIPrep json files used f
 1. Consume results!
     
     ```bash
-    cd ~/two_axes_manuscript/code/run_babs_qsirecon/
+    cd ~/two_axes/code/run_babs_qsirecon/
     ./babs_merge_consume_results.sh # run code to babs-merge and datalad clone the results for 
     # each dataset
     ```
     
-2. `Datalad get` the tract profiles for each test subject and copy them to a `tract_profiles` directory in `~/two_axes_manuscript/input/${dataset}/derivatives`
+2. `Datalad get` the tract profiles for each test subject and copy them to a `tract_profiles` directory in `~/two_axes/input/${dataset}/derivatives`
     
     ```bash
-    cd ~/two_axes_manuscript/code/datalad/pyafq
+    cd ~/two_axes/code/datalad/pyafq
     sbatch datalad_babs_pyafq.sh
     ```
+
+### 5. Create tract profiles from multi-shell diffusion models
+1. Reconstruction for NODDI and MAP-MRI were done using QSIPrep and BABS, with the same steps as described above. All code is analogous to the steps run in step 3 and can be found in 
+```bash
+~/two_axes/code/run_babs_qsirecon/babs_noddi_and_mapmri/
+```
     
+The custom BABS YAML files and custom QSIPrep json files used for each multi-shell dataset, HCP-D and HBN (all files are also located in `~/two_axes/code/run_babs_qsirecon/babs_yaml_files/` and `~/two_axes/code/run_babs_qsirecon/qsirecon_json_files`).
 
-### 5. Prepare data for final sample selection
+2. Map NODDI and MAP-MRI measures to tract profiles along pyAFQ-segmented tracts:
+```bash
+cd ~/two_axes/code/scalars_to_tractprofiles/noddi/
+./submit_wrapper_noddi_tractprofiles.sh
 
-1. From the QSIRecon/pyAFQ output, find subjects that are missing data and save out a list of them for exclusion. This step needs to be done before final sample selection.
+cd ~/two_axes/code/scalars_to_tractprofiles/mapmri/
+./submit_wrapper_mapmri_tractprofiles.sh
+```
+
+
+### 6. Prepare data for final sample selection
+
+From the QSIRecon/pyAFQ output, find subjects that are missing data and save out a list of them for exclusion. This step needs to be done before final sample selection.
     
-    ```bash
-    cd ~/two_axes_manuscript/code/prep_data/
-    python prep_tract_profiles_data.py
-    ```
-    
+```bash
+cd ~/two_axes/code/prep_data/
+python prep_tract_profiles_data.py
+```
+All the following steps are done for NODDI and MAP-MRI in the same way but using code from their respective subfolders, for example: 
+```bash
+cd ~/two_axes/code/prep_data/noddi
+python noddi_prep_tract_profiles_data.py
+```
+### 7. Construct final sample
 
-### 6. Construct final sample
+1. `~/two_axes/code/sample_construction/construct_final_sample/${dataset}_FinalSampleSelection.Rmd` creates the final sample and tract profiles for each dataset
 
-1. `~/two_axes_manuscript/code/sample_construction/construct_final_sample/${dataset}_FinalSampleSelection.Rmd` creates the final sample and tract profiles for each dataset
-
-### 7. Harmonize multi-site data using CovBat
+### 8. Harmonize multi-site data using CovBat
 
 ```bash
-cd ~/two_axes_manuscript/code/covbat_harmonization/
+cd ~/two_axes/code/covbat_harmonization/
 ./submit_covbat.sh # submit covbat for HCPD and HBN
 ```
 
-### 8. Fit GAMs
+### 9. Fit GAMs
 
 ```bash
-cd ~/two_axes_manuscript/code/fit_GAMs/
+cd ~/two_axes/code/fit_GAMs/
 ./submit_fit_GAMs_development.sh  # fit GAMs for all 3 datasets
 ```
 
-### 9. Tract-to-cortex mapping
+### 10. Tract-to-cortex mapping
 
-- Code for tract-to-cortex mapping is in `~/two_axes_manuscript/code/tract_to_cortex`.
-- The scripts in the subfolders of **`~/two_axes_manuscript/code/tract_to_cortex/`** need to be run sequentially.
+- Code for tract-to-cortex mapping is in `~/two_axes/code/tract_to_cortex`.
+- The scripts in the subfolders of **`~/two_axes/code/tract_to_cortex/`** need to be run sequentially.
 
-1. **The first set of scripts makes the tract density images: `~/two_axes_manuscript/code/tract_to_cortex/a_make_tdi`**
+1. **The first set of scripts makes the tract density images: `~/two_axes/code/tract_to_cortex/a_make_tdi`**
     
     The wrapper will run all scripts a01 to a05 as jobs with dependencies. Each script will automatically run as soon as the one before it finishes. It basically runs job arrays that are dependent on each other (each element of array = 1 subject)
     
     ```bash
-    cd ~/two_axes_manuscript/code/tract_to_cortex/a_make_tdi
+    cd ~/two_axes/code/tract_to_cortex/a_make_tdi
     ./a00_wrapper_make_tdi.sh
     ```
     
@@ -289,12 +311,12 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
 
 2. **Next, we need to make sure each subject's Freesurfer surfaces are aligned to their QSIPrep T1w's and tracts. Scripts found here:**
     
-    **`~/two_axes_manuscript/code/tract_to_cortex/b_transforms`**
+    **`~/two_axes/code/tract_to_cortex/b_transforms`**
     
     As above, the wrapper in this directory runs all the scripts from b01 to b02.
     
     ```bash
-    cd ~/two_axes_manuscript/code/tract_to_cortex/b_transforms
+    cd ~/two_axes/code/tract_to_cortex/b_transforms
     ./b00_wrapper_transforms.sh
     ```
     
@@ -304,12 +326,12 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
 
 3. **Now we will use nilearn’s vol_to_surf to sample the binarized TDI map for each tract to the cortical surface. The non-zero regions on the surface correspond to the cortical endpoints of that tract.** 
     
-    Scripts can be found at `~/two_axes_manuscript/code/tract_to_cortex/c_vol_to_surf`
+    Scripts can be found at `~/two_axes/code/tract_to_cortex/c_vol_to_surf`
     
     The wrapper runs c01 and c02.
     
     ```bash
-    cd ~/two_axes_manuscript/code/tract_to_cortex/c_vol_to_surf
+    cd ~/two_axes/code/tract_to_cortex/c_vol_to_surf
     ./c00_wrapper_vol_to_surf.sh
     ```
     
@@ -318,10 +340,10 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
 
 4. **Lastly, subject-level binarized tract-to-cortex maps are averaged to get a population probability map for each tract. Then we parcellate each map (1 map per tract per dataset) with Glasser.**
     
-    **Scripts can be found at `~/two_axes_manuscript/code/tract_to_cortex/d_group_avg_parcellate`**
+    **Scripts can be found at `~/two_axes/code/tract_to_cortex/d_group_avg_parcellate`**
     
     ```bash
-    cd ~/two_axes_manuscript/code/tract_to_cortex/d_group_avg_parcellate
+    cd ~/two_axes/code/tract_to_cortex/d_group_avg_parcellate
     ./d00_wrapper_group_avg_parcellate.sh
     ```
     
@@ -329,50 +351,50 @@ cd ~/two_axes_manuscript/code/fit_GAMs/
     Then saves the maps out as giftis (no threshold applied).
     - `d02_parcellate_maps.py`: This script takes the population probability tract-to-cortex maps and parcellates them to Glasser. Saves out csv's of the maps (no threshold applied).
 
-### 10. Significance testing with NEST: deep-to-superficial
+### 11. Significance testing with NEST: deep-to-superficial
 
-- This step checks — are age effects enriched in superficial compared to deep tract regions? **(For Figures 1 and 2).** Here, we use network enrichment significance testing  (NEST) ([https://github.com/smweinst/NEST/tree/main](https://github.com/smweinst/NEST/tree/main))
-1. First, we need to format the tract profiles data for NEST. `~/two_axes_manuscript/code/significance_testing/NEST/prep_data_for_NEST.Rmd` prepares the data for all 3 datasets. Run through this first. This saves out `tract_profiles_for_NEST.RData` for each dataset in `~/two_axes_manuscript/output/${dataset}/tract_profiles/`
+- This step checks — are age effects enriched in superficial compared to deep tract regions? **(For Figures 1, 2 and 3).** Here, we use network enrichment significance testing  (NEST) ([https://github.com/smweinst/NEST/tree/main](https://github.com/smweinst/NEST/tree/main))
+1. First, we need to format the tract profiles data for NEST. `~/two_axes/code/significance_testing/NEST/prep_data_for_NEST.Rmd` prepares the data for all 3 datasets. Run through this first. This saves out `tract_profiles_for_NEST.RData` for each dataset in `~/two_axes/output/${dataset}/tract_profiles/`
 2. Run NEST for each tract in each dataset:
 
 ```bash
-	cd ~/two_axes_manuscript/code/significance_testing/NEST/deep_to_superficial/
+	cd ~/two_axes/code/significance_testing/NEST/deep_to_superficial/
 	./submit_NEST_wrapper_clipEnds_clip5.sh
 ```
 
 - This wrapper submits a singularity call that uses my docker image for R-packages and the R script for NEST in the same directory (`NEST_wrapper_clipEnds_clip5.R`). This submits a job array where each element = 1 tract
 - This may take several hours since NEST does 10,000 permutations
 
-### 11. Significance testing with NEST: tract-to-cortex
+### 12. Significance testing with NEST: tract-to-cortex
 
-- This step checks — Age age effects different on each end of callosum motor and IFOF? **(For Figures 3 and 4)**
-- code is set up similarly to step 10
+- This step checks — Age age effects different on each end of callosum motor and IFOF? **(For Figures 4 and 5)**
+- code is set up similarly to step 11
 1. Run NEST for callosum motor and inferior fronto-occipital fasc
 
 ```bash
-cd ~/two_axes_manuscript/code/significance_testing/NEST/tract_to_cortex/
+cd ~/two_axes/code/significance_testing/NEST/tract_to_cortex/
 ./submit_NEST_wrapper_end_compare_clip5.sh
 ```
 
-### 12. Significance testing with spin tests: delta-delta analysis and parcel-level age of maturation vs. S-A rank
+### 13. Significance testing with spin tests: delta-delta analysis and parcel-level age of maturation vs. S-A rank
 
 - This step checks two things:
-    - 1) Are the ages of maturation different between tracts with large vs. small differences in S-A rank? **(For Figure 5)**
-    - 2) Collapsing across tracts, does the age of maturation of superficial tract regions correlate with S-A axis rank? **(For Figure 6)**
+    - 1) Are the ages of maturation different between tracts with large vs. small differences in S-A rank? **(For Figure 6)**
+    - 2) Collapsing across tracts, does the age of maturation of superficial tract regions correlate with S-A axis rank? **(For Figure 7)**
     - The scripts compute a spun t-test (t-value, dof, p-value) and Pearson’s correlations (p-value, correlation) for each dataset and averaged across datasets
 
 ```bash
-cd /cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/spin_tests
+cd /cbica/projects/luo_wm_dev/two_axes/code/significance_testing/spin_tests
 ./submit_main_figures_spintests.sh
 ```
 
-### 13. Visualize results!
+### 14. Visualize results!
 
-- Main figures: `~/two_axes_manuscript/code/results/main_figures.Rmd`
-    - this Rmd uses functions from `~/two_axes_manuscript/code/results/main_figures_functions.R`
-- Supp figures: `~/two_axes_manuscript/code/results/supp_figures.Rmd`
-    - this Rmd uses functions from `~/two_axes_manuscript/code/results/supp_figures_functions.R`
+- Main figures: `~/two_axes/code/results/main_figures.Rmd`
+    - this Rmd uses functions from `~/two_axes/code/results/main_figures_functions.R`
+- Supp figures: `~/two_axes/code/results/supp_figures.Rmd`
+    - this Rmd uses functions from `~/two_axes/code/results/supp_figures_functions.R`
 - Plotting glass brains:
-    - `~/two_axes_manuscript/code/results/fig1and2_glass_brain.py`
-    - `~/two_axes_manuscript/code/results/fig5_glass_brain.py`
-    - `~/two_axes_manuscript/code/results/glass_brain_xfm.sh` — necessary transforms for a freesurfer brain to match qsiprep headers for glass brain plotting
+    - `~/two_axes/code/results/fig1and3_glass_brain.py`
+    - `~/two_axes/code/results/fig6_glass_brain.py`
+    - `~/two_axes/code/results/glass_brain_xfm.sh` — necessary transforms for a freesurfer brain to match qsiprep headers for glass brain plotting
