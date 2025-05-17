@@ -14,7 +14,6 @@ title: Reproducibility Guide
   - [3. Use BABS to run qsirecon and pyAFQ](#3-use-babs-to-run-qsirecon-and-pyafq)
   - [4. Get tract profiles from babs project](#4-get-tract-profiles-from-babs-project)
   - [5. Create tract profiles from multi-shell diffusion models](#5-create-tract-profiles-from-multi-shell-diffusion-models)
-
   - [6. Prepare data for final sample selection](#6-prepare-data-for-final-sample-selection)
   - [7. Construct final sample](#7-construct-final-sample)
   - [8. Harmonize multi-site data using CovBat](#8-harmonize-multi-site-data-using-covbat)
