@@ -14,7 +14,7 @@ Each pyAFQ tract profiles csv should be a 1D array of length 2800 (100 nodes * 2
 have missing tracts and saves out sub-ids in order to exclude them in final sample construction. 
 
 Output:
-1) collated_tract_profiles.tsv for each dataset for subjects with ALL tracts (rows = 100 nodes * 28 tracts * X subjects; columns = 4 metrics + tractID + nodeID).
+1) collated_tract_profiles_nocovbat_tmp.tsv for each dataset for subjects with ALL tracts (rows = 100 nodes * 28 tracts * X subjects; columns = 4 metrics + tractID + nodeID).
     Note that this file will be edited in the final sample selection Rmd. Subjects missing non-essential tracts will be added back to collated_tract_profiles.tsv! 
 2) missing_tract_profiles_nocovbat.tsv for each dataset - tract profiles of all subjects missing at least 1 tract
 3) subs_with_nans.txt: 1D vector of subject IDs for people who had NaN data (seems like there are no NaNs in anyone's data)

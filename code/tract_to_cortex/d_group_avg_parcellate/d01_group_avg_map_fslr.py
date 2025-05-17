@@ -20,6 +20,10 @@ from tqdm import tqdm
 This script takes the binary, subject-level tract-to-cortex maps (in fsLR 32k) for each tract, and averages them across subjects. 
 This produces a group-level tract-to-cortex map of the proportion of subjects that have a tract connecting to each cortical region.
 Saves the maps out as giftis (no threshold applied)
+
+(Note that the method used to transform native acpc to fslr 32k was connectome wb's ADAP_BARY_AREA. 
+This interpolation introduced rare float values near edge regions. 
+These were treated as minor artifacts and do not meaningfully affect group-level averages)
 """
 
 ###########################
@@ -55,7 +59,6 @@ def load_tract_maps(subject_dir, filename):
 
 def average_tract_maps(derivs_dir, depth):
     """Average tract-to-cortex maps across subjects to get population probability maps for each tract.
-    Remember that each subject-level map is already binarized. 
     """
     subject_dirs = [os.path.join(derivs_dir, d, "fslr_32k") for d in os.listdir(derivs_dir) if d.startswith('sub-') and os.path.isdir(os.path.join(derivs_dir, d))]
     #subject_ids = [os.path.basename(d) for d in os.listdir(derivs_dir) if d.startswith('sub-') and os.path.isdir(os.path.join(derivs_dir, d))]
