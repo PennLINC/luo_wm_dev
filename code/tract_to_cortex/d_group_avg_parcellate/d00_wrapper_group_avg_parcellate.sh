@@ -2,17 +2,18 @@
 
 # submit this with ./c00_wrapper_vol_to_surf.sh
 
-datasets=( "PNC" "HCPD" "HBN")  
+datasets=("PNC" "HCPD" "HBN")  
+
 depths=(1.5)
 
 source /cbica/projects/luo_wm_dev/miniconda3/etc/profile.d/conda.sh
 conda activate luo_wm_dev
 
 for dataset in "${datasets[@]}"; do
-    config_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_${dataset}.json"
+    config_file="/cbica/projects/luo_wm_dev/two_axes/code/config/config_${dataset}.json"
         
     # Set where to save out error/output logs
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/tract_to_cortex/d_group_avg_parcellate/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/tract_to_cortex/d_group_avg_parcellate/${dataset}"
     if [ ! -d "${logs_dir}" ]; then
         mkdir -p ${logs_dir}
     fi

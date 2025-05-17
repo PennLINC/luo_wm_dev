@@ -1,0 +1,77 @@
+---
+title: "Prep data for NEST"
+author: "Audrey Luo"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(cowplot)
+library(data.table)
+library(dplyr)
+library(ggplot2)
+library(ggpubr)
+library(grid)
+library(gridExtra)
+library(gratia) 
+library(kableExtra)
+library(mgcv)
+library(RColorBrewer)
+library(stringr)
+library(tidyr)
+
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, include = TRUE) 
+
+font_size <- 14
+theme_set(theme_classic(base_family = "sans",base_size = font_size))
+line_size <- 1
+point_size <- 2
+
+MOUNT_DIR = "/cbica/projects/luo_wm_dev/"
+input_root <- paste0(MOUNT_DIR,"input")
+output_root <- paste0(MOUNT_DIR,"two_axes/output")
+```
+
+
+# Tract Names and Orientations
+https://yeatmanlab.github.io/pyAFQ/explanations/bundle_orientation.html#bundle-orientation 
+
+```{r load tract profiles, cache=TRUE}
+HCPD <- readRDS(sprintf("%1$s/%2$s/derivatives/mapmri/all_subjects/collated_tract_profiles_final.RData", input_root, "HCPD"))
+HBN <- readRDS(sprintf("%1$s/%2$s/derivatives/mapmri/all_subjects/collated_tract_profiles_final.RData", input_root, "HBN"))
+
+
+# format tract profiles df's
+format_tract_profiles <- function(df) {
+  # edit tract_node
+  df$tract_node <-  gsub("(?<=[a-z])(?=[A-Z])", "_", df$tract_node, perl = TRUE)
+  # make tract_label
+  df <- df %>% mutate(tract_label = s_new <- gsub("(?<=[a-z])(?=[A-Z])", "_", tractID, perl = TRUE) %>% # note this code is different from dti scalars due to how I made tractID column for noddi and mapmri
+                       gsub("Left_|Right_", "", .) %>%
+                       gsub("Frontooccipital", "Fronto-occipital", .) %>% # change to hyphen for plotting purposes
+                       trimws())
+  
+  # label main orientation
+  df <- df %>% 
+  mutate(main_orientation = case_when(
+    tract_label %in% c("Anterior Thalamic", "Cingulum Cingulate", "Inferior Fronto-occipital",
+                   "Inferior Longitudinal", "Superior Longitudinal") ~ "AP",
+    tract_label %in% c("Arcuate", "Uncinate") ~ "AP_frontal_temporal",
+    tract_label %in% c("Callosum Anterior Frontal", "Callosum Motor", "Callosum Occipital", "Callosum Orbital", 
+                       "Callosum Posterior Parietal", "Callosum Superior Frontal", "Callosum Superior Parietal", "Callosum Temporal") ~ "RL",
+    tract_label %in% c("Corticospinal", "Posterior Arcuate","Vertical Occipital") ~ "SI",
+    TRUE ~ NA_character_
+  ))
+
+  df$main_orientation <- as.factor(df$main_orientation)
+  return(df)
+}
+
+HCPD_tp <- format_tract_profiles(HCPD)
+HBN_tp <- format_tract_profiles(HBN)
+tracts <- read.table("/cbica/projects/luo_wm_dev/input/tract_list/tract_list.txt") 
+setdiff(unique(HCPD_tp$tract_label), tracts$V1)
+
+saveRDS(HCPD_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST_mapmri.RData", output_root, "HCPD"))
+saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST_mapmri.RData", output_root, "HBN"))
+```
+

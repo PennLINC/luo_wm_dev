@@ -7,45 +7,45 @@ conda activate babs
 ########################
 # PNC - act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act_v2
 babs-merge --project-root $PWD
 
-cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/
-datalad clone \
-    ria+file://${PWD}/babs_qsirecon_pyafq_act/output_ria#~data \
-    qsirecon_pyafq
+#cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/
+#datalad clone \
+   # ria+file://${PWD}/babs_qsirecon_pyafq_act/output_ria#~data \
+   # qsirecon_pyafq
 
 ########################
 # HCPD - act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act_v2
 babs-merge --project-root $PWD
 
-cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/
-datalad clone \
-    ria+file://${PWD}/babs_qsirecon_pyafq_act/output_ria#~data \
-    qsirecon_pyafq
+#cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/
+#datalad clone \
+   # ria+file://${PWD}/babs_qsirecon_pyafq_act_v2/output_ria#~data \
+   # qsirecon_pyafq
 
 ########################
 # HBN - no act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_allsubs_noACT
+cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_allsubs_noACT_v2
 babs-merge --project-root $PWD
 
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/
-datalad clone \
-    ria+file://${PWD}/babs_qsirecon_pyafq_allsubs_noACT/output_ria#~data \
-    qsirecon_pyafq
+#cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/
+#datalad clone \
+  #  ria+file://${PWD}/babs_qsirecon_pyafq_allsubs_noACT/output_ria#~data \
+  #  qsirecon_pyafq
 
 
 ########################
 # HBN - act-hsvs, sensitivity analysis
 ########################
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act_v2
 babs-merge --project-root $PWD
 
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/
-datalad clone \
-    ria+file://${PWD}/babs_qsirecon_pyafq_act/output_ria#~data \
-    qsirecon_pyafq
+#cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/
+#datalad clone \
+ #   ria+file://${PWD}/babs_qsirecon_pyafq_act/output_ria#~data \
+ #   qsirecon_pyafq
 

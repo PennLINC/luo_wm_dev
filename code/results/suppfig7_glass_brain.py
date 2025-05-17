@@ -8,8 +8,7 @@ from os.path import join as ospj
 import pandas as pd
 from scipy.ndimage import gaussian_filter, zoom
 
-# This script takes average across-subject tract profile for left CST and plots it on a tract from an example subject
-
+ 
 ####################
 # Set directory/variables
 ####################
@@ -18,7 +17,7 @@ study_path = f"/Users/audluo/PennLINC/luowm_local/tract_profiles/qsirecon/{subje
 tract_profiles_path = f"{study_path}/average_tract_profiles/"
 
 # Load md image
-md_img = nib.load(ospj(study_path, f"{subject}_ses-PNC1_odfmodel-DTI_desc-MD_dwi.nii.gz"))
+md_img = nib.load(ospj(study_path, f"{subject}_ses-PNC1_model-dti_param-md_dwimap.nii.gz"))
 md = md_img.get_fdata()
 
 # Load Freesurfer brain image -- note that this image had to be transformed to Native ACPC space with xfm_fs_brain.sh
@@ -41,16 +40,14 @@ def plot_tract_profile(tract_name, subject, study_path, tract_profiles_path, out
     tract_filename = tract_name.replace("_", "")
    
     # Load the CSV file for the tract
-    csv_file = ospj(tract_profiles_path, f"{tract_name}_avg_dev.csv")
+    csv_file = ospj(tract_profiles_path, f"{tract_name}_avg_dev_supp.csv")
     data = pd.read_csv(csv_file)
     normalized_values = data['normalized_values'].values
     normalized_values = np.abs(normalized_values)
 
     # Load tractography
-    tract_filename = tract_filename.replace("Fronto.occipital", "Frontooccipital") # need to update for IFO
-    sft = load_trk(ospj(study_path, "trk", f"{subject}_ses-PNC1_coordsys-RASMM_trkmethod-probCSD_recogmethod-AFQ_desc-{tract_filename}_tractography.trk"), md_img)
+    sft = load_trk(ospj(study_path, "trk", "callosal", f"{subject}_ses-PNC1_desc-{tract_filename}_tractography.trk"), md_img)
     tract_brain = sft.streamlines
-
    # Threshold and smooth brain image
     sigma = 1.5
     brain_interpolated_smooth = gaussian_filter(brain_interpolated, sigma=sigma)
@@ -110,33 +107,22 @@ def plot_tract_profile(tract_name, subject, study_path, tract_profiles_path, out
 
 
 
-# Figure 2: Callosum bundles - plot for both coronal and axial view
+# Supp Fig: Callosum bundles - plot for both coronal and axial view
 tract_list = ["Callosum_Anterior_Frontal", "Callosum_Motor", "Callosum_Occipital", "Callosum_Orbital",
                "Callosum_Posterior_Parietal", "Callosum_Superior_Frontal", 
                "Callosum_Superior_Parietal",  "Callosum_Temporal"]  
 
 for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/PennLINC/luowm_local/output/tract_profiles_testing/all_datasets/glass_brain/ageeffects", view = "axial")
+    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/supplement", view = "axial")
 
 for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/PennLINC/luowm_local/output/tract_profiles_testing/all_datasets/glass_brain/ageeffects", view = "coronal")
+    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/supplement", view = "coronal")
 
 
 tract_list = ["Callosum_Motor"]  
 for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/PennLINC/luowm_local/output/tract_profiles_testing/all_datasets/glass_brain/ageeffects", view = "axial")
+    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/supplement", view = "axial")
 
-
-
-# Figure 3: Association bundles - plot for sagittal view
-tract_list = ["Left_Arcuate", "Left_Inferior_Fronto.occipital",  "Left_Inferior_Longitudinal", "Left_Posterior_Arcuate",
-              "Left_Superior_Longitudinal", "Left_Uncinate", "Left_Vertical_Occipital", "Left_Corticospinal"]  
  
-for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/PennLINC/luowm_local/output/tract_profiles_testing/all_datasets/glass_brain/ageeffects", view = "sagittal")
-
-
-
-
 
  

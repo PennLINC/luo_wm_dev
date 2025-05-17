@@ -32,7 +32,7 @@ These were treated as minor artifacts and do not meaningfully affect group-level
 dataset = sys.argv[1]
 depth = float(sys.argv[2])
  
-config_file = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_{dataset}.json"
+config_file = f"/cbica/projects/luo_wm_dev/two_axes/code/config/config_{dataset}.json"
 
 with open(config_file, "rb") as f:
     config = json.load(f)

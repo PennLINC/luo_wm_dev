@@ -18,7 +18,7 @@ print(paste("Running NEST for", dataset, tract))
 ################## 
 # Set Directories 
 ################## 
-config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
+config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes/code/config/config_%1$s.json", dataset))
 demographics <- read.csv(config_data$demo_qc)
 tract_prof_output_root <- config_data$outputs_root
 NEST_outputs_dir <- paste0(tract_prof_output_root, "/NEST/dti_md/")

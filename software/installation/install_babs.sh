@@ -4,7 +4,7 @@
 
 ## 1. make python env
 
-cd /cbica/projects/luo_wm_dev/two_axes_manuscript/software/
+cd /cbica/projects/luo_wm_dev/two_axes/software/
 conda create -n babs python=3.9.16
 conda activate babs
 

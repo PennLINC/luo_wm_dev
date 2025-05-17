@@ -35,7 +35,7 @@ pacman::p_load(
   stringr, rjson, tidyr
 )
 
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/results/main_figures_functions.R")
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, include = TRUE) 
 
 font_size <- 20
@@ -43,7 +43,7 @@ theme_set(theme_classic(base_family = "sans",base_size = font_size))
 line_size <- 1
 point_size <- 2
 
-proj_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
+proj_root <- "/cbica/projects/luo_wm_dev/two_axes/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 fig_dir <- "/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/main/"
@@ -84,62 +84,62 @@ tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Cortic
 
 ```{r load deep to superficial NEST results}
 # PNC
-arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
-ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
-unc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
-vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+unc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
+vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
 
-cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
-cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
-cc_pp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
  
 NEST_PNC <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC$pval, cc_mot_PNC$pval, cc_occ_PNC$pval, cc_orb_PNC$pval, cc_pp_PNC$pval, cc_sf_PNC$pval, cc_sp_PNC$pval, cc_tm_PNC$pval, arc_PNC$pval, ifo_PNC$pval, ilf_PNC$pval, parc_PNC$pval, slf_PNC$pval, unc_PNC$pval, vof_PNC$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 
 # HCPD
-arc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
-ifo_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
-unc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
-vof_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+arc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+unc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
+vof_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
 
-cc_af_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
-cc_mot_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
-cc_pp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+cc_af_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
  
 NEST_HCPD <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HCPD$pval, cc_mot_HCPD$pval, cc_occ_HCPD$pval, cc_orb_HCPD$pval, cc_pp_HCPD$pval, cc_sf_HCPD$pval, cc_sp_HCPD$pval, cc_tm_HCPD$pval, arc_HCPD$pval, ifo_HCPD$pval, ilf_HCPD$pval, parc_HCPD$pval, slf_HCPD$pval, unc_HCPD$pval, vof_HCPD$pval)), method=c("fdr")), rep("HCP-D", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 
 # HBN
-arc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
-ifo_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
-ilf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
-parc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
-slf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+arc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
 unc_HBN <- NA 
-vof_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+vof_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
 
-cc_af_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
-cc_mot_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
-cc_occ_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
-cc_orb_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
-cc_pp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
-cc_sf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
-cc_sp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
-cc_tm_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+cc_af_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
  
 NEST_HBN <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HBN$pval, cc_mot_HBN$pval, cc_occ_HBN$pval, cc_orb_HBN$pval, cc_pp_HBN$pval, cc_sf_HBN$pval, cc_sp_HBN$pval, cc_tm_HBN$pval, arc_HBN$pval,  ifo_HBN$pval, ilf_HBN$pval, parc_HBN$pval, slf_HBN$pval, unc_HBN, vof_HBN$pval)), method=c("fdr")), rep("HBN", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
 ```
@@ -174,11 +174,11 @@ assoc_cst_avgs <- normalize_dev(assoc_cst, assoc_cst_min, assoc_cst_max)
 
 # save out
 for (df_name in names(callosum_norm_avgs)) {
-  #write.csv(callosum_norm_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
+  write.csv(callosum_norm_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
 }
 
 for (df_name in names(assoc_cst_avgs)) {
- # write.csv(assoc_cst_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
+  write.csv(assoc_cst_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
 }
 ```
 
@@ -224,10 +224,349 @@ arrange_callosum_plots(lollipop_plots)
 #ggsave(paste0(fig_dir, "fig1_lollipop.png"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
 
 ```
+
+# Figure 2: WM development occurs along a deep-to-superficial axis in callosum bundles with NODDI and MAPMRI
+## NODDI: Intracellular volume fraction (ICVF)
+```{r load dev effects files fig 2}
+scalar = "icvf"
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+```
+
+```{r format age effects dfs fig 2}
+# make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
+datasets <- c("HCPD", "HBN")
+ageeffect_df_names <- c()
+for (dataset in datasets) {
+  ageeffect_df_names <- append(ageeffect_df_names, paste0(dataset, "_ageeffects"))
+}
+
+# format age effect df's
+ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
+```
+
+```{r fdr correction fig 2}
+ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
+names(ageeffect.fdr_dfs) <- ageeffect_df_names 
+
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("(?<=[a-z])([A-Z])", " \\1", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("Fronto-cc", "Fronto-occ", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("Left |Right ", "", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("(?<=[a-z])([A-Z])", " \\1", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE)
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("Fronto-cc", "Fronto-occ", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("Left |Right ", "", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+
+
+tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
+```
+
+```{r load deep to superficial NEST results fig 2}
  
-# Figure 2: WM development occurs along a deep-to-superficial axis in association bundles 
+callosal_tracts <- tracts[grep("Callosum", tracts)]
+
+# HCPD
+cc_af_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData"))
+cc_mot_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Motor_bin5_clip5_1sided.RData"))
+cc_occ_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Occipital_bin5_clip5_1sided.RData"))
+cc_orb_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Orbital_bin5_clip5_1sided.RData"))
+cc_pp_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData"))
+cc_sf_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Superior_Frontal_bin5_clip5_1sided.RData"))
+cc_sp_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Superior_Parietal_bin5_clip5_1sided.RData"))
+cc_tm_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Temporal_bin5_clip5_1sided.RData"))
+ 
+NEST_HCPD <- data.frame(cbind(callosal_tracts, p.adjust(unlist(c(cc_af_HCPD$pval, cc_mot_HCPD$pval, cc_occ_HCPD$pval, cc_orb_HCPD$pval, cc_pp_HCPD$pval, cc_sf_HCPD$pval, cc_sp_HCPD$pval, cc_tm_HCPD$pval)), method=c("fdr")), rep("HCP-D", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+                        
+# HBN
+cc_af_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData"))
+cc_mot_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Motor_bin5_clip5_1sided.RData"))
+cc_occ_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Occipital_bin5_clip5_1sided.RData"))
+cc_orb_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Orbital_bin5_clip5_1sided.RData"))
+cc_pp_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData"))
+cc_sf_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Superior_Frontal_bin5_clip5_1sided.RData"))
+cc_sp_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Superior_Parietal_bin5_clip5_1sided.RData"))
+cc_tm_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Temporal_bin5_clip5_1sided.RData"))
+ 
+NEST_HBN <- data.frame(cbind(callosal_tracts, p.adjust(unlist(c(cc_af_HBN$pval, cc_mot_HBN$pval, cc_occ_HBN$pval, cc_orb_HBN$pval, cc_pp_HBN$pval, cc_sf_HBN$pval, cc_sp_HBN$pval, cc_tm_HBN$pval)), method=c("fdr")), rep("HBN", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+```
+ 
+```{r make age effect plots for callosum fig 2}
+ageeffect_measure = "GAM.smooth.AdjRsq"
+ageeffects_plots <- lapply(callosal_tracts, plot_age_effect_multishell, scalar = scalar, ageeffect_measure = ageeffect_measure, 
+                                color_HCPD = color_HCPD, color_HBN = color_HBN, clipEnds = 5, ylim2 = 0.6, ylim1 = 0, fontsize = 20, legend_position = "none")
+names(ageeffects_plots) <- callosal_tracts
+
+```
+
+```{r prep lollipop plots fig 2}
+colors <- c("#3FB8AFFF", "#FF9E9DFF")
+names(colors) <- c("HCP-D", "HBN")
+bin_num_nodes = 5
+clipEnds = 5
+
+# prepare the data for making lollipop plots
+df_all <- bind_rows(
+  ageeffect.fdr_dfs$HCPD_ageeffects %>% mutate(Dataset = "HCP-D"),
+  ageeffect.fdr_dfs$HBN_ageeffects  %>% mutate(Dataset = "HBN"),
+)
+
+df_all$Dataset <- factor(df_all$Dataset, levels = c("HCP-D", "HBN"))
+df_formatted <- format_deep_superficial(df_all, ageeffect_measure, bin_num_nodes, clipEnds)  
+df_formatted <- df_formatted[complete.cases(df_formatted), ]
+ 
+# merge with NEST results
+NEST <- rbind(NEST_HCPD, NEST_HBN)
+lollipop_data <- prepare_lollipop_data(df_formatted)   
+lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("HCP-D", "HBN"))
+
+# plot lollipops
+lollipop_plots <- lapply(callosal_tracts, make_lollipop_plot_multishell, lollipop_data)
+names(lollipop_plots) <- callosal_tracts
+ 
+```
+ 
 arrange plots
-```{r make age effect plots for association}
+```{r lollipop and age effects callosum arrange plots fig 2, fig.height = 13, fig.width = 20}
+arrange_callosum_plots(lollipop_plots) 
+
+#ggsave(paste0(fig_dir, "fig2_lollipop_noddi.svg"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+#ggsave(paste0(fig_dir, "fig2_lollipop_noddi.png"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+
+```
+
+## MAP-MRI: Return-to-origin probability (RTOP)
+```{r load dev effects files mapmri}
+scalar = "RTOP"
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+```
+
+```{r format age effects dfs mapmri}
+# make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
+datasets <- c("HCPD", "HBN")
+ageeffect_df_names <- c()
+for (dataset in datasets) {
+  ageeffect_df_names <- append(ageeffect_df_names, paste0(dataset, "_ageeffects"))
+}
+
+# format age effect df's
+ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
+```
+
+```{r fdr correction mapmri}
+ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
+names(ageeffect.fdr_dfs) <- ageeffect_df_names 
+
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("(?<=[a-z])([A-Z])", " \\1", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("Fronto-cc", "Fronto-occ", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HCPD_ageeffects$tract_label <- gsub("Left |Right ", "", ageeffect.fdr_dfs$HCPD_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("(?<=[a-z])([A-Z])", " \\1", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE)
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("Fronto-cc", "Fronto-occ", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+ageeffect.fdr_dfs$HBN_ageeffects$tract_label <- gsub("Left |Right ", "", ageeffect.fdr_dfs$HBN_ageeffects$tract_label, perl = TRUE) # format tract_label to be consistent with previous versions
+
+
+tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
+```
+
+```{r load deep to superficial NEST results mapmri}
+ 
+callosal_tracts <- tracts[grep("Callosum", tracts)]
+
+# HCPD
+cc_af_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData"))
+cc_mot_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Motor_bin5_clip5_1sided.RData"))
+cc_occ_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Occipital_bin5_clip5_1sided.RData"))
+cc_orb_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Orbital_bin5_clip5_1sided.RData"))
+cc_pp_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData"))
+cc_sf_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Superior_Frontal_bin5_clip5_1sided.RData"))
+cc_sp_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Superior_Parietal_bin5_clip5_1sided.RData"))
+cc_tm_HCPD <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/", scalar, "/Callosum_Temporal_bin5_clip5_1sided.RData"))
+ 
+NEST_HCPD <- data.frame(cbind(callosal_tracts, p.adjust(unlist(c(cc_af_HCPD$pval, cc_mot_HCPD$pval, cc_occ_HCPD$pval, cc_orb_HCPD$pval, cc_pp_HCPD$pval, cc_sf_HCPD$pval, cc_sp_HCPD$pval, cc_tm_HCPD$pval)), method=c("fdr")), rep("HCP-D", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+                        
+# HBN
+cc_af_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData"))
+cc_mot_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Motor_bin5_clip5_1sided.RData"))
+cc_occ_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Occipital_bin5_clip5_1sided.RData"))
+cc_orb_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Orbital_bin5_clip5_1sided.RData"))
+cc_pp_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData"))
+cc_sf_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Superior_Frontal_bin5_clip5_1sided.RData"))
+cc_sp_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Superior_Parietal_bin5_clip5_1sided.RData"))
+cc_tm_HBN <- readRDS(paste0("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/", scalar, "/Callosum_Temporal_bin5_clip5_1sided.RData"))
+ 
+NEST_HBN <- data.frame(cbind(callosal_tracts, p.adjust(unlist(c(cc_af_HBN$pval, cc_mot_HBN$pval, cc_occ_HBN$pval, cc_orb_HBN$pval, cc_pp_HBN$pval, cc_sf_HBN$pval, cc_sp_HBN$pval, cc_tm_HBN$pval)), method=c("fdr")), rep("HBN", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+```
+ 
+```{r make age effect plots for callosum mapmri}
+ageeffect_measure = "GAM.smooth.AdjRsq"
+ageeffects_plots <- lapply(callosal_tracts, plot_age_effect_multishell, scalar = scalar, ageeffect_measure = ageeffect_measure, 
+                                color_HCPD = color_HCPD, color_HBN = color_HBN, clipEnds = 5, ylim2 = 0.6, ylim1 = 0, fontsize = 20, legend_position = "none")
+names(ageeffects_plots) <- callosal_tracts
+```
+
+```{r prep lollipop plots mapmri}
+colors <- c("#3FB8AFFF", "#FF9E9DFF")
+names(colors) <- c("HCP-D", "HBN")
+bin_num_nodes = 5
+clipEnds = 5
+
+# prepare the data for making lollipop plots
+df_all <- bind_rows(
+  ageeffect.fdr_dfs$HCPD_ageeffects %>% mutate(Dataset = "HCP-D"),
+  ageeffect.fdr_dfs$HBN_ageeffects  %>% mutate(Dataset = "HBN"),
+)
+
+df_all$Dataset <- factor(df_all$Dataset, levels = c("HCP-D", "HBN"))
+df_formatted <- format_deep_superficial(df_all, ageeffect_measure, bin_num_nodes, clipEnds)  
+df_formatted <- df_formatted[complete.cases(df_formatted), ]
+ 
+# merge with NEST results
+NEST <- rbind(NEST_HCPD, NEST_HBN)
+lollipop_data <- prepare_lollipop_data(df_formatted)   
+lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("HCP-D", "HBN"))
+
+# plot lollipops
+lollipop_plots <- lapply(callosal_tracts, make_lollipop_plot_multishell, lollipop_data)
+names(lollipop_plots) <- callosal_tracts
+ 
+```
+ 
+arrange plots
+```{r lollipop and age effects callosum arrange plots mapmri, fig.height = 13, fig.width = 20}
+arrange_callosum_plots(lollipop_plots) 
+
+#ggsave(paste0(fig_dir, "fig2_lollipop_mapmri.svg"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+#ggsave(paste0(fig_dir, "fig2_lollipop_mapmri.png"), arrange_callosum_plots(lollipop_plots), height = 13, width = 20, units = "in")
+
+```
+
+# Figure 3: WM development occurs along a deep-to-superficial axis in association bundles 
+```{r load dev effects files fig 3}
+scalar = "dti_md"
+PNC_ageeffects <- read.csv(paste0(output_root, "/", "PNC", "/GAM/", scalar, "/PNC_GAM_dev_measures.csv"))
+HCPD_ageeffects <- read.csv(paste0(output_root, "/", "HCPD", "/GAM/", scalar, "/HCPD_GAM_dev_measures.csv"))
+HBN_ageeffects <- read.csv(paste0(output_root, "/", "HBN", "/GAM/", scalar, "/HBN_GAM_dev_measures.csv"))
+```
+
+```{r format age effects dfs fig 3}
+# make a list of the different df names: [dataset]_GAM_ageeffects_[scalar]
+datasets <- c("PNC", "HCPD", "HBN")
+ageeffect_df_names <- c()
+for (dataset in datasets) {
+  ageeffect_df_names <- append(ageeffect_df_names, paste0(dataset, "_ageeffects"))
+}
+
+# format age effect df's
+ageeffect_dfs <- lapply(ageeffect_df_names, format_ageeffect)
+```
+
+```{r fdr correction fig 3}
+ageeffect.fdr_dfs <- lapply(ageeffect_dfs, sig_nodes)
+names(ageeffect.fdr_dfs) <- ageeffect_df_names 
+tracts <- setdiff(unique(ageeffect.fdr_dfs$HCPD_ageeffects$tract_label), "Corticospinal") # CST for supplement
+```
+
+
+```{r load deep to superficial NEST results fig 3}
+# PNC
+arc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+unc_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
+vof_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+
+cc_af_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_PNC <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/PNC/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+ 
+NEST_PNC <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_PNC$pval, cc_mot_PNC$pval, cc_occ_PNC$pval, cc_orb_PNC$pval, cc_pp_PNC$pval, cc_sf_PNC$pval, cc_sp_PNC$pval, cc_tm_PNC$pval, arc_PNC$pval, ifo_PNC$pval, ilf_PNC$pval, parc_PNC$pval, slf_PNC$pval, unc_PNC$pval, vof_PNC$pval)), method=c("fdr")), rep("PNC", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+
+# HCPD
+arc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+unc_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Uncinate_bin5_clip5_1sided.RData")
+vof_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+
+cc_af_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_HCPD <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+ 
+NEST_HCPD <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HCPD$pval, cc_mot_HCPD$pval, cc_occ_HCPD$pval, cc_orb_HCPD$pval, cc_pp_HCPD$pval, cc_sf_HCPD$pval, cc_sp_HCPD$pval, cc_tm_HCPD$pval, arc_HCPD$pval, ifo_HCPD$pval, ilf_HCPD$pval, parc_HCPD$pval, slf_HCPD$pval, unc_HCPD$pval, vof_HCPD$pval)), method=c("fdr")), rep("HCP-D", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+
+# HBN
+arc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Arcuate_bin5_clip5_1sided.RData")
+ifo_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided.RData")
+ilf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Inferior_Longitudinal_bin5_clip5_1sided.RData")
+parc_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Posterior_Arcuate_bin5_clip5_1sided.RData")
+slf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Superior_Longitudinal_bin5_clip5_1sided.RData")
+unc_HBN <- NA 
+vof_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Vertical_Occipital_bin5_clip5_1sided.RData")
+
+cc_af_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Anterior_Frontal_bin5_clip5_1sided.RData")
+cc_mot_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Motor_bin5_clip5_1sided.RData")
+cc_occ_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Occipital_bin5_clip5_1sided.RData")
+cc_orb_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Orbital_bin5_clip5_1sided.RData")
+cc_pp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Posterior_Parietal_bin5_clip5_1sided.RData")
+cc_sf_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Superior_Frontal_bin5_clip5_1sided.RData")
+cc_sp_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Superior_Parietal_bin5_clip5_1sided.RData")
+cc_tm_HBN <- readRDS("/cbica/projects/luo_wm_dev/two_axes/output/HBN/NEST/dti_md/Callosum_Temporal_bin5_clip5_1sided.RData")
+ 
+NEST_HBN <- data.frame(cbind(tracts, p.adjust(unlist(c(cc_af_HBN$pval, cc_mot_HBN$pval, cc_occ_HBN$pval, cc_orb_HBN$pval, cc_pp_HBN$pval, cc_sf_HBN$pval, cc_sp_HBN$pval, cc_tm_HBN$pval, arc_HBN$pval,  ifo_HBN$pval, ilf_HBN$pval, parc_HBN$pval, slf_HBN$pval, unc_HBN, vof_HBN$pval)), method=c("fdr")), rep("HBN", 15))) %>% setNames(c("tract_label", "pval_fdr_all", "Dataset"))
+```
+
+
+```{r make age effect plots for callosum fig 3}
+ageeffect_measure = "GAM.smooth.AdjRsq"
+ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_md", ageeffect_measure = ageeffect_measure, 
+                                color_HCPD = color_HCPD, color_HBN = color_HBN, color_PNC = color_PNC, clipEnds = 5, ylim2 = 0.41, ylim1 = 0, fontsize = 20, legend_position = "none")
+names(ageeffects_plots) <- tracts
+```
+
+```{r prep lollipop plots fig 3}
+colors <- c("#3FB8AFFF", "#FF9E9DFF", "#cc0468")
+names(colors) <- c("HCP-D", "HBN", "PNC")
+bin_num_nodes = 5
+clipEnds = 5
+
+# prepare the data for making lollipop plots
+df_all <- bind_rows(
+  ageeffect.fdr_dfs$HCPD_ageeffects %>% mutate(Dataset = "HCP-D"),
+  ageeffect.fdr_dfs$HBN_ageeffects  %>% mutate(Dataset = "HBN"),
+  ageeffect.fdr_dfs$PNC_ageeffects  %>% mutate(Dataset = "PNC")
+)
+
+df_all$Dataset <- factor(df_all$Dataset, levels = c("HCP-D", "PNC", "HBN"))
+df_formatted <- format_deep_superficial(df_all, ageeffect_measure, bin_num_nodes, clipEnds)  
+df_formatted <- df_formatted[complete.cases(df_formatted), ]
+ 
+# merge with NEST results
+NEST <- rbind(NEST_HCPD, NEST_HBN, NEST_PNC)
+lollipop_data <- prepare_lollipop_data(df_formatted)   
+lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("PNC", "HCP-D", "HBN"))
+
+# plot lollipops
+tracts <- setdiff(unique(df_formatted$tract_label), "Corticospinal") # CST for supplement
+lollipop_plots <- lapply(tracts, make_lollipop_plot, lollipop_data)
+names(lollipop_plots) <- tracts
+```
+arrange plots
+```{r make age effect plots for association fig 3}
 ageeffect_measure = "GAM.smooth.AdjRsq"
 ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_md", ageeffect_measure = ageeffect_measure, 
                                 color_HCPD = color_HCPD, color_HBN = color_HBN, color_PNC = color_PNC, 
@@ -235,13 +574,13 @@ ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_md", ageeffect
 names(ageeffects_plots) <- tracts
 ```
  
-```{r lollipop and age effects association arrange plots, fig.height = 13, fig.width = 20, warnings = FALSE}
+```{r lollipop and age effects association arrange plots fig 3, fig.height = 13, fig.width = 20, warnings = FALSE}
 arrange_association_plots(lollipop_plots)
-#ggsave(paste0(fig_dir, "fig2_lollipop_UNC.svg"), arrange_association_plots(lollipop_plots), height = 13, width = 20, units = "in")
-#ggsave(paste0(fig_dir, "fig2_lollipop_UNC.png"), arrange_association_plots(lollipop_plots), height = 13, width = 20, units = "in")
+##ggsave(paste0(fig_dir, "fig3_lollipop.svg"), arrange_association_plots(lollipop_plots), height = 13, width = 20, units = "in")
+##ggsave(paste0(fig_dir, "fig3_lollipop.png"), arrange_association_plots(lollipop_plots), height = 13, width = 20, units = "in")
 ```
 
-# Figure 3: Superficial tract regions connecting homotopic cortical endpoints exhibit similar developmental patterns
+# Figure 4: Superficial tract regions connecting homotopic cortical endpoints exhibit similar developmental patterns
 ```{r load glasser tract to region maps 1}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
@@ -273,25 +612,29 @@ make_maps("PNC", bin_num_nodes = 5)
 
 ```{r load fitted values and tract profiles data and derivatives}
 PNC <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "PNC"))
-PNC_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/PNC/sample_selection_files/final_sample/PNC_WMDev_FinalSampleDemoQC.csv")
+PNC_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/PNC/sample_selection_files/final_sample/PNC_WMDev_FinalSampleDemoQC.csv")
 PNC <- merge(PNC, PNC_dem, by = 'sub')
-PNC_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/GAM/dti_md/PNC_GAM_smooth_fittedvalues.csv")
-PNC_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/GAM/dti_md/PNC_GAM_derivatives.csv")
+PNC_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/PNC/GAM/dti_md/PNC_GAM_smooth_fittedvalues.csv")
+PNC_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/PNC/GAM/dti_md/PNC_GAM_derivatives.csv")
 PNC_derivs$significant.derivative[PNC_derivs$significant.derivative == 0] <- NA
+PNC$tract_label <- gsub("_", " ", PNC$tract_label)
 
 HCPD <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HCPD"))
-HCPD_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HCPD/sample_selection_files/final_sample/HCPD_WMDev_FinalSampleDemoQC.csv")
+HCPD_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/final_sample/HCPD_WMDev_FinalSampleDemoQC.csv")
 HCPD <- merge(HCPD, HCPD_dem, by = 'sub')
-HCPD_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/GAM/dti_md/HCPD_GAM_smooth_fittedvalues.csv")
-HCPD_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/GAM/dti_md/HCPD_GAM_derivatives.csv")
+HCPD_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/GAM/dti_md/HCPD_GAM_smooth_fittedvalues.csv")
+HCPD_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/GAM/dti_md/HCPD_GAM_derivatives.csv")
 HCPD_derivs$significant.derivative[HCPD_derivs$significant.derivative == 0] <- NA
+HCPD$tract_label <- gsub("_", " ", HCPD$tract_label)
 
 HBN <- readRDS(sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HBN"))
-HBN_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv")
+HBN_dem <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv")
 HBN <- merge(HBN, HBN_dem, by = 'sub')
-HBN_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/GAM/dti_md/HBN_GAM_smooth_fittedvalues.csv")
-HBN_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/GAM/dti_md/HBN_GAM_derivatives.csv")
+HBN_fitted <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/GAM/dti_md/HBN_GAM_smooth_fittedvalues.csv")
+HBN_derivs <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/GAM/dti_md/HBN_GAM_derivatives.csv")
 HBN_derivs$significant.derivative[HBN_derivs$significant.derivative == 0] <- NA
+HBN$tract_label <- gsub("_", " ", HBN$tract_label)
+
 ```
  
 ```{r format fitted smooths and derivatives}
@@ -326,13 +669,13 @@ CMot_brain_PNC
 CMot_brain_HCPD 
 CMot_brain_HBN 
 
-#ggsave(paste0(fig_dir, "fig3_PNC_brain.svg"), CMot_brain_PNC, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig3_HCPD_brain.svg"), CMot_brain_HCPD, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig3_HBN_brain.svg"), CMot_brain_HBN, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_PNC_brain.svg"), CMot_brain_PNC, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_HCPD_brain.svg"), CMot_brain_HCPD, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_HBN_brain.svg"), CMot_brain_HBN, height = 3, width = 4, units = "in")
 
-#ggsave(paste0(fig_dir, "fig3_PNC_brain.png"), CMot_brain_PNC, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig3_HCPD_brain.png"), CMot_brain_HCPD, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig3_HBN_brain.png"), CMot_brain_HBN, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_PNC_brain.png"), CMot_brain_PNC, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_HCPD_brain.png"), CMot_brain_HCPD, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig4_HBN_brain.png"), CMot_brain_HBN, height = 3, width = 4, units = "in")
 ```
  
 ```{r plot NEST for CMot tract ends, fig.height = 3, fig.width = 15}
@@ -355,16 +698,16 @@ y.grob <- textGrob(bquote(atop("Magnitude of Age Effect",
                    gp = gpar(col = "black", fontsize = 20), rot = 90)
 
 NEST_CMot <- grid.arrange(arrangeGrob(NEST_CMot, left = y.grob))
-#ggsave(paste0(fig_dir, "fig3_NEST.svg"), NEST_CMot, height = 3, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig3_NEST.png"), NEST_CMot, height = 3, width = 15, units = "in")
-```
 
+#ggsave(paste0(fig_dir, "fig4_NEST.svg"), NEST_CMot, height = 3, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig4_NEST.png"), NEST_CMot, height = 3, width = 15, units = "in")
+```
 
 ```{r plot dev trajectories for CMot, fig.height = 6, fig.width = 15}
 PNC_CMot_devtraj <- dev_trajectory_plot("PNC", tp_df = PNC, tract_name = "Callosum Motor", 
                                         fitted_df = PNC_fitted, derivs_df = PNC_derivs, "Right", "Left", 
                                         clipEnds = 5, bin_num_nodes = 5, ylim1 = 0.00062, ylim2 = 0.00084) 
-
+ 
 HCPD_CMot_devtraj <- dev_trajectory_plot("HCPD", tp_df = HCPD, tract_name = "Callosum Motor", 
                                          fitted_df = HCPD_fitted, derivs_df = HCPD_derivs, "Right", "Left", 
                                          clipEnds = 5, bin_num_nodes = 5, ylim1 = 0.0006, ylim2 = 0.00077) 
@@ -393,12 +736,12 @@ p <- ggplot(df, aes(x = x, y = y, color = region)) +
 legend2_CMot <- get_legend(p)
 
 CMot_devtraj_final <- ggarrange(CMot_devtraj, legend2_CMot, nrow = 2, heights = c(5, 1)) + bgcolor("white") 
-CMot_devtraj_final
-#ggsave(paste0(fig_dir, "fig3_devtraj.svg"), CMot_devtraj_final, height = 6, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig3_devtraj.png"), CMot_devtraj_final, height = 6, width = 15, units = "in")
+#CMot_devtraj_final
+#ggsave(paste0(fig_dir, "fig4_devtraj.svg"), CMot_devtraj_final, height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig4_devtraj.png"), CMot_devtraj_final, height = 6, width = 15, units = "in")
 ``` 
 
-# Figure 4: Developmental trajectories are dissociable based on cortical endpoint for IFO
+# Figure 5: Developmental trajectories are dissociable based on cortical endpoint for IFO
 ```{r plot tract to region age effects for IFO, fig.height = 3, fig.width = 4}
 IFOL_brain_HCPD <- plot_cortex_ageeffects("IFOL", dataset="HCPD", ylim1 = 0.08, ylim2 = 0.38) 
 IFOR_brain_HCPD <- plot_cortex_ageeffects("IFOR", dataset="HCPD", ylim1 = 0.08, ylim2 = 0.38) 
@@ -422,13 +765,14 @@ IFO_brain_PNC
 IFO_brain_HCPD
 IFO_brain_HBN
 
-#ggsave(paste0(fig_dir, "fig4_PNC_brain.svg"), IFO_brain_PNC, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig4_HCPD_brain.svg"), IFO_brain_HCPD, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig4_HBN_brain.svg"), IFO_brain_HBN, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_PNC_brain.svg"), IFO_brain_PNC, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_HCPD_brain.svg"), IFO_brain_HCPD, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_HBN_brain.svg"), IFO_brain_HBN, height = 3, width = 4, units = "in")
 
-#ggsave(paste0(fig_dir, "fig4_PNC_brain.png"), IFO_brain_PNC, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig4_HCPD_brain.png"), IFO_brain_HCPD, height = 3, width = 4, units = "in")
-#ggsave(paste0(fig_dir, "fig4_HBN_brain.png"), IFO_brain_HBN, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_PNC_brain.png"), IFO_brain_PNC, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_HCPD_brain.png"), IFO_brain_HCPD, height = 3, width = 4, units = "in")
+#ggsave(paste0(fig_dir, "fig5_HBN_brain.png"), IFO_brain_HBN, height = 3, width = 4, units = "in")
+
 # legend2
 CMot_legend_plot <- ggplot() + geom_brain(data = CMotL_deveffect_HCPD, atlas= glasser, 
                  mapping=aes(fill=mean_age_effect), 
@@ -452,31 +796,31 @@ legend_title <- textGrob(expression("Magnitude of Age Effect (" * Delta * " Adju
                      gp=gpar(col="black", fontsize=20), hjust = 0.5, vjust = 0, y = unit(-2, "npc"))
     
 brain_legend <- plot_grid(legend_title, brain_legend, ncol = 1, rel_heights = c(1, 2))
-#ggsave(paste0(fig_dir, "fig3and4_brain_legend.svg"), brain_legend, height = 1, width = 5, units = "in")
-#ggsave(paste0(fig_dir, "fig3and4_brain_legend.png"), brain_legend, height = 1, width = 5, units = "in")
+#ggsave(paste0(fig_dir, "fig4and5_brain_legend.svg"), brain_legend, height = 1, width = 5, units = "in")
+#ggsave(paste0(fig_dir, "fig4and5_brain_legend.png"), brain_legend, height = 1, width = 5, units = "in")
 
 ```
 
 ```{r plot NEST for IFO tract ends, fig.height = 3, fig.width = 15}
-NEST_PNC_CMot_pval <- readRDS(paste0(output_root, "/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
-print(NEST_PNC_CMot_pval$pval)
-NEST_HCPD_CMot_pval <- readRDS(paste0(output_root, "/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
-print(NEST_HCPD_CMot_pval$pval)
-NEST_HBN_CMot_pval <- readRDS(paste0(output_root, "/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
-print(NEST_HBN_CMot_pval$pval)
+NEST_PNC_IFO_pval <- readRDS(paste0(output_root, "/PNC/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+print(NEST_PNC_IFO_pval$pval)
+NEST_HCPD_IFO_pval <- readRDS(paste0(output_root, "/HCPD/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+print(NEST_HCPD_IFO_pval$pval)
+NEST_HBN_IFO_pval <- readRDS(paste0(output_root, "/HBN/NEST/dti_md/Inferior_Fronto_occipital_bin5_clip5_1sided_end_compare.RData"))
+print(NEST_HBN_IFO_pval$pval)
 
 
-NEST_PNC_IFO <- plot_NEST_tract_ends("PNC", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
-NEST_HCPD_IFO <- plot_NEST_tract_ends("HCPD", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
-NEST_HBN_IFO <- plot_NEST_tract_ends("HBN", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0.1, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= N.S."))
+NEST_PNC_IFO <- plot_NEST_tract_ends("PNC", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
+NEST_HCPD_IFO <- plot_NEST_tract_ends("HCPD", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
+NEST_HBN_IFO <- plot_NEST_tract_ends("HBN", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= N.S."))
 
 NEST_IFO <- ggarrange(NEST_PNC_IFO, NEST_HCPD_IFO, NEST_HBN_IFO, ncol = 3)
 NEST_IFO <- grid.arrange(arrangeGrob(NEST_IFO, left = y.grob))
 y.grob <- textGrob(bquote(atop("Magnitude of Age Effect", 
                                "(" * Delta * " Adjusted " * R^2 * ")")), 
                    gp = gpar(col = "black", fontsize = 20), rot = 90)
-#ggsave(paste0(fig_dir, "fig4_NEST.svg"), NEST_IFO, height = 3, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig4_NEST.png"), NEST_IFO, height = 3, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig5_NEST.svg"), NEST_IFO, height = 3, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig5_NEST.png"), NEST_IFO, height = 3, width = 15, units = "in")
 
 ```
 
@@ -514,14 +858,14 @@ p <- ggplot(df, aes(x = x, y = y, color = region)) +
 legend2_IFO <- get_legend(p)
 
 IFO_devtraj_final <- ggarrange(IFO_devtraj, legend2_IFO, nrow = 2, heights = c(5, 1)) + bgcolor("white") 
-IFO_devtraj_final
-#ggsave(paste0(fig_dir, "fig4_devtraj.svg"), IFO_devtraj_final, height = 6, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig4_devtraj.png"), IFO_devtraj_final, height = 6, width = 15, units = "in")
+#IFO_devtraj_final
+#ggsave(paste0(fig_dir, "fig5_devtraj.svg"), IFO_devtraj_final, height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig5_devtraj.png"), IFO_devtraj_final, height = 6, width = 15, units = "in")
 
 ```
 
 
-# Figure 5: Cortical endpoints at opposite ends of the cortical hierarchy have discrepant ages of maturation.
+# Figure 6: Cortical endpoints at opposite ends of the cortical hierarchy have discrepant ages of maturation.
 ```{r load glasser tract to region maps}
 # load glasser labels
 glasser_labels <- read.csv("/cbica/projects/luo_wm_dev/atlases/glasser/HCP-MMP1_UniqueRegionList.csv")
@@ -543,7 +887,7 @@ glasser_SAaxis$regionName <- gsub("^(.)_(.*)$", "\\2_\\1", glasser_SAaxis$region
 ```
 
 ```{r make cortical endpoint maps for age of maturation}
-threshold=0.3
+threshold = 0.3
 
 PNC_deveffects_5_agemat <- ageeffect.fdr_dfs$PNC_ageeffects %>% filter((nodeID < 10 & nodeID > 4) | (nodeID < 95 & nodeID > 89)) %>% mutate(node_position = case_when((nodeID < 10 & nodeID > 4) ~ "end1", (nodeID < 95 & nodeID > 89) ~ "end2")) %>%
   select(tract_label, tractID, nodeID, node_position, hemi, smooth.peak.change, smooth.decrease.offset, smooth.last.change, smooth.slowing.onset) %>%
@@ -628,13 +972,13 @@ diffs_HBN <- diffs_HBN %>% mutate(group = ifelse(str_detect(bundle_name, "IFO") 
                         "Small Difference in S-A Rank"))
 diffs_HBN$group <- factor(diffs_HBN$group, levels = c("Small Difference in S-A Rank", "Large Difference in S-A Rank"))
  
-PNC_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/fig5_fig6_spintests/fig5_pspin_absdiff.csv")
-HCPD_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/fig5_fig6_spintests/fig5_pspin_absdiff.csv")
-HBN_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/fig5_fig6_spintests/fig5_pspin_absdiff.csv")
+PNC_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/PNC/fig6_fig7_spintests/fig6_pspin_absdiff.csv")
+HCPD_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/fig6_fig7_spintests/fig6_pspin_absdiff.csv")
+HBN_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/fig6_fig7_spintests/fig6_pspin_absdiff.csv")
 
 diffs_plot_PNC <- plot_diffs("PNC", p_label = bquote(italic(p[spin]) == .(format(PNC_delta_p$p.perm, scientific = FALSE))), legend_position = "none", labels = NULL)
-diffs_plot_HCPD <- plot_diffs("HCPD", p_label = bquote(italic(p[spin]) == .(format(HCPD_delta_p$p.perm, scientific = FALSE))), legend_position = "none", labels = NULL)
-diffs_plot_HBN <- plot_diffs("HBN", p_label = bquote(italic(p[spin]) == .(format(HBN_delta_p$p.perm, scientific = FALSE))), legend_position = "none", labels = NULL)
+diffs_plot_HCPD <- plot_diffs("HCPD", p_label = bquote(italic(p[spin]) == .(format(round(HCPD_delta_p$p.perm, 4), scientific = FALSE))), legend_position = "none", labels = NULL)
+diffs_plot_HBN <- plot_diffs("HBN", p_label = bquote(italic(p[spin]) == .(format(round(HBN_delta_p$p.perm, 2), scientific = FALSE))), legend_position = "none", labels = NULL)
 diffs_plot_PNC_legend <- plot_diffs("PNC", p_label = bquote(italic(p[spin]) == "N.S."), legend_position = "right") # just need the legend
 
 diffs_plot_final <- plot_grid(diffs_plot_PNC, diffs_plot_HCPD, diffs_plot_HBN, ncol = 3)
@@ -649,7 +993,6 @@ y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)
 # callosum motor = 52
 
 ```
-
 
 ```{r, compute mean diffs avg across datasets, fig.height = 6, fig.width = 15}
 lh_combined_df <- bind_rows(lh_all_endpoints_PNC %>% mutate(dataset = "PNC"),
@@ -678,9 +1021,9 @@ diffs_avg_datasets <- diffs_avg_datasets %>% mutate(group = ifelse(str_detect(bu
 diffs_avg_datasets$group <- factor(diffs_avg_datasets$group, levels = c("Small Difference\n in S-A Rank", "Large Difference\n in S-A Rank"))
  
  
-across_datasets_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/avgdatasets/fig5_fig6_spintests/fig5_pspin_absdiff.csv") 
+across_datasets_delta_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/fig6_fig7_spintests/fig6_pspin_absdiff.csv") 
   
-diffs_plot_avg <- plot_diffs("avg_datasets", p_label = bquote(italic(p[spin]) == .(format(across_datasets_delta_p$p.perm, scientific = FALSE))), legend_position = "none") + labs(title = "Average Across Datasets") 
+diffs_plot_avg <- plot_diffs("avg_datasets", p_label = bquote(italic(p[spin]) == .(format(round(across_datasets_delta_p$p.perm, 4), scientific = FALSE))), legend_position = "none") + labs(title = "Average Across Datasets") 
 diffs_plot_PNC_legend <- plot_diffs("PNC", p_label = bquote(italic(p[spin]) == "N.S."), legend_position = "right") # just need the legend
 diffs_plot_final <- plot_grid(diffs_plot_PNC, diffs_plot_HCPD, diffs_plot_HBN, diffs_plot_avg, ncol = 4)
 
@@ -689,8 +1032,8 @@ x.grob <- textGrob("Difference in Mean Sensorimotor-Association Rank Between End
 y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)", 
                    gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob))
-#ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets.svg"), grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets.png"), grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets.svg"), grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets.png"), grid.arrange(arrangeGrob(diffs_plot_final, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
 
 # save a version with labels
  
@@ -707,8 +1050,8 @@ y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)
                    gp=gpar(col="black", fontsize=20), rot=90)
 #grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob))
 
-#ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets_labels.svg"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
-#ggsave(paste0(fig_dir, "fig5_delta_delta_with_avgdatasets_labels.png"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets_labels.svg"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
+#ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets_labels.png"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
 
 ```
 
@@ -753,9 +1096,13 @@ map_CMotR_mean <- plot_SA_surface("CMotR", merged_CMotR_mean, position = "latera
 map_CMot <- ggarrange(map_CMotL_mean, map_CMotR_mean, ncol = 2)
 map_CMot_final <- ggarrange(map_CMot, legend, nrow = 2, heights = c(1, 0.3))
 map_CMot_final
-#ggsave(paste0(fig_dir, "fig5_CMot_SArank.svg"), map_CMot_final, height = 4, width = 10, units = "in")
-#ggsave(paste0(fig_dir, "fig5_CMot_SArank.png"), map_CMot_final, height = 4, width = 10, units = "in")
+#ggsave(paste0(fig_dir, "fig6_CMot_SArank.svg"), map_CMot_final, height = 4, width = 10, units = "in")
+#ggsave(paste0(fig_dir, "fig6_CMot_SArank.png"), map_CMot_final, height = 4, width = 10, units = "in")
 
+
+#merged_CMotL_mean %>% arrange(SA.axis_rank)
+#merged_CMotR_mean %>% arrange(SA.axis_rank)
+# diff = 0.8
 ```
 
 ```{r IFO SA rank on cortex, fig.height = 5, fig.width = 10}
@@ -781,14 +1128,29 @@ map_IFO <- ggarrange(map_IFOL_mean, map_IFOR_mean, ncol = 2)
 map_IFO_final <- ggarrange(map_IFO, legend, nrow = 2, heights = c(1, 0.3))
 map_IFO_final
 
-#ggsave(paste0(fig_dir, "fig5_IFO_SArank.svg"), map_IFO_final, height = 4, width = 10, units = "in")
-#ggsave(paste0(fig_dir, "fig5_SA_legend.svg"), plot_legend, height = 4, width = 10, units = "in")
 
-#ggsave(paste0(fig_dir, "fig5_IFO_SArank.png"), map_IFO_final, height = 4, width = 10, units = "in")
-#ggsave(paste0(fig_dir, "fig5_SA_legend.png"), plot_legend, height = 4, width = 10, units = "in")
+
+#merged_IFOL_mean %>%
+#  filter(end %in% c("end1", "end2")) %>%
+#  distinct(end, SA.axis_rank) %>%
+#  pivot_wider(names_from = end, values_from = SA.axis_rank) %>%
+#  mutate(difference = end2 - end1) # left difference: 208.372
+
+
+#merged_IFOR_mean %>%
+#  filter(end %in% c("end1", "end2")) %>%
+#  distinct(end, SA.axis_rank) %>%
+#  pivot_wider(names_from = end, values_from = SA.axis_rank) %>%
+#  mutate(difference = end2 - end1) # right difference: 237.5972
+
+#ggsave(paste0(fig_dir, "fig6_IFO_SArank.svg"), map_IFO_final, height = 4, width = 10, units = "in")
+#ggsave(paste0(fig_dir, "fig6_SA_legend.svg"), plot_legend, height = 4, width = 10, units = "in")
+
+#ggsave(paste0(fig_dir, "fig6_IFO_SArank.png"), map_IFO_final, height = 4, width = 10, units = "in")
+#ggsave(paste0(fig_dir, "fig6_SA_legend.png"), plot_legend, height = 4, width = 10, units = "in")
 ```
 
-# Figure 6: Development of superficial tract regions is associated with the cortical hierarchy
+# Figure 7: Development of superficial tract regions is associated with the cortical hierarchy
 average age of maturation map across tracts, across datasets
 ```{r avg age of mat across all dataset, fig.height = 3, fig.width = 8}
 lh_PNC_merge <- lh_by_region_PNC %>% rename(PNC_mean_ageeffect = regional_mean_ageeffect)
@@ -812,8 +1174,8 @@ rh_all_datasets_ageMat <- rh_all_datasets_ageMat %>% # right hemi age of maturat
 aggregated_age_mat_plot <- plot_aggregated_maps(lh_all_datasets_ageMat, rh_all_datasets_ageMat, ylim1 = 15, ylim2 = 23.5, dataset = "Aggregated Age of Maturation Map Across Datasets")
 aggregated_age_mat_plot
 
-#ggsave(paste0(fig_dir, "fig6_aggregated_age_mat.svg"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
-#ggsave(paste0(fig_dir, "fig6_aggregated_age_mat.png"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
+#ggsave(paste0(fig_dir, "fig7_aggregated_age_mat.svg"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
+#ggsave(paste0(fig_dir, "fig7_aggregated_age_mat.png"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
 
 ```
 
@@ -862,24 +1224,25 @@ aggregated_axis_avgdatasets_binary <- right_join(aggregated_axis_avgdatasets, gl
 max_value <- max(aggregated_axis_avgdatasets_binary$regional_mean_ageeffect, na.rm = TRUE)
 aggregated_axis_avgdatasets_binary$regional_mean_ageeffect[aggregated_axis_avgdatasets_binary$regional_mean_ageeffect == max_value] <- NA
 
-PNC_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/fig5_fig6_spintests/fig6_pearsons_pspin.csv")
-HCPD_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/fig5_fig6_spintests/fig6_pearsons_pspin.csv")
-HBN_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/fig5_fig6_spintests/fig6_pearsons_pspin.csv")
+PNC_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/PNC/fig6_fig7_spintests/fig7_pearsons_pspin.csv")
+HCPD_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/fig6_fig7_spintests/fig7_pearsons_pspin.csv")
+HBN_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/fig6_fig7_spintests/fig7_pearsons_pspin.csv")
 
-PNC_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/PNC/fig5_fig6_spintests/fig6_ttest_pspin.csv")
-HCPD_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HCPD/fig5_fig6_spintests/fig6_ttest_pspin.csv")
-HBN_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/HBN/fig5_fig6_spintests/fig6_ttest_pspin.csv")
+PNC_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/PNC/fig6_fig7_spintests/fig7_ttest_pspin.csv")
+HCPD_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HCPD/fig6_fig7_spintests/fig7_ttest_pspin.csv")
+HBN_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/fig6_fig7_spintests/fig7_ttest_pspin.csv")
 
-avgdatasets_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/avgdatasets/fig5_fig6_spintests/fig6_pearsons_pspin_avgdatasets.csv")
-avgdatasets_ttest_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/output/avgdatasets/fig5_fig6_spintests/fig6_ttest_pspin_avgdatasets.csv")
+avgdatasets_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/fig6_fig7_spintests/fig7_pearsons_pspin_avgdatasets.csv")
+avgdatasets_ttest_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/fig6_fig7_spintests/fig7_ttest_pspin_avgdatasets.csv")
 
 ```
 
 ```{r SA by age of mat parcel plot, fig.height = 5, fig.width = 18}
 # remember, this data is using bin = 5 (5 nodes at each end, after clipping 5 nodes already)
-annot_text_PNC <- bquote(paste(italic("r"), " = ", .(round(PNC_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]) == .(format(PNC_parcelSA_cor$p.perm, scientific = FALSE))))
-annot_text_HCPD <-  bquote(paste(italic("r"), " = ", .(round(HCPD_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001")) # pval = 0
-annot_text_HBN <- bquote(paste(italic("r"), " = ", .(round(HBN_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]) == .(format(HBN_parcelSA_cor$p.perm, scientific = FALSE))))
+annot_text_PNC <- bquote(paste(italic("r"), " = ", .(round(PNC_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))
+annot_text_HCPD <-  bquote(paste(italic("r"), " = ", .(round(HCPD_parcelSA_cor$rho.emp, 2)), ", ", italic(p[spin]) == .(format(round(HCPD_parcelSA_cor$p.perm, 4), scientific = FALSE)))) # pval = 0
+
+annot_text_HBN <- bquote(paste(italic("r"), " = ", .(round(HBN_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))
 annot_text_avgdatasets <-  bquote(paste(italic("r"), " = ", .(round(avgdatasets_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001")) # pval = 0
 
 agg_SA_parcel_PNC <- plot_agg_SA_parcel("PNC", annot_text_PNC)
@@ -892,20 +1255,20 @@ x.grob <- textGrob("S-A Axis Rank", gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Age of Maturation (Years)", gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob))
 
-#ggsave(paste0(fig_dir, "fig6_pearsons.svg"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
-#ggsave(paste0(fig_dir, "fig6_pearsons.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
+##ggsave(paste0(fig_dir, "fig7_pearsons.svg"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
+##ggsave(paste0(fig_dir, "fig7_pearsons.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
 
 ```
 
 
-```{r print fig 6 perasons table}
+```{r print fig 7 perasons table}
 PNC_parcelSA_cor <- PNC_parcelSA_cor %>% mutate(Dataset = "PNC")
 HCPD_parcelSA_cor <- HCPD_parcelSA_cor %>% mutate(Dataset = "HCPD")
 HBN_parcelSA_cor <- HBN_parcelSA_cor %>% mutate(Dataset = "HBN")
 
 avgdatasets_parcelSA_cor <- avgdatasets_parcelSA_cor %>% mutate(Dataset = "Average Across Datasets")
 
-kbl(rbind(PNC_parcelSA_cor, HCPD_parcelSA_cor, HBN_parcelSA_cor, avgdatasets_parcelSA_cor), align = "lccrr", caption = "Pearson's correlations and p_spin for Fig. 6") %>%
+kbl(rbind(PNC_parcelSA_cor, HCPD_parcelSA_cor, HBN_parcelSA_cor, avgdatasets_parcelSA_cor), align = "lccrr", caption = "Pearson's correlations and p_spin for Fig. 7") %>%
   kable_styling(bootstrap_options = "striped", full_width = F, position = "left") 
 ```
 

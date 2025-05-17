@@ -25,13 +25,17 @@ for dataset in ["HBN"]:
     ########################################
     # Set directories
     ########################################
-    data_root = f"/cbica/projects/luo_wm_dev/input/{dataset}/derivatives/tract_profiles_ACT"  
-    if not os.path.exists(ospj(data_root, "all_subjects", "ACT_noUF")):
-        os.makedirs(ospj(data_root, "all_subjects", "ACT_noUF"))
+    config_file = f"/cbica/projects/luo_wm_dev/two_axes/code/config/config_{dataset}.json"
+    with open(config_file, "rb") as f:
+        config = json.load(f)
+
+    data_root = f"/cbica/projects/luo_wm_dev/input/{dataset}/derivatives/tract_profiles_ACT_v2"  
+    if not os.path.exists(ospj(data_root, "all_subjects")):
+        os.makedirs(ospj(data_root, "all_subjects"))
         print(f"all_subjects created")
     else:
         print(f"all_subjects already exists.")
-    sample_selection_dir = ospj(data_root, "sample_selection_files")
+    sample_selection_dir = ospj(config['data_root'], "sample_selection_files")
 
     ########################################
     # Reformat tract profiles
@@ -49,7 +53,7 @@ for dataset in ["HBN"]:
         sub_dir = os.path.join(data_root, sub)
         if os.path.isdir(sub_dir) and sub != "all_subjects":
             for filename in os.listdir(sub_dir):
-                if filename.endswith("profiles_dwi.csv"):
+                if filename.endswith("profiles_tractography.csv"):
                     filepath = os.path.join(sub_dir, filename)
                     df = pd.read_csv(filepath)
                     # check for rows with NaNs
@@ -73,10 +77,10 @@ for dataset in ["HBN"]:
              
     # save out collated tract profiles (subjects missing data are NOT included in this)
     all_tract_profiles = all_tract_profiles.iloc[:, :-1]
-    all_tract_profiles.to_csv(f'{data_root}/all_subjects/ACT_noUF/collated_tract_profiles_nocovbat_unc_cc.tsv', index=False)
+    all_tract_profiles.to_csv(f'{data_root}/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv', index=False)
 
     missing_tract_profiles = missing_tract_profiles.iloc[:, :-1]
-    missing_tract_profiles.to_csv(f'{data_root}/all_subjects/ACT_noUF/missing_tract_profiles_nocovbat_ACT_noUF.tsv', index=False)
+    missing_tract_profiles.to_csv(f'{data_root}/all_subjects/missing_tract_profiles_nocovbat.tsv', index=False)
     
     # save the rows with NaNs for each subject to a text file
     with open(os.path.join(sample_selection_dir, 'subs_with_nans.txt'), 'w') as f:

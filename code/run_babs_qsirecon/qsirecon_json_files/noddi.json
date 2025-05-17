@@ -1,0 +1,34 @@
+{ "description": "Runs the AMICO implementation of NODDI",
+  "space": "T1w",
+  "name": "amico_noddi",
+  "atlases": [],
+  "nodes": [
+    {
+      "name": "fit_noddi_wm",
+      "action": "fit_noddi",
+      "software": "AMICO",
+      "input": "qsiprep",
+      "qsirecon_suffix": "wmNODDI",
+      "parameters": {
+        "isExvivo": false,
+        "dPar": 1.7E-3,
+        "dIso": 3.0E-3
+      }
+    },
+    {
+      "name": "fit_noddi_gm",
+      "action": "fit_noddi",
+      "software": "AMICO",
+      "input": "qsiprep",
+      "qsirecon_suffix": "gmNODDI",
+      "parameters": {
+        "isExvivo": false,
+        "dPar": 1.1E-3,
+        "dIso": 3.0E-3
+      }
+
+    }
+  ]
+}
+
+ 

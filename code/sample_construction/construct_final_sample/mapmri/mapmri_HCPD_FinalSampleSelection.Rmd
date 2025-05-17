@@ -1,0 +1,146 @@
+---
+title: "HCPD Final Sample Selection for mapmri"
+author: "Audrey Luo"
+output:
+  html_document:
+    code_folding: show
+    highlight: haddock
+    theme: lumen
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(data.table)
+library(dplyr)
+library(purrr)
+library(rjson)
+library(stringr)
+library(tidyr)
+```
+
+
+## Load initial sample list
+```{r}
+sub_id <- read.table("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/subject_list/HCPD_subject_list_babs.txt", header = T)
+demographics.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/HCPD_WMDev_TempSampleDemographics_N572_age8to22.csv")
+dwi.qc.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/HCPD_WMDev_TempSampleQCMetrics_N572_age8to22.csv")
+```
+
+## Incomplete Data Processing Exclusion
+- this is for babs_mapmri
+```{r}
+missing_recon <- read.csv('/cbica/projects/luo_wm_dev/input/HCPD/derivatives/mapmri/missing_files_HCPD.csv')
+ 
+missing_TORTOISE <- missing_recon %>% filter(str_detect(missing_file, "TORTOISE")) 
+
+sub_id <- sub_id[!sub_id$sub_id %in% unique(missing_TORTOISE$subject),] %>% as.data.frame() %>% setNames("sub_id") # no subjects missing tortoise
+
+# subjects that don't have pyAFQ
+fail_qsirecon <- read.table(paste0("/cbica/projects/luo_wm_dev/input/HCPD/sample_selection_files/failed_qsirecon.txt"), sep = ",")
+sub_id <- sub_id[!sub_id$sub_id %in% fail_qsirecon$V1,] %>% as.data.frame() %>% setNames("sub_id") #remove 3 participants from the sample of 572 due to failure to complete pyAFQ, final N = 569
+
+# no subjects are missing freesurfer
+
+```
+ 
+
+Note that there are some bundles that are OKAY if they are missing because we are excluding some from analyses:
+- cingulum cingulate
+- anterior thalamic radiation
+```{r}
+# load the tract profiles of subjects who are missing at least 1 tract
+missing_tracts <- fread("/cbica/projects/luo_wm_dev/input/HCPD/derivatives/mapmri/all_subjects/missing_tract_profiles_nocovbat.tsv")
+# load full tract profiles of everyone (except for the subjects in missing_tracts)
+HCPD_all <- fread("/cbica/projects/luo_wm_dev/input/HCPD/derivatives/mapmri/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv") # takes a while to load
+required_tracts <- unique(HCPD_all$tractID)
+
+failed_recon_other <- setdiff(sub_id$sub_id,unique(HCPD_all$sub)) # some subjects may have failed pyAFQ  
+
+sub_id <- sub_id[!sub_id$sub_id %in% failed_recon_other,] %>% as.data.frame() %>% setNames("sub_id") # remove 2 additional subjects that are missing recon, final N = 567
+
+
+##########################
+# missing tract exclusion
+##########################
+# it's okay if a participant is missing these tracts
+allowed_missing_tracts <- c("Cingulate", "AnteriorThalamic") # note NO space here for noddi and tortoise
+
+# summarize tracts present for each subject
+tract_summary <- missing_tracts %>%
+  distinct(sub, tractID) %>%
+  group_by(sub) %>%
+  summarize(tracts_present = list(tractID), .groups = "drop")
+
+# identify missing tracts for each subject
+subjects_missing_tracts <- tract_summary %>%
+  mutate(missing_tracts = map(tracts_present, ~ setdiff(required_tracts, .x))) %>%
+  select(sub, missing_tracts)
+ 
+# have one row per missing tract
+missing_tracts_long <- subjects_missing_tracts %>%
+  unnest(cols = c(missing_tracts))
+
+missing_tracts_count <- missing_tracts_long %>%
+  group_by(missing_tracts) %>%  # Group by missing tracts
+  summarise(count = n()) 
+
+# identify subjects to exclude
+# A subject should be excluded if they are missing any REQUIRED tracts (aka tracts not in "allowed_missing_tracts")
+# determine the subjects are missing needed tracts  
+unacceptable_missing_tracts <- missing_tracts_long %>%
+  filter(!str_detect(missing_tracts, paste(allowed_missing_tracts, collapse = "|")))
+
+# get unique subjects who have any unacceptable missing tracts
+subjects_to_exclude <- unacceptable_missing_tracts %>%
+  distinct(sub)
+
+# count the number of excluded subjects
+num_excluded_subjects <- nrow(subjects_to_exclude)
+
+write.table(subjects_to_exclude, "/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/mapmri_subs_missing_tracts.txt", col.names=T, row.names=F, quote = TRUE)
+
+sub_id <- sub_id[!sub_id$sub_id %in% subjects_to_exclude$sub,] %>% as.data.frame() %>% setNames("sub_id") # remove 0 participants
+```
+
+```{r}
+# add back subjects that are missing non-important tracts. save HCPD tract profiles
+# Identify subjects missing only non-essential tracts (tracts in allowed_missing_tracts)
+# = identify subjects who are not in the exclusion list
+subjects_with_allowed_missing_tracts <- missing_tracts_long %>%
+  filter(sub %notin% subjects_to_exclude$sub) %>%
+  filter(str_detect(missing_tracts, paste(allowed_missing_tracts, collapse = "|"))) # remove 1 subject that was missing data
+
+# get sub ids
+subjects_with_allowed_missing_tracts <- subjects_with_allowed_missing_tracts %>%
+  distinct(sub)
+
+# add these subjects' data back to the full tract profiles data (should be 0 participants added back)
+HCPD_all_with_allowed <- HCPD_all 
+
+# remove the tracts we don't need
+HCPD_all_with_allowed <- HCPD_all_with_allowed %>% filter(!str_detect(tractID, paste(allowed_missing_tracts, collapse = "|")))
+
+write.table(HCPD_all_with_allowed, "/cbica/projects/luo_wm_dev/input/HCPD/derivatives/mapmri/all_subjects/collated_tract_profiles_nocovbat.tsv", row.names = FALSE) # N = 567
+```
+## Save Final Sample: Subject List, Demographics, QC measures
+```{r}
+# Make final sample demographics dataframe
+demographics.final <- demographics.temp[demographics.temp$sub %in% sub_id$sub_id,] %>% select(sub, age, sex, race, site) # combine demographics data 
+ 
+# Make final sample QC metrics dataframe 
+dwi.qc.final <- dwi.qc.temp[dwi.qc.temp$sub %in% sub_id$sub_id,] %>% select(sub, mean_fd, t1_neighbor_corr) 
+
+write.table(sub_id, "/cbica/projects/luo_wm_dev/two_axes/input/HCPD/subject_list/final_sample/HCPD_WMDev_FinalSample_mapmri.txt", col.names=T, row.names=F, quote = TRUE)
+write.csv(merge(demographics.final, dwi.qc.final), "/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/final_sample/HCPD_WMDev_FinalSampleDemoQC_mapmri.csv", quote = F, row.names = F)
+```
+
+## Demographics table
+```{r}
+final_sample <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/final_sample/HCPD_WMDev_FinalSampleDemoQC_mapmri.csv", header=T)
+main_sample <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/final_sample/HCPD_WMDev_FinalSampleDemoQC.csv", header=T)
+identical(final_sample$sub, main_sample$sub) # same sample as for mean diffusivity
+```
+

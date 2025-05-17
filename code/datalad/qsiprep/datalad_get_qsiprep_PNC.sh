@@ -5,14 +5,14 @@
 #SBATCH --mem=1G
 #SBATCH --time=12:00:00
 #SBATCH --propagate=NONE
-#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/PNC/qsiprep_%j.out
-#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/PNC/qsiprep_%j.err
+#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/PNC/qsiprep_%j.out
+#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/PNC/qsiprep_%j.err
 
 cd /cbica/projects/luo_wm_dev/input/PNC/raw/datalad_qsiprep
 missing_files=$(git annex find --not --in here)
 
 # in case missing qsiprep outputs
-no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes_manuscript/input/PNC/sample_selection_files/missing_qsiprep.txt"
+no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes/input/PNC/sample_selection_files/missing_qsiprep.txt"
 > $no_zip_file_list
 
 while IFS= read -r participant; do
@@ -24,7 +24,7 @@ while IFS= read -r participant; do
         echo "${participant}'s needs to be gotten. Attempting to download..."
         datalad get "$zip_file_pattern"
     fi
-done < /cbica/projects/luo_wm_dev/two_axes_manuscript/input/PNC/subject_list/PNC_subject_list_babs.txt
+done < /cbica/projects/luo_wm_dev/two_axes/input/PNC/subject_list/PNC_subject_list_babs.txt
 
 echo "Participants with no zip file have been logged in: $no_zip_file_list"
 

@@ -5,10 +5,10 @@ datasets=( "PNC" "HCPD" "HBN")
 # submit this with ./a00_wrapper_make_tdi.sh
 
 for dataset in "${datasets[@]}"; do
-    config_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_${dataset}.json"
+    config_file="/cbica/projects/luo_wm_dev/two_axes/code/config/config_${dataset}.json"
     
     # where to save output and error logs
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/tract_to_cortex/a_make_tdi/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/tract_to_cortex/a_make_tdi/${dataset}"
     if [ ! -d "${logs_dir}" ]; then
         mkdir -p ${logs_dir}
     fi
@@ -19,9 +19,9 @@ for dataset in "${datasets[@]}"; do
     qsiprep_dir="${data_root}/raw/datalad_qsiprep"
     
     if [ "${dataset}" = "HBN" ]; then
-        pyafq_dir="${data_root}/derivatives/babs_qsirecon_pyafq_allsubs_noACT/merge_ds"
+        pyafq_dir="${data_root}/derivatives/babs_qsirecon_pyafq_allsubs_noACT_v2/merge_ds"
     else
-        pyafq_dir="${data_root}/derivatives/babs_qsirecon_pyafq_act/merge_ds"
+        pyafq_dir="${data_root}/derivatives/babs_qsirecon_pyafq_act_v2/merge_ds"
     fi
 
     # subjects file

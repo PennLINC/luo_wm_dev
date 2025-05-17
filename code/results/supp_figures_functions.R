@@ -97,64 +97,8 @@ make_summary_dfs <- function(scalar, dataset_name, df) {
   assign(summary_dataset_scalar, summary_data, envir = .GlobalEnv)
 }
 
-############################################################################
-# Supplementary Figure 3. Age effect plots for fractional anisotropy (FA).
-############################################################################
-# functions for arranging different tracts into 1 big plot (exluding lollipop plots)
-## callosum
-arrange_callosum_plots_nolollipop <- function(list_figures, title) {
-  callosum1_plots <- ggarrange(list_figures$`Callosum Orbital` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Orbital", size = 20, y = 0.2, hjust = 1), 
-                               list_figures$`Callosum Anterior Frontal` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Anterior Frontal", size = 20, y = 0.2, hjust = 1),  
-                               list_figures$`Callosum Superior Frontal`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Superior Frontal", size = 20, y = 0.2, hjust = 1), 
-                               list_figures$`Callosum Motor`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Motor", size = 20, y = 0.2, hjust = 1), ncol = 4, nrow = 1)  
-  callosum1_plots <- plot_grid(ggdraw() + draw_label(expression("Age Effect (|" * Delta * " Adjusted " * R^2 * "|)"), size = 20, vjust = 0.5, hjust = 0.4, angle = 90), 
-                               callosum1_plots, rel_widths = c(0.02, 1))
-  callosum1_plots <- annotate_figure(callosum1_plots, bottom = text_grob("", color = "black", size = 20, hjust = 0.3))
-  
-  
-  
-  callosum2_plots <- ggarrange(list_figures$`Callosum Superior Parietal`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Superior Parietal", size = 20, y = 0.2, hjust = 1), 
-                               list_figures$`Callosum Posterior Parietal`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Posterior Parietal", size = 20, y = 0.2, hjust = 1), 
-                               list_figures$`Callosum Temporal`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Temporal", size = 20, y = 0.2, hjust = 1), 
-                               list_figures$`Callosum Occipital`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Callosum Occipital", size = 20, y = 0.2, hjust = 1),  ncol = 4, nrow = 1)  
-  callosum2_plots <- plot_grid(ggdraw() + draw_label(expression("Age Effect (|" * Delta * " Adjusted " * R^2 * "|)"), size = 20, vjust = 0.5, hjust = 0.4, angle = 90), 
-                               callosum2_plots, rel_widths = c(0.02, 1))
-  callosum2_plots <- annotate_figure(callosum2_plots, bottom = text_grob("Position on Tract (Node ID)", color = "black", size = 20, hjust = 0.3))
-  
-  callosum_plot_final <- ggarrange(callosum1_plots, callosum2_plots, nrow = 2) + bgcolor("white")  
-  return(callosum_plot_final)
-}
-
-# association FA plots
-arrange_association_plots_nolollipop <- function(list_figures) {
-  AP_plots <- ggarrange(list_figures$`Arcuate` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Arcuate", size = 18, y = 0.2, hjust = 0.5),
-                        list_figures$`Inferior Fronto-occipital`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Inferior Fronto-occipital", size = 18, y = 0.2, hjust = 0.5), 
-                        list_figures$`Inferior Longitudinal`+ theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Inferior Longitudinal", size = 18, y = 0.2, hjust = 0.5), 
-                        list_figures$`Superior Longitudinal` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Superior Longitudinal", size = 18, y = 0.2, hjust = 0.5), ncol = 4, nrow = 1)
-  AP_plots <- plot_grid(ggdraw() + draw_label(expression("Age Effect (|" * Delta * " Adjusted " * R^2 * "|)"), size = 18, vjust = 0.5, hjust = 0.4, angle = 90), 
-                        AP_plots, rel_widths = c(0.02, 1))
-  AP_plots_final <- annotate_figure(AP_plots, top = text_grob("Anterior - Posterior", 
-                                                              color = "black", face = "bold", size = 18, hjust = 0.4, vjust = 0.2), 
-                                    bottom = text_grob("", color = "black", size = 18, hjust = 0.3))
-  
-  blank_plot <- ggdraw() + theme_void()
-  SI_plots <- ggarrange(list_figures$`Posterior Arcuate` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Posterior Arcuate", size = 18, y = 0.2, hjust = 0.5), 
-                        list_figures$`Uncinate` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Uncinate", size = 18, y = 0.2, hjust = 0.5),
-                        list_figures$`Vertical Occipital` + theme(legend.position = "none", plot.margin = unit(c(0, 0, 0.5, 0.5), "cm")) + labs(title = "Vertical Occipital", size = 18, y = 0.2, hjust = 0.5),
-                        blank_plot, 
-                        ncol=4, nrow = 1)
-  SI_plots <- plot_grid(ggdraw() + draw_label(expression("Age Effect (|" * Delta * " Adjusted " * R^2 * "|)"), size = 18, vjust = 0.5, hjust = 0.4, angle = 90), 
-                        SI_plots, rel_widths = c(0.02, 1))
-  
-  SI_plots_final <- annotate_figure(SI_plots, top = text_grob("Superior - Inferior", 
-                                                              color = "black", face = "bold", size = 18, hjust = 0.4, vjust = 0.2),
-                                    bottom = text_grob("Position on Tract (Node ID)", color = "black", size = 18, hjust = 0.3))
-  tractprofiles_plot_final <- ggarrange(AP_plots_final, SI_plots_final, nrow = 2) + bgcolor("white") 
-  return(tractprofiles_plot_final) 
-}
-
 ##################################################################################
-# Supplementary Figure 4. Tract-level: age of maturation association with S-A axis.
+# Supplementary Figure 3. Tract-level: age of maturation association with S-A axis.
 ##################################################################################
 plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
   title = gsub("PD", "P-D", dataset) # for HCPD
@@ -179,7 +123,7 @@ plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
         segment.size = 0.5,  # Line thickness
         max.overlaps = Inf 
       )  + 
-      annotate(geom="text", x=180, y=27, label=annot_text, color="black", size=8) + 
+      annotate(geom="text", x=180, y=28, label=annot_text, color="black", size=8) + 
       labs(title = title) + theme_classic() +
       theme(legend.position = "none",
             legend.text = element_text(size = 24),
@@ -187,7 +131,7 @@ plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
             plot.title = element_text(hjust = 0.5, size = 24),
             axis.title = element_blank(),
             axis.text.x = element_text(size = 24),
-            axis.text.y = element_text(size = 24)) + xlim(15, 340) + ylim(13, 27) + guides(shape = guide_legend("Endpoint"), color = FALSE, fill = FALSE) 
+            axis.text.y = element_text(size = 24)) + xlim(15, 340) + ylim(13, 28) + guides(shape = guide_legend("Endpoint"), color = FALSE, fill = FALSE) 
   } else {
     all_endpoints <- get(paste0("all_endpoints_", dataset))
     all_endpoints_binary <- all_endpoints
@@ -212,7 +156,7 @@ plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
         segment.size = 0.5,  # line thickness
         max.overlaps = Inf 
       )  + 
-      annotate(geom="text", x=180, y=27, label=annot_text, color="black", size=8) + 
+      annotate(geom="text", x=180, y=28, label=annot_text, color="black", size=8) + 
       labs(title = title) + theme_classic() +
       theme(legend.position = "none",
             legend.text = element_text(size = 24),
@@ -220,7 +164,7 @@ plot_meanSA_by_age_mat <- function(dataset, annot_text, binary=NULL) {
             plot.title = element_text(hjust = 0.5, size = 24),
             axis.title = element_blank(),
             axis.text.x = element_text(size = 24),
-            axis.text.y = element_text(size = 24)) + xlim(15, 340) + ylim(13, 27) + guides(shape = guide_legend("Endpoint"), color = FALSE, fill = FALSE) 
+            axis.text.y = element_text(size = 24)) + xlim(15, 340) + ylim(13, 28) + guides(shape = guide_legend("Endpoint"), color = FALSE, fill = FALSE) 
     
   }
   

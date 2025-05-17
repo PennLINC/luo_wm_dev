@@ -19,8 +19,8 @@ print(paste("Running NEST for", dataset, tract))
 ################## 
 # Set Directories 
 ################## 
-config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
-demographics <- read.csv(config_data$demo_qc)
+config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes/code/config/config_%1$s.json", dataset))
+demographics <- read.csv('/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv')
 tract_prof_output_root <- config_data$outputs_root
 NEST_outputs_dir <- paste0(tract_prof_output_root, "/NEST/dti_md/")
 
@@ -178,7 +178,7 @@ NEST_wrapper <- function(tract, df, bin_size, nodes_to_clip) {
     seed = 123, 
     what.to.return = "everything"
   )
-  saveRDS(result_onesided, paste0(NEST_outputs_dir,  gsub(" ", "_", gsub("-", "_",tract)), "_bin", bin_size, "_clip", nodes_to_clip, "_1sided.RData"))
+  saveRDS(result_onesided, paste0(NEST_outputs_dir,  gsub(" ", "_", gsub("-", "_",tract)), "_bin", bin_size, "_clip", nodes_to_clip, "_1sided_withACT.RData"))
 
 }
  
@@ -195,11 +195,5 @@ nodes_per_tract <- 100 # nodes per tract (nodeIDs from 0 to 99)
 ################### 
 
 NEST_wrapper(tract, df = df, bin_size = 5, nodes_to_clip = 5)
-
-# sensitivity analyses:
-#NEST_wrapper(tract, df = df, bin_size = 3, nodes_to_clip = 5)
-#NEST_wrapper(tract, df = df, bin_size = 7, nodes_to_clip = 5)
-#NEST_wrapper(tract, df = df, bin_size = 10, nodes_to_clip = 5)
-
 
 

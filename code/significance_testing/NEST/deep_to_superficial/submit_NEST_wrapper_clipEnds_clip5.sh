@@ -13,7 +13,7 @@ tract_count=${#inputarray[@]}
 
 # submit job array for each dataset
 for dataset in "${datasets[@]}"; do
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/NEST/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/NEST/${dataset}"
     mkdir -p ${logs_dir}
 
     sbatch --job-name=NEST_${dataset} \

@@ -1,8 +1,8 @@
 library(dplyr)
 library(parallel)
 library(tidyr)
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/supp_figures_functions.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/results/main_figures_functions.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/results/supp_figures_functions.R")
 
 # Spin tests for supplementary figures: tract-level Pearson's (age of maturation vs. S-A rank), and parcel-level Pearson's
 ## saves out the spun p-values, empirical test statistic, and dof where appropriate in a csv for each dataset
@@ -18,7 +18,7 @@ print(paste("Running spin tests for", dataset))
 # set directories
 ################# 
 data_root <- "/cbica/projects/luo_wm_dev/"
-proj_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
+proj_root <- "/cbica/projects/luo_wm_dev/two_axes/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 

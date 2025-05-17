@@ -5,15 +5,15 @@
 #SBATCH --mem=4G
 #SBATCH --time=12:00:00
 #SBATCH --propagate=NONE
-#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/HCPD/freesurfer_%j.out
-#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/HCPD/freesurfer_%j.err
+#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/HCPD/freesurfer_%j.out
+#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/HCPD/freesurfer_%j.err
 
 cd /cbica/projects/luo_wm_dev/input/HCPD/raw/datalad_freesurfer/inputs/data/
 # datalad get -n .
 missing_files=$(git annex find --not --in here)
 
 # some participants in my list don't have freesurfer outputs
-no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HCPD/sample_selection_files/missing_freesurfer.txt"
+no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes/input/HCPD/sample_selection_files/missing_freesurfer.txt"
 > $no_zip_file_list
 
 while IFS= read -r participant; do
@@ -26,7 +26,7 @@ while IFS= read -r participant; do
         echo "${participant}'s needs to be gotten. Attempting to download..."
         datalad get "$zip_file_pattern"
     fi
-done < /cbica/projects/luo_wm_dev/two_axes_manuscript/input/HCPD/subject_list/HCPD_subject_list_babs.txt
+done < /cbica/projects/luo_wm_dev/two_axes/input/HCPD/subject_list/HCPD_subject_list_babs.txt
 
 echo "Participants with no zip file have been logged in: $no_zip_file_list"
  

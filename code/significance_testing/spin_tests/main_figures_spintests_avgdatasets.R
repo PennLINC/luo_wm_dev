@@ -2,9 +2,9 @@ library(dplyr)
 library(parallel)
 library(purrr)
 library(tidyr)
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/results/main_figures_functions.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/results/main_figures_functions.R")
 
-# Spin tests for Figures 5 and 6
+# Spin tests for Figures 6 and 7
 ## saves out the spun p-values, empirical test statistic, and dof where appropriate in a csv for each dataset
 
 ################## 
@@ -16,11 +16,11 @@ print(paste("Running spin tests for average across datasets"))
 # set directories
 ################# 
 data_root <- "/cbica/projects/luo_wm_dev/"
-proj_root <-   "/cbica/projects/luo_wm_dev/two_axes_manuscript/"
+proj_root <-   "/cbica/projects/luo_wm_dev/two_axes/"
 input_root <- paste0(proj_root, "input")
 output_root <- paste0(proj_root, "output")
 
-output_dir <- paste0(output_root, "/avgdatasets/fig5_fig6_spintests")
+output_dir <- paste0(output_root, "/avgdatasets/fig6_fig7_spintests")
 
 if (!dir.exists(output_dir)) {
   dir.create(output_dir, recursive = T)
@@ -205,7 +205,7 @@ diffs_avg_datasets$group <- factor(diffs_avg_datasets$group, levels = c("Small D
 print(paste("Delta-delta spin test running for average across datasets"))
 across_datasets_delta_p <- perm.sphere.age_map_delta_absdiff(aggregate_age_map = aggregated_axis$regional_mean_ageeffect, perm.id = perm.id.full, dataset = "avg_datasets", tract_names = tract_names, all_endpoints = all_endpoints) 
 across_datasets_delta_p <- as.data.frame(across_datasets_delta_p)
-write.csv(across_datasets_delta_p, paste0(output_dir, "/fig5_pspin_absdiff.csv"), row.names=F)
+write.csv(across_datasets_delta_p, paste0(output_dir, "/fig6_pspin_absdiff.csv"), row.names=F)
 
 
 ########################################################################  
@@ -246,13 +246,13 @@ combined_parcelSA_p <- perm.sphere.p(x = binarized_combined_df$SA.axis_rank, y =
 # save out empirical rho's and spun p-values
 combined_rho.emp <- cor.test(binarized_combined_df$SA.axis_rank, binarized_combined_df$regional_mean_ageeffect, method = "pearson", use = "complete.obs")$estimate # r = 0.53, pspin < 0.0001
 combined_ageMat_SA_p_df <- data.frame(list(p.perm = combined_parcelSA_p, rho.emp = combined_rho.emp), row.names = NULL)
-write.csv(combined_ageMat_SA_p_df, paste0(output_dir, "/fig6_pearsons_pspin_avgdatasets.csv"), row.names=F)
+write.csv(combined_ageMat_SA_p_df, paste0(output_dir, "/fig7_pearsons_pspin_avgdatasets.csv"), row.names=F)
 
 # spin t-test 
 aggregated_axis_avgdatasets_binary <- binarized_combined_df
 
 parcelSA_p_ttest <- perm.sphere.p.ttest(SAaxis = glasser_SAaxis$SA.axis_rank, perm.id = perm.id.full, dataset = "avgdatasets", alternative = "greater", var.equal = FALSE)  
 parcelSA_p_ttest <- as.data.frame(parcelSA_p_ttest)
-write.csv(parcelSA_p_ttest, paste0(output_dir, "/fig6_ttest_pspin_avgdatasets.csv"), row.names=F)
+write.csv(parcelSA_p_ttest, paste0(output_dir, "/fig7_ttest_pspin_avgdatasets.csv"), row.names=F)
 
 print("Script finished!")

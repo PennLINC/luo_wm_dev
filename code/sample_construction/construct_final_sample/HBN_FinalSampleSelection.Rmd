@@ -22,15 +22,15 @@ library(tidyr)
 
 ## Load initial sample list
 ```{r}
-sub_id <- read.table("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/HBN_subject_list_babs.txt", header = T)
-demographics.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_TempSampleDemographics_N1101_age5to22.csv")
-dwi.qc.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_TempSampleQCMetrics_N1101_age5to22.csv")
+sub_id <- read.table("/cbica/projects/luo_wm_dev/two_axes/input/HBN/subject_list/HBN_subject_list_babs.txt", header = T)
+demographics.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/HBN_WMDev_TempSampleDemographics_N1101_age5to22.csv")
+dwi.qc.temp <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/HBN_WMDev_TempSampleQCMetrics_N1101_age5to22.csv")
 ```
 
 ## Incomplete Data Processing Exclusion
 ```{r}
-# this txt file was made with awk -F, '$8 == "True" { print $1 }' job_status.csv > ~/input/HBN/sample_selection_files/subs_failed_babs_noACT.txt
-failed_babs <- read.table("/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/subs_failed_babs_noACT.txt", header=F) # these subjects are already excluded in collated_tract_profiles_nocovbat_tmp.tsv below. But just wanted to look at who failed babs
+# this txt file was made with awk -F, '$8 == "True" { print $1 }' job_status.csv > ~/two_axes/input/HBN/sample_selection_files/subs_failed_babs_noACT.txt
+failed_babs <- read.table("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/subs_failed_babs_noACT.txt", header=F) # these subjects are already excluded in collated_tract_profiles_nocovbat_tmp.tsv below. But just wanted to look at who failed babs
 
 # load subjects missing Freesurfer data (need this data for tract-to-cortex mapping)
 missing_freesurfer <- read.table("/cbica/projects/luo_wm_dev/input/HBN/sample_selection_files/missing_freesurfer.txt", header=T)
@@ -45,9 +45,9 @@ Note that there are some bundles that are OKAY if they are missing because we ar
 - anterior thalamic radiation
 ```{r}
 # load the tract profiles of subjects who are missing at least 1 tract
-missing_tracts <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles/all_subjects/missing_tract_profiles_nocovbat.tsv")
+missing_tracts <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_v2/all_subjects/missing_tract_profiles_nocovbat.tsv")
 # load full tract profiles of everyone (except for the subjects in missing_tracts)
-HBN_all <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv") # takes a while to load
+HBN_all <- fread("/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_v2/all_subjects/collated_tract_profiles_nocovbat_tmp.tsv") # takes a while to load
 required_tracts <- unique(HBN_all$tractID)
 
 ##########################
@@ -89,9 +89,9 @@ subjects_to_exclude <- unacceptable_missing_tracts %>%
 num_excluded_subjects <- nrow(subjects_to_exclude)
 cat("Number of subjects excluded:", num_excluded_subjects, "\n")
 
-write.table(subjects_to_exclude, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/subs_missing_tracts_noACT.txt", col.names=T, row.names=F, quote = TRUE)
+write.table(subjects_to_exclude, "/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/subs_missing_tracts_noACT.txt", col.names=T, row.names=F, quote = TRUE)
 
-sub_id <- sub_id[!sub_id$sub_id %in% subjects_to_exclude$sub,] %>% as.data.frame() %>% setNames("sub_id") # N = 1086
+sub_id <- sub_id[!sub_id$sub_id %in% subjects_to_exclude$sub,] %>% as.data.frame() %>% setNames("sub_id") # N = 1090
 
 ```
 
@@ -117,9 +117,9 @@ HBN_all_with_allowed <- HBN_all_with_allowed %>% filter(!str_detect(tractID, pas
 # remove those missing freesurfer files (these subjects were NOT already excluded when running qsiprep/qsirecon, unlike HCP-D and PNC since those two used ACT)
 HBN_all_with_allowed <- HBN_all_with_allowed %>% filter(!sub %in% missing_freesurfer$sub_id)
  
-length(unique(HBN_all_with_allowed$sub)) # final N = 1041. Excluded 60 subjects for missing babs, freesurfer, and missing required tracts 
+length(unique(HBN_all_with_allowed$sub)) # final N = 1051. Excluded 50 subjects for missing babs, freesurfer, and missing required tracts 
 
-write.table(HBN_all_with_allowed, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/derivatives/tract_profiles/all_subjects/collated_tract_profiles_nocovbat.tsv", row.names = FALSE)
+write.table(HBN_all_with_allowed, "/cbica/projects/luo_wm_dev/input/HBN/derivatives/tract_profiles_v2/all_subjects/collated_tract_profiles_nocovbat.tsv", row.names = FALSE)
 
 sub_id <- data.frame(unique(HBN_all_with_allowed$sub)) %>% setNames("sub_id")
 ```
@@ -132,13 +132,13 @@ demographics.final<- demographics.temp[demographics.temp$sub %in% sub_id$sub_id,
 # Make final sample QC metrics dataframe 
 dwi.qc.final <- dwi.qc.temp[dwi.qc.temp$sub %in% sub_id$sub_id,] %>% select(sub, mean_fd, t1_neighbor_corr) 
 
-write.table(sub_id, "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/final_sample/HBN_WMDev_FinalSample.txt", col.names=T, row.names=F, quote = TRUE)
-write.csv(merge(demographics.final, dwi.qc.final), "/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv", quote = F, row.names = F)
+write.table(sub_id, "/cbica/projects/luo_wm_dev/two_axes/input/HBN/subject_list/final_sample/HBN_WMDev_FinalSample.txt", col.names=T, row.names=F, quote = TRUE)
+write.csv(merge(demographics.final, dwi.qc.final), "/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv", quote = F, row.names = F)
 ```
 
 ## Demographics table
 ```{r}
-final_sample <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv", header=T)
+final_sample <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/final_sample/HBN_WMDev_FinalSampleDemoQC.csv", header=T)
 
 # demographic variables to summarize
 demo_vars <- c("sex", "race")

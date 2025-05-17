@@ -7,7 +7,7 @@
 # Set directories
 ########################################
 dataset="PNC"
-config_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_${dataset}.json"
+config_file="/cbica/projects/luo_wm_dev/two_axes/code/config/config_${dataset}.json"
 
 data_root=$(jq -r '.data_root' "$config_file")
 

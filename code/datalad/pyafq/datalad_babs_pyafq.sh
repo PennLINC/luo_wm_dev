@@ -8,25 +8,26 @@
 #SBATCH --output=/dev/null    # suppress default output file
 #SBATCH --error=/dev/null     # suppress default error file
 
-datasets=("PNC" "HCPD" "HBN")
+#datasets=("PNC" "HCPD" "HBN")
+datasets=("HCPD" "HBN")
 
 # get the dataset corresponding to this task
 dataset=${datasets[$SLURM_ARRAY_TASK_ID-1]}
  
 # Define the log filenames dynamically based on the dataset
-output_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/babs_mergeds_tractprofiles_${dataset}_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out"
-error_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/babs_mergeds_tractprofiles_${dataset}_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err"
+output_file="/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/${dataset}/babs_mergeds_tractprofiles_${dataset}_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.out"
+error_file="/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/${dataset}/babs_mergeds_tractprofiles_${dataset}_${SLURM_JOB_ID}_${SLURM_ARRAY_TASK_ID}.err"
 
 # Redirect stdout and stderr to the desired log files
 exec > "${output_file}"
 exec 2> "${error_file}"
 
-dest_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/tract_profiles"
+dest_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/tract_profiles_v2"
 
 if [[ "$dataset" == "HBN" ]]; then
-    src_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/babs_qsirecon_pyafq_allsubs_noACT/merge_ds"
+    src_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/babs_qsirecon_pyafq_allsubs_noACT_v2/merge_ds"
 else
-    src_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/babs_qsirecon_pyafq_act/merge_ds"
+    src_dir="/cbica/projects/luo_wm_dev/input/${dataset}/derivatives/babs_qsirecon_pyafq_act_v2/merge_ds"
 fi
 
 echo "Processing dataset: ${dataset}"
@@ -57,7 +58,7 @@ find . -name 'sub*zip' | parallel -j 5 '
         mkdir -p "${dest_dir}/${sub}"
         
         # unzip only the tract profiles csv
-        unzip -j "${file}" "qsirecon-PYAFQ/${sub}/*/dwi/*/*profiles_dwi.csv" -d "${dest_dir}/${sub}"
+        unzip -j "${file}" "qsirecon-PYAFQ/${sub}/*/dwi/*/*profiles_tractography.csv" -d "${dest_dir}/${sub}"
         
         datalad drop "${file}"  # drop the zip
     fi

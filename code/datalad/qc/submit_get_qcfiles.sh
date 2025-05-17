@@ -8,7 +8,7 @@ datasets=( "PNC" "HCPD" "HBN")
 for dataset in "${datasets[@]}"; do
 
     # make dataset-specific logs folders
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/${dataset}/"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/${dataset}/"
     if [ ! -d ${logs_dir} ]; then
         mkdir -p ${logs_dir}
     fi

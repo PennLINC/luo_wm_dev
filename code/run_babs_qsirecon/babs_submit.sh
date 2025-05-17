@@ -7,21 +7,21 @@ conda activate babs
 ########################
 # PNC - act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act_v2
 # after test job finishes successfully: 
 babs-submit --project-root $PWD --all 
 
 ########################
 # HCPD - act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act_v2
 # after test job finishes successfully: 
 babs-submit --project-root $PWD --all 
 
 ########################
 # HBN - no act-hsvs
 ########################
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_allsubs_noACT
+cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_allsubs_noACT_v2
 # after test job finishes successfully: 
 babs-submit --project-root $PWD --all 
 
@@ -29,6 +29,6 @@ babs-submit --project-root $PWD --all
 ########################
 # HBN - act-hsvs, sensitivity analysis
 ########################
-cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act
+cd /cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act_v2
 # after test job finishes successfully: 
 babs-submit --project-root $PWD --all 

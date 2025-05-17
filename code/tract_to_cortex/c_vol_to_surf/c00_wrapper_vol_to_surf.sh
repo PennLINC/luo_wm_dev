@@ -4,10 +4,10 @@
 datasets=("PNC" "HCPD" "HBN")  
 
 for dataset in "${datasets[@]}"; do
-    config_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_${dataset}.json"
+    config_file="/cbica/projects/luo_wm_dev/two_axes/code/config/config_${dataset}.json"
     
     # Set where to save out error/output logs
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/tract_to_cortex/c_vol_to_surf/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/tract_to_cortex/c_vol_to_surf/${dataset}"
     if [ ! -d "${logs_dir}" ]; then
         mkdir -p ${logs_dir}
     fi

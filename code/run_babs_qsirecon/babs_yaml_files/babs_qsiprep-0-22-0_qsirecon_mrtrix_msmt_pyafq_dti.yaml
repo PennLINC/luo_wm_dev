@@ -10,7 +10,7 @@ singularity_run:
     --n_cpus: "$SLURM_CPUS_PER_TASK"   
     --omp-nthreads: "3"   # without this, only run single-threaded jobs (N=`--n_cpus`) at once
     --stop-on-first-crash: ""
-    --fs-license-file: "/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/license.txt"   
+    --fs-license-file: "/cbica/projects/luo_wm_dev/two_axes/software/freesurfer/license.txt"   
     --skip-bids-validation: ""
     --recon_input: "inputs/data/qsiprep/qsiprep" 
     --recon_spec: "code/mrtrix_multishell_msmt_pyafq_tractometry_dti.json"

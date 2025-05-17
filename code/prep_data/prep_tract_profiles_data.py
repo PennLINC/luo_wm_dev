@@ -20,22 +20,22 @@ Output:
 3) subs_with_nans.txt: 1D vector of subject IDs for people who had NaN data (seems like there are no NaNs in anyone's data)
 """
  
-for dataset in ["PNC", "HCPD", "HBN"]:  
+for dataset in ["PNC", "HCPD", "HBN"]:   
     print(f"Processing {dataset}")
     ########################################
     # Set directories
     ########################################
-    config_file = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_{dataset}.json"
+    config_file = f"/cbica/projects/luo_wm_dev/two_axes/code/config/config_{dataset}.json"
     with open(config_file, "rb") as f:
         config = json.load(f)
-    data_root = ospj(config['data_root'], "derivatives", "tract_profiles")
-    output_root = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/input/{dataset}/derivatives/tract_profiles" 
+    data_root = ospj(config['data_root'], "derivatives", "tract_profiles_v2")
+    output_root = f"/cbica/projects/luo_wm_dev/input/{dataset}/derivatives/tract_profiles_v2" 
     if not os.path.exists(ospj(output_root, "all_subjects")):
         os.makedirs(ospj(output_root, "all_subjects"))
         print(f"all_subjects created")
     else:
         print(f"all_subjects already exists.")
-    sample_selection_dir = f"/cbica/projects/luo_wm_dev/two_axes_manuscript/input/{dataset}/sample_selection_files"
+    sample_selection_dir = f"/cbica/projects/luo_wm_dev/two_axes/input/{dataset}/sample_selection_files"
 
     ########################################
     # Reformat tract profiles
@@ -53,7 +53,7 @@ for dataset in ["PNC", "HCPD", "HBN"]:
         sub_dir = os.path.join(data_root, sub)
         if os.path.isdir(sub_dir) and sub != "all_subjects":
             for filename in os.listdir(sub_dir):
-                if filename.endswith("profiles_dwi.csv"):
+                if filename.endswith("profiles_tractography.csv"):
                     filepath = os.path.join(sub_dir, filename)
                     df = pd.read_csv(filepath)
                     # check for rows with NaNs

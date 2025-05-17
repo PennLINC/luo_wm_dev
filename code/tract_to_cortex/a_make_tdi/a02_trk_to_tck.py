@@ -58,7 +58,7 @@ ref_img = nib.load(ref_anat)
 ######################
 # get the trk files
 search_pattern = ospj(pyafq_dir, "qsirecon-PYAFQ", subject, "*", "dwi", 
-                      f"{subject}_*T1w_desc-preproc*/bundles/{subject}_*RASMM*_tractography.trk")
+                      f"{subject}_*T1w_desc-preproc*/bundles/{subject}_*_tractography.trk")
 trk_files = glob.glob(search_pattern)
 excluded_tracts = ["Cingulum", "Thalamic"]
 trk_files = [f for f in trk_files if not any(exclude in f for exclude in excluded_tracts)]

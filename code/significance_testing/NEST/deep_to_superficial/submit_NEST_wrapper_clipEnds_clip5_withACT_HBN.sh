@@ -13,7 +13,7 @@ tract_count=${#inputarray[@]}
 
 # submit job array for each dataset
 for dataset in "${datasets[@]}"; do
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/NEST/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/NEST/${dataset}"
     mkdir -p ${logs_dir}
 
     sbatch --job-name=NEST_${dataset}_withACT \
@@ -25,7 +25,7 @@ for dataset in "${datasets[@]}"; do
            --array=0-$((tract_count-1)) \
            --output=${logs_dir}/NEST_${dataset}_withACT_%A_%a.out \
            --error=${logs_dir}/NEST_${dataset}_withACT_%A_%a.err \
-           singularity_NEST_clip5.sh ${dataset} ${tract_list} 
+           singularity_NEST_clip5_withACT_HBN.sh ${dataset} ${tract_list} 
 done
 
 

@@ -16,7 +16,7 @@ json_content='{
 }'
 
 
-PNC_json="/cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act/analysis/code/dataset_description.json"
+PNC_json="/cbica/projects/luo_wm_dev/input/PNC/derivatives/babs_qsirecon_pyafq_act_v2/analysis/code/dataset_description.json"
 echo "$json_content" > "$PNC_json"
 echo "JSON file '$PNC_json' has been created successfully."
 
@@ -35,7 +35,7 @@ json_content='{
     "template": "project"
 }'
 
-HCPD_json="/cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act/analysis/code/dataset_description.json"
+HCPD_json="/cbica/projects/luo_wm_dev/input/HCPD/derivatives/babs_qsirecon_pyafq_act_v2/analysis/code/dataset_description.json"
 echo "$json_content" > "$HCPD_json"
 echo "JSON file '$HCPD_json' has been created successfully."
 
@@ -55,6 +55,6 @@ json_content='{
     "template": "project"
 }'
 
-HBN_json="/cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act/analysis/code/dataset_description.json"
+HBN_json="/cbica/projects/luo_wm_dev/input/HBN/derivatives/babs_qsirecon_pyafq_act_v2/analysis/code/dataset_description.json"
 echo "$json_content" > "$HBN_json"
 echo "JSON file '$HBN_json' has been created successfully."

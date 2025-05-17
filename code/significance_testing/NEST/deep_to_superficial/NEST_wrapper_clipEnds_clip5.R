@@ -19,7 +19,7 @@ print(paste("Running NEST for", dataset, tract))
 ################## 
 # Set Directories 
 ################## 
-config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
+config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes/code/config/config_%1$s.json", dataset))
 demographics <- read.csv(config_data$demo_qc)
 tract_prof_output_root <- config_data$outputs_root
 NEST_outputs_dir <- paste0(tract_prof_output_root, "/NEST/dti_md/")
@@ -197,9 +197,9 @@ nodes_per_tract <- 100 # nodes per tract (nodeIDs from 0 to 99)
 NEST_wrapper(tract, df = df, bin_size = 5, nodes_to_clip = 5)
 
 # sensitivity analyses:
-#NEST_wrapper(tract, df = df, bin_size = 3, nodes_to_clip = 5)
-#NEST_wrapper(tract, df = df, bin_size = 7, nodes_to_clip = 5)
-#NEST_wrapper(tract, df = df, bin_size = 10, nodes_to_clip = 5)
+NEST_wrapper(tract, df = df, bin_size = 3, nodes_to_clip = 5)
+NEST_wrapper(tract, df = df, bin_size = 7, nodes_to_clip = 5)
+NEST_wrapper(tract, df = df, bin_size = 10, nodes_to_clip = 5)
 
 
 

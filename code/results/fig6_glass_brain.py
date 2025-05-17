@@ -22,7 +22,7 @@ study_path = f"/Users/audluo/PennLINC/luowm_local/tract_profiles/qsirecon/{subje
 tract_profiles_path = f"{study_path}/average_tract_profiles/"
 
 # Load md image
-md_img = nib.load(ospj(study_path, f"{subject}_ses-PNC1_odfmodel-DTI_desc-MD_dwi.nii.gz"))
+md_img = nib.load(ospj(study_path, f"{subject}_ses-PNC1_model-dti_param-md_dwimap.nii.gz"))
 md = md_img.get_fdata()
 
 # Load Freesurfer brain image -- note that this image had to be transformed to Native ACPC space with xfm_fs_brain.sh
@@ -52,7 +52,7 @@ def plot_tract_profile(tract_name, subject, study_path, tract_profiles_path, out
 
     # Load tractography
     tract_filename = tract_filename.replace("Fronto.occipital", "Frontooccipital") # need to update for IFO
-    sft = load_trk(ospj(study_path, "trk", f"{subject}_ses-PNC1_coordsys-RASMM_trkmethod-probCSD_recogmethod-AFQ_desc-{tract_filename}_tractography.trk"), md_img)
+    sft = load_trk(ospj(study_path, "trk", f"{subject}_ses-PNC1_desc-{tract_filename}_tractography.trk"), md_img)
     tract_brain = sft.streamlines
 
    # Threshold and smooth brain image
@@ -119,15 +119,15 @@ def plot_tract_profile(tract_name, subject, study_path, tract_profiles_path, out
 tract_list = ["Left_Inferior_Fronto.occipital"]  
 ifo_hex_colors = ["#f56262", "#fa8e8e", "#fcaeae"]
 for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/draft_figures/main", view = "sagittal", hex_colors = ifo_hex_colors)
+    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/main", view = "sagittal", hex_colors = ifo_hex_colors)
 
 
-# Figure 6b: Callosum bundles - plot for both coronal and axial view
+# Figure 6b: Callosum bundles - plot for coronal 
 tract_list = ["Callosum_Motor"]  
 cmot_hex_colors = ["#5b0004","#79001e", "#980034", "#b7274b"]
 cmot_hex_colors = ["#ad0258","#cc0468", "#c44584"]
 for tract in tract_list:
-    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/draft_figures/main", view = "coronal", hex_colors = cmot_hex_colors)
+    plot_tract_profile(tract, subject=subject, study_path=study_path, tract_profiles_path=tract_profiles_path, output_folder="/Users/audluo/Library/CloudStorage/Box-Box/Box_PhD_Land/PennLINC/luo_wm_dev/wm_manuscript/final_figures/main", view = "coronal", hex_colors = cmot_hex_colors)
 
  
 

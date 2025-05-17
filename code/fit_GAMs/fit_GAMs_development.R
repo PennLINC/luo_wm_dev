@@ -5,7 +5,7 @@ library(parallel)
 library(rjson)
 library(stringr)
 library(tidyr)
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/fit_GAMs/gam_functions/GAM_functions_tractprofiles.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/fit_GAMs/gam_functions/GAM_functions_tractprofiles.R")
 
 # This script fits developmental nodewise GAMs on tract profiles data using functions from GAM_functions_tractprofiles.R.
 # fyi: GAMs are fit for 1 specified scalar (i.e. dti_md)
@@ -39,7 +39,7 @@ print(paste("Scalar:", scalar))
 ################## 
 # Set Directories 
 ################## 
-config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
+config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes/code/config/config_%1$s.json", dataset))
 demographics <- read.csv(config_data$demo_qc)
 data_root <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles")
 outputs_root <- config_data$outputs_root
@@ -124,7 +124,7 @@ run_gam.smooth.predict <- function(gam_df, smooth.var, covs, k, set.fx, num.pred
 ###################
 if (dataset == "PNC" & !file.exists(sprintf("%1$s/all_subjects/collated_tract_profiles_final.RData", data_root))) {
   print("Formatting PNC collated profiles tsv")
-  all_subjects <- fread(sprintf("%1$s/all_subjects/collated_tract_profiles_nocovbat.tsv", data_root))
+  all_subjects <- fread(sprintf("%1$s/derivatives/tract_profiles_v2/all_subjects/collated_tract_profiles_nocovbat.tsv", config_data$data_root))
   all_subjects$tractID <- gsub("Fronto-occipital", "Fronto.occipital", all_subjects$tractID)
   all_subjects <- all_subjects %>% mutate(hemi = ifelse(grepl("Left", tractID), "Left", "Right")) %>% 
     mutate(tract_node = gsub(" ", "_", paste0(tractID, "_", nodeID)))

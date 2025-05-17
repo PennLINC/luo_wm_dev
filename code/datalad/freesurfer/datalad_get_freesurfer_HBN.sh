@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --job-name=datalad_get_freesurfer_HBN
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=5
+#SBATCH --cpus-per-task=1
 #SBATCH --mem=5G
 #SBATCH --time=12:00:00
 #SBATCH --propagate=NONE
-#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/HBN/freesurfer_%j.out
-#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/datalad/HBN/freesurfer_%j.err
+#SBATCH --output=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/HBN/freesurfer_%j.out
+#SBATCH --error=/cbica/projects/luo_wm_dev/two_axes/code/logs/datalad/HBN/freesurfer_%j.err
 
 # Main analyses: HBN does NOT use ACT and therefore doesn't need Freesurfer for QSIRecon. But we also ran a version of HBN with ACT. This script
 # gets the Freesurfer zips needed for that sensitivity analysis.
@@ -15,7 +15,7 @@ cd /cbica/projects/luo_wm_dev/input/HBN/raw/datalad_freesurfer/inputs/data/
 missing_files=$(git annex find --not --in here)
 
 # some participants in my list don't have freesurfer outputs
-no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/missing_freesurfer.txt"
+no_zip_file_list="/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/missing_freesurfer.txt"
 > $no_zip_file_list
 
 while IFS= read -r participant; do
@@ -28,7 +28,7 @@ while IFS= read -r participant; do
         echo "${participant}'s needs to be gotten. Attempting to download..."
         datalad get "$zip_file_pattern"
     fi
-done < /cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/subject_list/HBN_subject_list_babs.txt
+done < /cbica/projects/luo_wm_dev/two_axes/input/HBN/subject_list/HBN_subject_list_babs.txt
 
 echo "Participants with no zip file have been logged in: $no_zip_file_list"
  

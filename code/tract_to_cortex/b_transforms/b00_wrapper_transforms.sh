@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # submit this with ./b00_wrapper_transforms.sh
-datasets=( "PNC" "HCPD" "HBN") 
+datasets=("PNC" "HCPD" "HBN") 
+  
 
 for dataset in "${datasets[@]}"; do
-    config_file="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_${dataset}.json"
+    config_file="/cbica/projects/luo_wm_dev/two_axes/code/config/config_${dataset}.json"
     
     # where to save output and error logs
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/tract_to_cortex/b_transforms/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/tract_to_cortex/b_transforms/${dataset}"
     if [ ! -d "${logs_dir}" ]; then
         mkdir -p ${logs_dir}
     fi

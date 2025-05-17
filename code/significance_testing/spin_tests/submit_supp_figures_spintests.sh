@@ -3,11 +3,11 @@
 datasets=("PNC" "HCPD" "HBN")
 
 # set variables
-r_script="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/spin_tests/supp_figures_spintests.R"
-r_script_avg="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/significance_testing/spin_tests/supp_figures_spintests_avgdatasets.R"
+r_script="/cbica/projects/luo_wm_dev/two_axes/code/significance_testing/spin_tests/supp_figures_spintests.R"
+r_script_avg="/cbica/projects/luo_wm_dev/two_axes/code/significance_testing/spin_tests/supp_figures_spintests_avgdatasets.R"
 
 for dataset in "${datasets[@]}"; do
-    logs_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/spin_tests/${dataset}"
+    logs_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/spin_tests/${dataset}"
     if [ ! -d "${logs_dir}" ]; then
         mkdir -p ${logs_dir}
     fi
@@ -21,11 +21,11 @@ for dataset in "${datasets[@]}"; do
            --propagate=NONE \
            --output=${logs_dir}/${job_name}_%j.out \
            --error=${logs_dir}/${job_name}_%j.err \
-           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes_manuscript/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script} ${dataset}"
+           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script} ${dataset}"
 done
 
 
-logs_avgdatasets_dir="/cbica/projects/luo_wm_dev/two_axes_manuscript/code/logs/spin_tests/avgdatasets"
+logs_avgdatasets_dir="/cbica/projects/luo_wm_dev/two_axes/code/logs/spin_tests/avgdatasets"
 if [ ! -d "${logs_avgdatasets_dir}" ]; then
     mkdir -p ${logs_avgdatasets_dir}
 fi
@@ -39,4 +39,4 @@ sbatch --job-name=supp_figures_spintests_avgdatasets \
            --propagate=NONE \
            --output=${logs_avgdatasets_dir}/${job_name}_%j.out \
            --error=${logs_avgdatasets_dir}/${job_name}_%j.err \
-           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes_manuscript/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script_avg}"
+           --wrap="singularity run --cleanenv /cbica/projects/luo_wm_dev/two_axes/software/r_packages/r-packages-for-cubic_0.0.7.sif Rscript --save ${r_script_avg}"

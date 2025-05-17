@@ -21,7 +21,7 @@ data_root = config['data_root']
 manuscript_data_root = config['manuscript_input_root']
 dataset = config['dataset']
 derivs_dir = ospj(manuscript_data_root, f"derivatives/fs_qsiprep_xfm")
- 
+
 ########################################
 # Check for required files
 ########################################
@@ -50,6 +50,7 @@ if len(lta_files) != 1:
 if not os.path.exists(ospj(derivs_dir, subject, 'surfaces', 'native_acpc')):
     os.makedirs(ospj(derivs_dir, subject, 'surfaces', 'native_acpc'))
 outputs_dir = ospj(derivs_dir, subject, 'surfaces', 'native_acpc')
+ 
 
 ########################################
 # Apply Freesurfer to native AC-PC volume transformation to surfaces
@@ -95,7 +96,7 @@ for file_path in gii_files:
     except Exception as e:
         print(f"Error deleting file {file_path}: {e}")
 
-folder_path = "/cbica/projects/luo_wm_dev/two_axes_manuscript/code/tract_to_cortex/b_transforms"
+folder_path = "/cbica/projects/luo_wm_dev/two_axes/code/tract_to_cortex/b_transforms"
 gii_files = glob.glob(os.path.join(folder_path, f'{subject}*.gii')) # i think these are some tmp files that normalize_surfs forgot to delete lol *shrug*
 
 for file_path in gii_files:

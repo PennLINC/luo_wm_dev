@@ -26,34 +26,13 @@ theme_set(theme_classic(base_family = "sans",base_size = font_size))
 line_size <- 1
 point_size <- 2
 
-input_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/input"
-output_root <- "/cbica/projects/luo_wm_dev/two_axes_manuscript/output"
+input_root <- "/cbica/projects/luo_wm_dev/two_axes/input"
+output_root <- "/cbica/projects/luo_wm_dev/two_axes/output"
 ```
 
 
 # Tract Names and Orientations
 https://yeatmanlab.github.io/pyAFQ/explanations/bundle_orientation.html#bundle-orientation 
-- Left Anterior Thalamic: anterior to posterior
-- Right Anterior Thalamic: anterior to posterior
-- Left Cingulum Cingulate: anterior to posterior
-- Right Cingulum Cingulate: anterior to posterior
-- Left Corticospinal: superior to inferior
-- Right Corticospinal: superior to inferior
-- Left Inferior Fronto-occipital: anterior to posterior
-- Right Inferior Fronto-occipital: anterior to posterior
-- Left Inferior Longitudinal: anterior to posterior
-- Right Inferior Longitudinal: anterior to posterior
-- Left Superior Longitudinal: anterior to posterior
-- Right Superior Longitudinal: anterior to posterior
-- Left Arcuate: anterior to posterior
-- Right Arcuate: anterior to posterior
-- Left Uncinate: superior to inferior
-- Right Uncinate: superior to inferior
-- Callosal tracts: right to left
-- Left Posterior Arcuate: superior to inferior
-- Right Posterior Arcuate: superior to inferior
-- Left Vertical Occipital: superior to inferior
-- Right Vertical Occipital: superior to inferior
 
 ```{r load tract profiles, cache=TRUE}
 PNC <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles/all_subjects/collated_tract_profiles_final.RData", input_root, "PNC"))
@@ -63,9 +42,11 @@ HBN <- readRDS(sprintf("%1$s/%2$s/derivatives/tract_profiles/all_subjects/collat
 # format tract profiles df's
 format_tract_profiles <- function(df) {
   
+ # edit tract_node
+  df$tract_node <-  gsub("(?<=[a-z])(?=[A-Z])", "_", df$tract_node, perl = TRUE)
   # make tract_label
-  df <- df %>% mutate(tract_label = gsub("_", " ", tractID) %>%
-                       gsub("Left|Right", "", .) %>%
+  df <- df %>% mutate(tract_label = s_new <- gsub("(?<=[a-z])(?=[A-Z])", "_", tractID, perl = TRUE) %>% # note this code is different from dti scalars due to how I made tractID column for noddi and tortoise
+                       gsub("Left_|Right_", "", .) %>%
                        gsub("Fronto.occipital", "Fronto-occipital", .) %>% # change to hyphen for plotting purposes
                        trimws())
   
@@ -88,7 +69,7 @@ format_tract_profiles <- function(df) {
 PNC_tp <- format_tract_profiles(PNC)
 HCPD_tp <- format_tract_profiles(HCPD)
 HBN_tp <- format_tract_profiles(HBN)
-  
+
 saveRDS(PNC_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "PNC"))
 saveRDS(HCPD_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HCPD"))
 saveRDS(HBN_tp, sprintf("%1$s/%2$s/tract_profiles/tract_profiles_for_NEST.RData", output_root, "HBN"))

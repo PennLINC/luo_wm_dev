@@ -128,8 +128,8 @@ fi
 # Freesurfer  
 ###############
 # set variables for singularity
-freesurfer_license="/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/license.txt"
-freesurfer_sif="/cbica/projects/luo_wm_dev/two_axes_manuscript/software/freesurfer/fmriprep-20.2.3.sif"
+freesurfer_license="/cbica/projects/luo_wm_dev/two_axes/software/freesurfer/license.txt"
+freesurfer_sif="/cbica/projects/luo_wm_dev/two_axes/software/freesurfer/fmriprep-20.2.3.sif"
  
 
 # Convert Freesurfer reference volumes (nu.mgz) to NIFTIs

@@ -5,7 +5,7 @@ library(parallel)
 library(rjson)
 library(stringr)
 library(tidyr)
-source("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/fit_GAMs/gam_functions/GAM_functions_tractprofiles.R")
+source("/cbica/projects/luo_wm_dev/two_axes/code/fit_GAMs/gam_functions/GAM_functions_tractprofiles.R")
 
 # This script fits developmental nodewise GAMs on tract profiles data using functions from GAM_functions_tractprofiles.R.
 # fyi: GAMs are fit for 1 specified scalar (i.e. dti_md)
@@ -39,9 +39,9 @@ print(paste("Scalar:", scalar))
 ################## 
 # Set Directories 
 ################## 
-config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes_manuscript/code/config/config_%1$s.json", dataset))
-demographics <- read.csv("/cbica/projects/luo_wm_dev/two_axes_manuscript/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv")
-data_root <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles_ACT")
+config_data <- fromJSON(file=sprintf("/cbica/projects/luo_wm_dev/two_axes/code/config/config_%1$s.json", dataset))
+demographics <- read.csv("/cbica/projects/luo_wm_dev/two_axes/input/HBN/sample_selection_files/HBN_WMDev_FinalSampleDemoQC_withACT.csv")
+data_root <- paste0(config_data$manuscript_input_root, "/derivatives/tract_profiles_ACT_v2")
 
 outputs_root <- config_data$outputs_root
 GAM_outputs_dir <- paste0(outputs_root, "/GAM/", scalar)
@@ -66,7 +66,6 @@ run_gam.fit.smooth <- function(gam_df, smooth.var, covs, k, set.fx) {
                                                                              knots = k, 
                                                                              set_fx = set.fx))}, mc.cores = 4) 
   GAM_dev_measures <- do.call(rbind, GAM_dev_measures)
-  #write.csv(GAM_dev_measures, sprintf("%1$s/%2$s_GAM_dev_measures_age_mat.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
   write.csv(GAM_dev_measures, sprintf("%1$s/%2$s_GAM_dev_measures_withACT.csv", GAM_outputs_dir, dataset), quote = F, row.names =F)
 }
 
@@ -124,7 +123,7 @@ run_gam.smooth.predict <- function(gam_df, smooth.var, covs, k, set.fx, num.pred
 ################### 
 # Load files  
 ##################
-tract_profiles_long <- readRDS(sprintf("%1$s/all_subjects/ACT_noUF/collated_tract_profiles_final_ACT_noUF.RData", data_root))
+tract_profiles_long <- readRDS(sprintf("%1$s/all_subjects/collated_tract_profiles_final.RData", data_root))
 
 ######################################################### 
 # Merge demographics and qc with tract profiles data
