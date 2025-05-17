@@ -241,20 +241,20 @@ This table shows the custom BABS YAML files and custom QSIPrep json files used f
 
 ### 5. Create tract profiles from multi-shell diffusion models
 1. Reconstruction for NODDI and MAP-MRI were done using QSIPrep and BABS, with the same steps as described above. All code is analogous to the steps run in step 3 and can be found in 
-```bash
-~/two_axes/code/run_babs_qsirecon/babs_noddi_and_mapmri/
-```
-    
+    ```bash
+    ~/two_axes/code/run_babs_qsirecon/babs_noddi_and_mapmri/
+    ```
+
 The custom BABS YAML files and custom QSIPrep json files used for each multi-shell dataset, HCP-D and HBN (all files are also located in `~/two_axes/code/run_babs_qsirecon/babs_yaml_files/` and `~/two_axes/code/run_babs_qsirecon/qsirecon_json_files`).
 
 2. Map NODDI and MAP-MRI measures to tract profiles along pyAFQ-segmented tracts:
-```bash
-cd ~/two_axes/code/scalars_to_tractprofiles/noddi/
-./submit_wrapper_noddi_tractprofiles.sh
 
-cd ~/two_axes/code/scalars_to_tractprofiles/mapmri/
-./submit_wrapper_mapmri_tractprofiles.sh
-```
+    ```bash
+    cd ~/two_axes/code/scalars_to_tractprofiles/noddi/
+    ./submit_wrapper_noddi_tractprofiles.sh
+    cd ~/two_axes/code/scalars_to_tractprofiles/mapmri/
+    ./submit_wrapper_mapmri_tractprofiles.sh
+    ```
 
 
 ### 6. Prepare data for final sample selection
