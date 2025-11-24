@@ -110,13 +110,13 @@ HCPD_HBN_ageeffects <- merge(HCPD_to_corr, HBN_to_corr, by = "tract_node")
 HCPD_PNC_ageeffects <- merge(HCPD_to_corr, PNC_to_corr, by = "tract_node")
 HBN_PNC_ageeffects <- merge(HBN_to_corr, PNC_to_corr, by = "tract_node")
 
-text_HCPD_HBN <- bquote(italic(r) == .(cor_HCPD_HBN) * "," ~ italic(p[perm]) < .(format(round(HCPD_HBN_ageeffect_perm$p_value, 4), scientific = FALSE)))
+text_HCPD_HBN <- bquote(italic(r) == .(cor_HCPD_HBN) * "," ~ italic(p[perm]) == .(format(round(HCPD_HBN_ageeffect_perm$p_value, 5), scientific = FALSE)))
 HCPD_HBN_ageeffects_plot <- hex_plot(HCPD_HBN_ageeffects, "HCPD", "HBN", text_HCPD_HBN, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
-text_HCPD_PNC <- bquote(italic(r) == .(cor_HCPD_PNC) * "," ~ italic(p[perm]) < .(format(round(HCPD_PNC_ageeffect_perm$p_value, 4), scientific = FALSE)))
+text_HCPD_PNC <- bquote(italic(r) == .(cor_HCPD_PNC) * "," ~ italic(p[perm]) == .(format(round(HCPD_PNC_ageeffect_perm$p_value, 5), scientific = FALSE)))
 HCPD_PNC_ageeffects_plot <- hex_plot(HCPD_PNC_ageeffects, "HCPD", "PNC", text_HCPD_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
-text_HBN_PNC <- bquote(italic(r) == .(cor_HBN_PNC) * "," ~ italic(p[perm]) < .(format(round(PNC_HBN_ageeffect_perm$p_value, 4), scientific = FALSE)))
+text_HBN_PNC <- bquote(italic(r) == .(cor_HBN_PNC) * "," ~ italic(p[perm]) == .(format(round(PNC_HBN_ageeffect_perm$p_value, 5), scientific = FALSE)))
 HBN_PNC_ageeffects_plot <- hex_plot(HBN_PNC_ageeffects, "HBN", "PNC", text_HBN_PNC, ylim1 = 0 , ylim2 = 0.64, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 0.64, bin_size = 9)
 
 # make bin colors the same across plots
@@ -447,11 +447,11 @@ HCPD_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes/out
 HBN_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes/output/HBN/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
 avgdatasets_tractlevel_SA_pearsons <- read.csv('/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/suppfigs_spintests/supp_tractlevel_pearson_pspin_allendpoints.csv')
 
-SA_age_mat_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) # pval=0
-SA_age_mat_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) # pval=0
+SA_age_mat_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " = 0.0001"))) # pval=0
+SA_age_mat_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " = 0.0001"))) # pval=0
 SA_age_mat_HBN <- plot_meanSA_by_age_mat("HBN", bquote(paste(italic("r"), " = ", .(round(HBN_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " = N.S.")))
  
-SA_age_mat_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))) + ggtitle("Average Across Datasets")
+SA_age_mat_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_pearsons$rho.emp, 2)), ", ", italic("p"[spin]), " = 0.0001"))) + ggtitle("Average Across Datasets")
 
 SA_age_mat_plot_final <- ggarrange(SA_age_mat_PNC, SA_age_mat_HCPD, SA_age_mat_HBN, SA_age_mat_avgdatasets, ncol = 4, common.legend = T, legend = "bottom") 
 
@@ -493,12 +493,12 @@ HBN_tractlevel_SA_ttest_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/outpu
 avgdatasets_tractlevel_SA_ttest_p <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/suppfigs_spintests/supp_tractlevel_pearson_ttest_pspin_maturedonly.csv")
 
 SA_age_mat_binary_PNC <- plot_meanSA_by_age_mat("PNC", bquote(paste(italic("r"), " = ", .(round(PNC_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001")), binary = TRUE) # pval=0
+                                                      italic("p"[spin]), " = 0.0001")), binary = TRUE) # pval=0
 SA_age_mat_binary_HCPD <- plot_meanSA_by_age_mat("HCPD", bquote(paste(italic("r"), " = ", .(round(HCPD_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.05")), binary = TRUE)
+                                                      italic("p"[spin]), " = 0.046")), binary = TRUE)
 SA_age_mat_binary_HBN <- plot_meanSA_by_age_mat("HBN", bquote(paste(italic("r"), " = ", .(round(HBN_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.05")), binary = TRUE)
-SA_age_mat_binary_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001")), binary = TRUE) + ggtitle("Average Across Datasets")
+                                                      italic("p"[spin]), " = 0.045")), binary = TRUE)
+SA_age_mat_binary_avgdatasets <- plot_meanSA_by_age_mat("avgdatasets", bquote(paste(italic("r"), " = ", .(round(avgdatasets_tractlevel_SA_ttest_p$rho.emp, 2)), ", ", italic("p"[spin]), " = 0.0001")), binary = TRUE) + ggtitle("Average Across Datasets")
 
 SA_age_mat_binary_plot_final <- ggarrange(SA_age_mat_binary_PNC, SA_age_mat_binary_HCPD, SA_age_mat_binary_HBN, SA_age_mat_binary_avgdatasets, ncol = 4, common.legend = T, legend = "bottom")
  
@@ -531,17 +531,17 @@ HCPD_age_measures_perm <- perm_cor_test(ageeffect.fdr_dfs$HCPD_ageeffects$GAM.sm
 HBN_age_measures_perm <- perm_cor_test(ageeffect.fdr_dfs$HBN_ageeffects$GAM.smooth.AdjRsq, ageeffect.fdr_dfs$HBN_ageeffects$smooth.decrease.offset)
 
 
-text_PNC <- bquote(italic(r) == .(cor_PNC) * "," ~ italic(p[perm]) < .(format(round(PNC_age_measures_perm$p_value, 4), scientific = FALSE)))
+text_PNC <- bquote(italic(r) == .(cor_PNC) * "," ~ italic(p[perm]) == .(format(round(PNC_age_measures_perm$p_value, 4), scientific = FALSE)))
 PNC_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$PNC_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_PNC, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10) + 
   labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "PNC") + 
   theme(plot.title = element_text(hjust=0.5))
 
-text_HCPD <- bquote(italic(r) == .(cor_HCPD) * "," ~ italic(p[perm]) < .(format(round(HCPD_age_measures_perm$p_value, 4), scientific = FALSE)))
+text_HCPD <- bquote(italic(r) == .(cor_HCPD) * "," ~ italic(p[perm]) == .(format(round(HCPD_age_measures_perm$p_value, 4), scientific = FALSE)))
 HCPD_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$HCPD_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_HCPD, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10)  + 
   labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "HCP-D") + 
   theme(plot.title = element_text(hjust=0.5))
 
-text_HBN <- bquote(italic(r) == .(cor_HBN) * "," ~ italic(p[perm]) < .(format(round(HBN_age_measures_perm$p_value, 4), scientific = FALSE)))
+text_HBN <- bquote(italic(r) == .(cor_HBN) * "," ~ italic(p[perm]) == .(format(round(HBN_age_measures_perm$p_value, 4), scientific = FALSE)))
 HBN_age_measures_plot <- hex_plot(ageeffect.fdr_dfs$HBN_ageeffects, "abs_GAM.smooth.AdjRsq", "smooth.decrease.offset", text_HBN, ylim1 = 13 , ylim2 = 24.5, xlim1 = 0, xlim2 = 0.62, x_text = 0, y_text = 24.5, bin_size = 10) + 
   labs(x = "Mean Diffusivity Age Effect", y = "Age of Maturation", title = "HBN") + 
   theme(plot.title = element_text(hjust=0.5))
@@ -618,13 +618,13 @@ avgdatasets_parcellevel_SA_ttest_p <- read.csv("/cbica/projects/luo_wm_dev/two_a
 
 # remember, this data is using bin = 5 (5 nodes at each end, after clipping 5 nodes already)
 annot_text_PNC <- bquote(paste(italic("r"), " = ", .(round(PNC_parcellevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001"))
+                                                      italic("p"[spin]), " = 0.0001"))
 annot_text_HCPD <- bquote(paste(italic("r"), " = ", .(round(HCPD_parcellevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001"))
+                                                      italic("p"[spin]), " = 0.0001"))
 annot_text_HBN <-  bquote(paste(italic("r"), " = ", .(round(HBN_parcellevel_SA_ttest_p$rho.emp, 2)), ", ", 
                                                       italic("p"[spin]), " = ", .(round(HBN_parcellevel_SA_ttest_p$p.perm, 3))))
 annot_text_avgdatasets <-  bquote(paste(italic("r"), " = ", .(round(avgdatasets_parcellevel_SA_ttest_p$rho.emp, 2)), ", ", 
-                                                      italic("p"[spin]), " < 0.0001")) 
+                                                      italic("p"[spin]), " = 0.0001")) 
 
 agg_SA_parcel_PNC <- plot_agg_SA_parcel("PNC", annot_text_PNC, all_parcels = TRUE)
 agg_SA_parcel_HCPD <- plot_agg_SA_parcel("HCPD", annot_text_HCPD, all_parcels = TRUE)
