@@ -174,11 +174,11 @@ assoc_cst_avgs <- normalize_dev(assoc_cst, assoc_cst_min, assoc_cst_max)
 
 # save out
 for (df_name in names(callosum_norm_avgs)) {
-  write.csv(callosum_norm_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
+  #write.csv(callosum_norm_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
 }
 
 for (df_name in names(assoc_cst_avgs)) {
-  write.csv(assoc_cst_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
+  #write.csv(assoc_cst_avgs[[df_name]], paste0(glass_brain_dir, "/", df_name, "_avg_dev.csv"), row.names = FALSE)
 }
 ```
 
@@ -187,6 +187,11 @@ ageeffect_measure = "GAM.smooth.AdjRsq"
 ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_md", ageeffect_measure = ageeffect_measure, 
                                 color_HCPD = color_HCPD, color_HBN = color_HBN, color_PNC = color_PNC, clipEnds = 5, ylim2 = 0.41, ylim1 = 0, fontsize = 20, legend_position = "none")
 names(ageeffects_plots) <- tracts
+
+# write figure data
+#write.csv(ageeffect.fdr_dfs$PNC_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure1/figure1_PNC_ageeffect.fdr.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HCPD_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure1/figure1_HCPD_ageeffect.fdr.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HBN_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure1/figure1_HBN_ageeffect.fdr.csv", row.names = F)
 ```
 
 ```{r prep lollipop plots}
@@ -215,6 +220,9 @@ lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("PNC", "HCP-D"
 tracts <- setdiff(unique(df_formatted$tract_label), "Corticospinal") # CST for supplement
 lollipop_plots <- lapply(tracts, make_lollipop_plot, lollipop_data)
 names(lollipop_plots) <- tracts
+
+# write figure data
+#write.csv(lollipop_data, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure1/figure1_lollipop_data.csv", row.names = F)
 ```
  
 arrange plots
@@ -296,6 +304,9 @@ ageeffects_plots <- lapply(callosal_tracts, plot_age_effect_multishell, scalar =
                                 color_HCPD = color_HCPD, color_HBN = color_HBN, clipEnds = 5, ylim2 = 0.6, ylim1 = 0, fontsize = 20, legend_position = "none")
 names(ageeffects_plots) <- callosal_tracts
 
+# write figure data
+#write.csv(ageeffect.fdr_dfs$HCPD_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_HCPD_ageeffect.fdr_icvf.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HBN_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_HBN_ageeffect.fdr_icvf.csv", row.names = F)
 ```
 
 ```{r prep lollipop plots fig 2}
@@ -323,6 +334,8 @@ lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("HCP-D", "HBN"
 lollipop_plots <- lapply(callosal_tracts, make_lollipop_plot_multishell, lollipop_data)
 names(lollipop_plots) <- callosal_tracts
  
+# write figure data
+#write.csv(lollipop_data, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_lollipop_data_icvf.csv", row.names = F)
 ```
  
 arrange plots
@@ -403,6 +416,11 @@ ageeffect_measure = "GAM.smooth.AdjRsq"
 ageeffects_plots <- lapply(callosal_tracts, plot_age_effect_multishell, scalar = scalar, ageeffect_measure = ageeffect_measure, 
                                 color_HCPD = color_HCPD, color_HBN = color_HBN, clipEnds = 5, ylim2 = 0.6, ylim1 = 0, fontsize = 20, legend_position = "none")
 names(ageeffects_plots) <- callosal_tracts
+
+
+# write figure data
+#write.csv(ageeffect.fdr_dfs$HCPD_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_HCPD_ageeffect.fdr_RTOP.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HBN_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_HBN_ageeffect.fdr_RTOP.csv", row.names = F)
 ```
 
 ```{r prep lollipop plots mapmri}
@@ -430,6 +448,8 @@ lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("HCP-D", "HBN"
 lollipop_plots <- lapply(callosal_tracts, make_lollipop_plot_multishell, lollipop_data)
 names(lollipop_plots) <- callosal_tracts
  
+# write figure data
+#write.csv(lollipop_data, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure2/figure2_lollipop_data_RTOP.csv", row.names = F)
 ```
  
 arrange plots
@@ -536,6 +556,12 @@ ageeffect_measure = "GAM.smooth.AdjRsq"
 ageeffects_plots <- lapply(tracts, plot_age_effect, scalar = "dti_md", ageeffect_measure = ageeffect_measure, 
                                 color_HCPD = color_HCPD, color_HBN = color_HBN, color_PNC = color_PNC, clipEnds = 5, ylim2 = 0.41, ylim1 = 0, fontsize = 20, legend_position = "none")
 names(ageeffects_plots) <- tracts
+
+
+# write figure data
+#write.csv(ageeffect.fdr_dfs$PNC_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure3/figure3_PNC_ageeffect.fdr.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HCPD_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure3/figure3_HCPD_ageeffect.fdr.csv", row.names = F)
+#write.csv(ageeffect.fdr_dfs$HBN_ageeffects, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure3/figure3_HBN_ageeffect.fdr.csv", row.names = F)
 ```
 
 ```{r prep lollipop plots fig 3}
@@ -564,6 +590,9 @@ lollipop_data$Dataset <- factor(lollipop_data$Dataset, levels = c("PNC", "HCP-D"
 tracts <- setdiff(unique(df_formatted$tract_label), "Corticospinal") # CST for supplement
 lollipop_plots <- lapply(tracts, make_lollipop_plot, lollipop_data)
 names(lollipop_plots) <- tracts
+
+# write figure data
+#write.csv(lollipop_data, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure3/figure3_lollipop_data.csv", row.names = F)
 ```
 arrange plots
 ```{r make age effect plots for association fig 3}
@@ -645,6 +674,23 @@ HBN_fitted <- format_fitted(HBN_fitted)
 PNC_derivs <- format_derivs(PNC_derivs)
 HCPD_derivs <- format_derivs(HCPD_derivs)
 HBN_derivs <- format_derivs(HBN_derivs)
+
+# write figure data
+# same data used for figures 4 and 5
+#write.csv(PNC_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/fitted/PNC_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(HCPD_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/fitted/HCPD_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(HBN_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/fitted/HBN_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(PNC_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/derivs/PNC_formatted_derivs_smooths.csv", row.names = F)
+#write.csv(HCPD_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/derivs/HCPD_formatted_derivs_smooths.csv", row.names = F)
+#write.csv(HBN_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/derivs/HBN_formatted_derivs_smooths.csv", row.names = F)
+
+#write.csv(PNC_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/fitted/PNC_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(HCPD_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/fitted/HCPD_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(HBN_fitted, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/fitted/HBN_formatted_fitted_smooths.csv", row.names = F)
+#write.csv(PNC_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/derivs/PNC_formatted_derivs_smooths.csv", row.names = F)
+#write.csv(HCPD_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/derivs/HCPD_formatted_derivs_smooths.csv", row.names = F)
+#write.csv(HBN_derivs, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/derivs/HBN_formatted_derivs_smooths.csv", row.names = F)
+
 ```
 
 ```{r plot tract to region age effects for CMot on cortical surface, fig.height = 3, fig.width = 4}
@@ -676,6 +722,14 @@ CMot_brain_HBN
 #ggsave(paste0(fig_dir, "fig4_PNC_brain.png"), CMot_brain_PNC, height = 3, width = 4, units = "in")
 #ggsave(paste0(fig_dir, "fig4_HCPD_brain.png"), CMot_brain_HCPD, height = 3, width = 4, units = "in")
 #ggsave(paste0(fig_dir, "fig4_HBN_brain.png"), CMot_brain_HBN, height = 3, width = 4, units = "in")
+
+# write figure data
+#write.csv(CMotL_deveffect_PNC, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotL_deveffect_PNC.csv", row.names = F)
+#write.csv(CMotR_deveffect_PNC, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotR_deveffect_PNC.csv", row.names = F)
+#write.csv(CMotL_deveffect_HCPD, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotL_deveffect_HCPD.csv", row.names = F)
+#write.csv(CMotR_deveffect_HCPD, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotR_deveffect_HCPD.csv", row.names = F)
+#write.csv(CMotL_deveffect_HBN, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotL_deveffect_HBN.csv", row.names = F)
+#write.csv(CMotR_deveffect_HBN, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure4/endpoint_ageeffects/CMotR_deveffect_HBN.csv", row.names = F)
 ```
  
 ```{r plot NEST for CMot tract ends, fig.height = 3, fig.width = 15}
@@ -799,6 +853,14 @@ brain_legend <- plot_grid(legend_title, brain_legend, ncol = 1, rel_heights = c(
 #ggsave(paste0(fig_dir, "fig4and5_brain_legend.svg"), brain_legend, height = 1, width = 5, units = "in")
 #ggsave(paste0(fig_dir, "fig4and5_brain_legend.png"), brain_legend, height = 1, width = 5, units = "in")
 
+
+# write figure data
+#write.csv(IFOL_deveffect_PNC, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOL_deveffect_PNC.csv", row.names = F)
+#write.csv(IFOR_deveffect_PNC, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOR_deveffect_PNC.csv", row.names = F)
+#write.csv(IFOL_deveffect_HCPD, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOL_deveffect_HCPD.csv", row.names = F)
+#write.csv(IFOR_deveffect_HCPD, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOR_deveffect_HCPD.csv", row.names = F)
+#write.csv(IFOL_deveffect_HBN, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOL_deveffect_HBN.csv", row.names = F)
+#write.csv(IFOR_deveffect_HBN, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure5/endpoint_ageeffects/IFOR_deveffect_HBN.csv", row.names = F)
 ```
 
 ```{r plot NEST for IFO tract ends, fig.height = 3, fig.width = 15}
@@ -810,8 +872,8 @@ NEST_HBN_IFO_pval <- readRDS(paste0(output_root, "/HBN/NEST/dti_md/Inferior_Fron
 print(NEST_HBN_IFO_pval$pval)
 
 
-NEST_PNC_IFO <- plot_NEST_tract_ends("PNC", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
-NEST_HCPD_IFO <- plot_NEST_tract_ends("HCPD", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "< 0.0001"))
+NEST_PNC_IFO <- plot_NEST_tract_ends("PNC", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= 0.0001")) # p = 0.00009999
+NEST_HCPD_IFO <- plot_NEST_tract_ends("HCPD", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= 0.0001")) # p = 0.00009999
 NEST_HBN_IFO <- plot_NEST_tract_ends("HBN", tract = "IFO", color1 = color1, color2 = color2, ylim1 = 0, ylim2 = 0.47, significance_text = expression(italic(p) ~ "= N.S."))
 
 NEST_IFO <- ggarrange(NEST_PNC_IFO, NEST_HCPD_IFO, NEST_HBN_IFO, ncol = 3)
@@ -992,6 +1054,7 @@ y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)
 # IFOR = 241
 # callosum motor = 52
 
+
 ```
 
 ```{r, compute mean diffs avg across datasets, fig.height = 6, fig.width = 15}
@@ -1053,6 +1116,12 @@ y.grob <- textGrob("Difference in Age of Maturation \n Between Endpoints (Years)
 #ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets_labels.svg"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
 #ggsave(paste0(fig_dir, "fig6_delta_delta_with_avgdatasets_labels.png"), grid.arrange(arrangeGrob(diffs_plot_final_label, left = y.grob, bottom = x.grob)), height = 6, width = 15, units = "in")
 
+
+# write figure data
+#write.csv(diffs_PNC, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/diffs_PNC.csv", row.names=F)
+#write.csv(diffs_HCPD, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/diffs_HCPD.csv", row.names=F)
+#write.csv(diffs_HBN, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/diffs_HBN.csv", row.names=F)
+#write.csv(diffs_avg_datasets, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/diffs_avg_datasets.csv", row.names=F)
 ```
 
 ```{r CMot SA rank on cortex, fig.height = 4, fig.width = 10}
@@ -1103,6 +1172,10 @@ map_CMot_final
 #merged_CMotL_mean %>% arrange(SA.axis_rank)
 #merged_CMotR_mean %>% arrange(SA.axis_rank)
 # diff = 0.8
+
+# write figure data
+#write.csv(merged_CMotL_mean, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/merged_CMotL_mean.csv", row.names = F)
+#write.csv(merged_CMotR_mean, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/merged_CMotR_mean.csv", row.names = F)
 ```
 
 ```{r IFO SA rank on cortex, fig.height = 5, fig.width = 10}
@@ -1148,6 +1221,11 @@ map_IFO_final
 
 #ggsave(paste0(fig_dir, "fig6_IFO_SArank.png"), map_IFO_final, height = 4, width = 10, units = "in")
 #ggsave(paste0(fig_dir, "fig6_SA_legend.png"), plot_legend, height = 4, width = 10, units = "in")
+
+
+# write figure data
+#write.csv(merged_IFOL_mean, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/merged_IFOL_mean.csv", row.names = F)
+#write.csv(merged_IFOR_mean, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure6/merged_IFOR_mean.csv", row.names = F)
 ```
 
 # Figure 7: Development of superficial tract regions is associated with the cortical hierarchy
@@ -1176,6 +1254,11 @@ aggregated_age_mat_plot
 
 #ggsave(paste0(fig_dir, "fig7_aggregated_age_mat.svg"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
 #ggsave(paste0(fig_dir, "fig7_aggregated_age_mat.png"), aggregated_age_mat_plot, height = 3, width = 8, units = "in")
+
+
+# write figure data
+#write.csv(lh_all_datasets_ageMat, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/lh_all_datasets_ageMat.csv", row.names = F)
+#write.csv(rh_all_datasets_ageMat, "/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/rh_all_datasets_ageMat.csv", row.names = F)
 
 ```
 
@@ -1235,15 +1318,22 @@ HBN_parcelSA_ttest <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/HBN/f
 avgdatasets_parcelSA_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/fig6_fig7_spintests/fig7_pearsons_pspin_avgdatasets.csv")
 avgdatasets_ttest_cor <- read.csv("/cbica/projects/luo_wm_dev/two_axes/output/avgdatasets/fig6_fig7_spintests/fig7_ttest_pspin_avgdatasets.csv")
 
+# write figure data
+#write.csv(aggregated_axis_PNC_binary, '/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/aggregated_axis_PNC_binary.csv', row.names = F)
+#write.csv(aggregated_axis_HCPD_binary, '/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/aggregated_axis_HCPD_binary.csv', row.names = F)
+#write.csv(aggregated_axis_HBN_binary, '/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/aggregated_axis_HBN_binary.csv', row.names = F)
+#write.csv(aggregated_axis_avgdatasets_binary, '/cbica/projects/luo_wm_dev/two_axes/figure_data/figure7/aggregated_axis_avgdatasets_binary.csv', row.names = F)
+
+
+
 ```
 
 ```{r SA by age of mat parcel plot, fig.height = 5, fig.width = 18}
 # remember, this data is using bin = 5 (5 nodes at each end, after clipping 5 nodes already)
-annot_text_PNC <- bquote(paste(italic("r"), " = ", .(round(PNC_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))
-annot_text_HCPD <-  bquote(paste(italic("r"), " = ", .(round(HCPD_parcelSA_cor$rho.emp, 2)), ", ", italic(p[spin]) == .(format(round(HCPD_parcelSA_cor$p.perm, 4), scientific = FALSE)))) # pval = 0
-
-annot_text_HBN <- bquote(paste(italic("r"), " = ", .(round(HBN_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001"))
-annot_text_avgdatasets <-  bquote(paste(italic("r"), " = ", .(round(avgdatasets_parcelSA_cor$rho.emp, 2)), ", ", italic("p"[spin]), " < 0.0001")) # pval = 0
+annot_text_PNC <- bquote(italic("r") == .(round(PNC_parcelSA_cor$rho.emp, 2)) ~ "," ~ italic("p"[spin]) == .(sprintf("%.4f", 0.0001))) # # pval = 0, which technically = 1/10001 = 0.000099999 
+annot_text_HCPD <- bquote(italic("r") == .(round(HCPD_parcelSA_cor$rho.emp, 2)) ~ "," ~ italic("p"[spin]) == .(sprintf("%.4f", HCPD_parcelSA_cor$p.perm)))
+annot_text_HBN <- bquote(italic("r") == .(round(HBN_parcelSA_cor$rho.emp, 2)) ~ "," ~ italic("p"[spin]) == .(sprintf("%.4f", 0.0001))) # # pval = 0, which technically = 1/10001 = 0.000099999 
+annot_text_avgdatasets <- bquote(italic("r") == .(round(avgdatasets_parcelSA_cor$rho.emp, 2)) ~ "," ~ italic("p"[spin]) == .(sprintf("%.4f", 0.0001))) # # pval = 0, which technically = 1/10001 = 0.000099999 
 
 agg_SA_parcel_PNC <- plot_agg_SA_parcel("PNC", annot_text_PNC)
 agg_SA_parcel_HCPD <- plot_agg_SA_parcel("HCPD", annot_text_HCPD)
@@ -1255,8 +1345,8 @@ x.grob <- textGrob("S-A Axis Rank", gp=gpar(col="black", fontsize=20))
 y.grob <- textGrob("Age of Maturation (Years)", gp=gpar(col="black", fontsize=20), rot=90)
 grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob))
 
-##ggsave(paste0(fig_dir, "fig7_pearsons.svg"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
-##ggsave(paste0(fig_dir, "fig7_pearsons.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
+#ggsave(paste0(fig_dir, "fig7_pearsons.svg"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in")
+#ggsave(paste0(fig_dir, "fig7_pearsons.png"), grid.arrange(arrangeGrob(agg_SA_parcel_plot_final, left = y.grob, bottom = x.grob)), height = 5, width = 18, units = "in") 
 
 ```
 
