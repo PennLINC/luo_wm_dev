@@ -62,8 +62,10 @@ Despite decades of neuroimaging research, how white matter develops along the le
 
 - Poster presented at The Organization for Human Brain Mapping Annual Meeting, June 2024
 - Poster presented at Flux Congress, September 2024
-- Poster to be presented at The Society of Biological Psychiatry Annual Meeting, April 2025 as a Predoctoral Travel Awardee
-- Talk entitled *Axes of Hierarchical Brain Development* to be given at the Gradients of Brain Organization Workshop, Brisbane, Australia, June 2025
+- Poster presented at The Society of Biological Psychiatry Annual Meeting, April 2025 as a Predoctoral Travel Awardee
+- Talk titled *Axes of Hierarchical Brain Development* given at the Gradients of Brain Organization Workshop, Brisbane, Australia, June 2025
+- Talk titled *Two Axes of White Matter Development* to be given at the O'Donnell Brain Institute Physician-Scientist Trainee Symposium, Dallas, Texas, 2026
+
 
 ---
 
