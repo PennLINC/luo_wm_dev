@@ -46,7 +46,7 @@ Despite decades of neuroimaging research, how white matter develops along the le
 
 | **Project Start Date** | February 2024 |
 | --- | --- |
-| **Current Project Status** | In prep |
+| **Current Project Status** | In press at Nature Communications |
 
 **Code and Communication**
 
