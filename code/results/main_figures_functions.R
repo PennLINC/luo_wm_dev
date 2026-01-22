@@ -2250,7 +2250,8 @@ plot_agg_SA_parcel <- function(dataset, annot_text, all_parcels = NULL) {
 source("/cbica/projects/luo_wm_dev/software/spin_test/perm.sphere.p.R")
 perm.id.full <- readRDS("/cbica/projects/luo_wm_dev/software/spin_test/rotate_parcellation/glasser.coords_sphericalrotations_N10k.rds")
 
-# spin test for delta-delta: spin the S-A axis then recompute average S-A rank for each end. Then calculate difference in rank for delta-delta analysis. Then compute t.test and spun p-value for t-test
+# spin test for delta-delta: spin parcel-level age-of-maturation maps, 
+# recompute tract-level delta Age between endpoints, and generate a null t distribution
 ## @param aggregate_age_map, vector of regional (parcel-level) age of maturation values
 perm.sphere.age_map_delta_absdiff <- function(aggregate_age_map, perm.id, dataset, tract_names, all_endpoints, alternative = "greater", var.equal = FALSE) {
   
