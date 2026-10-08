@@ -1,6 +1,7 @@
 # Two Axes of White Matter Development
 
 **Article** now published in *Nature Communications*: [https://www.nature.com/articles/s41467-026-68714-8](https://www.nature.com/articles/s41467-026-68714-8)
+
 A detailed **reproducibility guide** and **description of the code** can be found at: [https://pennlinc.github.io/luo_wm_dev/](https://pennlinc.github.io/luo_wm_dev/)
 
 
